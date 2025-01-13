@@ -5,24 +5,16 @@
   padding: 20px;
 }
 
-/* Make each event category scrollable */
-.event-categories-container {
-  display: block; /* Ensure each category is displayed as a block */
-  margin-top: 20px;
-}
-
-/* Style for each event category */
-.event-category {
-  margin-bottom: 20px;
-  max-height: 400px;
-  overflow-y: auto;   /* Enable vertical scrolling */
-  padding-right: 20px;
-}
-
 /* Style for event category headers */
 h3 {
   font-size: 1.5em;
   margin-bottom: 10px;
+}
+
+/* Style for the event list container */
+.event-list-container {
+  margin-top: 20px;
+  display: block; /* Display as block to ensure each category is properly aligned */
 }
 
 /* Style for checkboxes and labels */
