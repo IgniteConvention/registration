@@ -37,11 +37,13 @@
   "main": "index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/IgniteConvention/Registration.git"
+    "url": "https://github.com/IgniteConvention/Registration.git"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/IgniteConvention/Registration/issues"
-  }
+  },
+  "homepage": "https://github.com/IgniteConvention/Registration#readme"
+}
