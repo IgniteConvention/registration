@@ -1,20 +1,67 @@
 import React, { useState } from 'react';
 import SchoolRegistrationForm from './components/SchoolRegistrationForm';
 import StudentRegistrationForm from './components/StudentRegistrationForm';
+import EventRegistrationForm from './components/EventRegistrationForm';
 
 function App() {
   const [schoolData, setSchoolData] = useState(null);
   const [students, setStudents] = useState([]);
   const [editingStudent, setEditingStudent] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
+  const [selectedEvents, setSelectedEvents] = useState({}); // To store events for each student
+  const [isEventRegistration, setIsEventRegistration] = useState(false);
 
-  // Handle submission of school registration form
+  const availableEvents = [
+    {
+      category: "Athletics",
+      events: [
+        "Soccer Kick (M)", "Soccer Kick (F)", "Basketball (M)", "Basketball (F)",
+        "Shotput (M)", "Shotput (F)", "Discus (M)", "Discus (F)", "Track and Field"
+      ]
+    },
+    {
+      category: "Instrumentals",
+      events: [
+        "Male Duet", "Freestyle Male Duet", "Female Duet", "Freestyle Female Duet",
+        "Mixed Duet", "Freestyle Mixed Duet", "Male Trio", "Freestyle Male Trio",
+        "Female Trio", "Freestyle Female Trio", "Mixed Trio", "Freestyle Mixed Trio",
+        "Male Quartet", "Freestyle Male Quartet", "Female Quartet", "Freestyle Female Quartet",
+        "Mixed Quartet", "Freestyle Mixed Quartet", "Small Ensemble", "Freestyle Small Ensemble"
+      ]
+    },
+    {
+      category: "Dramatics",
+      events: [
+        "Dramatic Monologue", "Expressive Recitation Male", "Expressive Recitation Female",
+        "Poetry Recitation Male", "Poetry Recitation Female", "Dramatic Dialogue", "Clown Act",
+        "Ventriloquism", "Skit", "Oratory", "Preaching (M) 13-15"
+      ]
+    },
+    {
+      category: "Academic",
+      events: [
+        "Spelling", "Academic Bowl", "Chess", "Table Tennis", "Checkers", "Bible Memory Bee"
+      ]
+    },
+    {
+      category: "Creative",
+      events: [
+        "Art Showcase", "Oil Painting", "Water Color", "Graphic Design", "Website Design", "Service Recap Video Presentation"
+      ]
+    },
+    {
+      category: "Other",
+      events: [
+        "Golden Harp Award", "Social Studies-Research", "Social Studies-Theoretical", "Social Studies-Collection"
+      ]
+    }
+  ];
+
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
     console.log('School Data Submitted:', school);
   };
 
-  // Handle submission of student registration form
   const handleStudentSubmit = (student) => {
     if (editingStudent) {
       setStudents(
@@ -29,75 +76,65 @@ function App() {
     console.log('Student Data Submitted:', student);
   };
 
-  // Handle adding another student
-  const handleAddAnotherStudent = () => {
-    setIsComplete(false);
+  const handleEventSubmit = (studentName, selectedEventsForStudent) => {
+    setSelectedEvents((prevEvents) => ({
+      ...prevEvents,
+      [studentName]: selectedEventsForStudent
+    }));
+    console.log(`Events for ${studentName}:`, selectedEventsForStudent);
+    setIsEventRegistration(false); // Return to the student registration flow after submitting events
   };
 
-  // Handle completion of registration (finalize process)
-  const handleCompleteRegistration = () => {
-    setIsComplete(true);
-  };
-
-  // Handle editing a specific student
   const handleEditStudent = (student) => {
-    setEditingStudent(student); // Set the student to be edited
-    setIsComplete(false); // Keep the form visible for editing
+    setEditingStudent(student);
+    setIsEventRegistration(false);
   };
 
-  // Handle event registration
-  const handleEventRegistration = () => {
-    console.log("Starting event registration");
-    // Logic for moving to the event registration page will go here
+  const handleStartEventRegistration = (student) => {
+    setEditingStudent(student); // Set the student to edit
+    setIsEventRegistration(true); // Show the event registration form
   };
 
   return (
     <div className="App">
       <h1>Registration System</h1>
 
-      {/* School registration form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !isComplete ? (
-        // Student registration form
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           student={editingStudent}
         />
+      ) : isEventRegistration ? (
+        <EventRegistrationForm
+          student={editingStudent}
+          onSubmit={handleEventSubmit}
+          availableEvents={availableEvents}
+        />
       ) : (
-        // After registration is complete, show the confirmation page
         <div className="confirmation-container">
           <h2>Registration Complete</h2>
           <p><strong>School Name:</strong> {schoolData.schoolName}</p>
           <h3>Students Registered:</h3>
-          <ul className="student-list">
+          <ul>
             {students.map((student, index) => (
-              <li key={index} className="student-item">
-                <span>{student.studentName}</span>
-                <button 
-                  onClick={() => handleEditStudent(student)} 
-                  className="edit-button">
-                  Edit
+              <li key={index}>
+                {student.studentName} - {student.studentAge} years old ({student.studentGender})
+                <button onClick={() => handleEditStudent(student)}>Edit</button>
+                <button onClick={() => handleStartEventRegistration(student)}>
+                  Add Events
                 </button>
+                <div>
+                  <strong>Selected Events:</strong>
+                  {selectedEvents[student.studentName]
+                    ? selectedEvents[student.studentName].join(', ')
+                    : 'None yet'}
+                </div>
               </li>
             ))}
           </ul>
-          <div className="buttons">
-            <button onClick={handleCompleteRegistration} className="finish-button">
-              Finish Registration
-            </button>
-            <button onClick={handleEventRegistration} className="event-button">
-              Start Adding Events
-            </button>
-          </div>
-        </div>
-      )}
-
-      {/* Show options after each student is added */}
-      {students.length > 0 && !isComplete && (
-        <div>
-          <button onClick={handleAddAnotherStudent}>Add Another Student</button>
-          <button onClick={handleCompleteRegistration}>Complete Registration</button>
+          <button onClick={() => setIsComplete(true)}>Finish Registration</button>
         </div>
       )}
     </div>
