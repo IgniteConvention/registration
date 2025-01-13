@@ -9,11 +9,24 @@ function App() {
   const [editingStudent, setEditingStudent] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState({});
-  const [isEventRegistration, setIsEventRegistration] = useState(false);
 
-  const availableEvents = [
-    // Add your available events here as before
-  ];
+  // List of available events from the PDF
+  const availableEvents = {
+    "Digital Media (Early Entry)": [
+      "Website Design", "Service Recap Video Presentation", "Graphic Design", "Persuasive Video", 
+      "Scripture Video", "Radio Program"
+    ],
+    "Academic Division (Performance)": [
+      "Bible Memory Bee", "Academic Bowl", "Bible Bowl"
+    ],
+    "Athletics (Male)": [
+      "100 Meter Dash", "200 Meter Dash", "400 Meter Dash", "800 Meter Run", "1600 Meter Run", 
+      "400 Meter Relay", "1600 Meter Relay", "Soccer Kick", "Physical Fitness", "Table Tennis", "Basketball", 
+      "Long Jump", "Archery - Compound Bow", "Archery - Traditional Instinctive", 
+      "Archery - Limited Freestyle", "Archery - Unlimited Freestyle"
+    ],
+    // Add the rest of the categories and events as needed...
+  };
 
   // Handle submission of school registration form
   const handleSchoolSubmit = (school) => {
@@ -41,11 +54,6 @@ function App() {
     setEditingStudent(null); // Reset the editing state to add a new student
   };
 
-  // Handle completion of registration (finalize process)
-  const handleCompleteRegistration = () => {
-    setIsComplete(true); // Mark registration as complete
-  };
-
   // Handle event registration for the student
   const handleEventSubmit = (studentName, selectedEventsForStudent) => {
     setSelectedEvents((prevEvents) => ({
@@ -53,19 +61,11 @@ function App() {
       [studentName]: selectedEventsForStudent,
     }));
     console.log(`Events for ${studentName}:`, selectedEventsForStudent);
-    setIsEventRegistration(false); // Return to the student registration flow after submitting events
   };
 
   // Handle editing a specific student
   const handleEditStudent = (student) => {
     setEditingStudent(student); // Set the student to be edited
-    setIsEventRegistration(false);
-  };
-
-  // Handle event registration
-  const handleStartEventRegistration = (student) => {
-    setEditingStudent(student); // Set the student to edit
-    setIsEventRegistration(true); // Show the event registration form
   };
 
   return (
@@ -75,48 +75,23 @@ function App() {
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !isComplete ? (
-        // Show the student registration form if registration isn't complete
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           student={editingStudent}
         />
-      ) : isEventRegistration ? (
+      ) : (
         <EventRegistrationForm
           student={editingStudent}
           onSubmit={handleEventSubmit}
           availableEvents={availableEvents}
         />
-      ) : (
-        <div className="confirmation-container">
-          <h2>Registration Complete</h2>
-          <p><strong>School Name:</strong> {schoolData.schoolName}</p>
-          <h3>Students Registered:</h3>
-          <ul>
-            {students.map((student, index) => (
-              <li key={index}>
-                {student.studentName} - {student.studentAge} years old ({student.studentGender})
-                <button onClick={() => handleEditStudent(student)}>Edit</button>
-                <button onClick={() => handleStartEventRegistration(student)}>
-                  Add Events
-                </button>
-                <div>
-                  <strong>Selected Events:</strong>
-                  {selectedEvents[student.studentName]
-                    ? selectedEvents[student.studentName].join(', ')
-                    : 'None yet'}
-                </div>
-              </li>
-            ))}
-          </ul>
-          <button onClick={handleCompleteRegistration}>Finish Registration</button>
-        </div>
       )}
 
-      {/* Show options after at least one student is added */}
+      {/* Add buttons for adding a student or completing registration */}
       {students.length > 0 && !isComplete && (
         <div>
           <button onClick={handleAddAnotherStudent}>Add Another Student</button>
-          <button onClick={handleCompleteRegistration}>Complete Registration</button>
+          <button onClick={() => setIsComplete(true)}>Complete Registration</button>
         </div>
       )}
     </div>
