@@ -5,6 +5,7 @@ import StudentRegistrationForm from './components/StudentRegistrationForm';
 function App() {
   const [schoolData, setSchoolData] = useState(null);
   const [students, setStudents] = useState([]);
+  const [isComplete, setIsComplete] = useState(false);
 
   // Handle submission of school registration form
   const handleSchoolSubmit = (school) => {
@@ -18,17 +19,28 @@ function App() {
     console.log('Student Data Submitted:', student);
   };
 
+  // Handle adding another student
+  const handleAddAnotherStudent = () => {
+    setIsComplete(false); // Keep the student form visible for next submission
+  };
+
+  // Handle completion of registration (finalize process)
+  const handleCompleteRegistration = () => {
+    setIsComplete(true);
+  };
+
   return (
     <div className="App">
       <h1>Registration System</h1>
-      
-      {/* Display School Registration Form if no school data yet */}
+
       {!schoolData ? (
+        // Show school registration form if no school data is entered
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : !students.length ? (
-        // Display Student Registration Form if no students yet
+      ) : !isComplete ? (
+        // Show student registration form if students are not completed
         <StudentRegistrationForm onSubmit={handleStudentSubmit} />
       ) : (
+        // After all students are registered, show the confirmation page
         <div>
           <h2>Registration Complete</h2>
           <p>School Name: {schoolData.schoolName}</p>
@@ -38,6 +50,15 @@ function App() {
               <li key={index}>{student.studentName}</li>
             ))}
           </ul>
+          <button onClick={handleCompleteRegistration}>Finish Registration</button>
+        </div>
+      )}
+
+      {/* Show options after each student is added */}
+      {students.length > 0 && !isComplete && (
+        <div>
+          <button onClick={handleAddAnotherStudent}>Add Another Student</button>
+          <button onClick={handleCompleteRegistration}>Complete Registration</button>
         </div>
       )}
     </div>
