@@ -28,6 +28,7 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
 
   // Handle form submission
   const handleSubmit = () => {
+    // Passing the selected events and group data to the parent component
     onSubmit(student.studentName, selectedEvents.map((e) => ({
       ...e,
       group: groupSelection[e.eventName] || 'N/A',
