@@ -8,60 +8,20 @@ function App() {
   const [students, setStudents] = useState([]);
   const [editingStudent, setEditingStudent] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
-  const [selectedEvents, setSelectedEvents] = useState({}); // To store events for each student
+  const [selectedEvents, setSelectedEvents] = useState({});
   const [isEventRegistration, setIsEventRegistration] = useState(false);
 
   const availableEvents = [
-    {
-      category: "Athletics",
-      events: [
-        "Soccer Kick (M)", "Soccer Kick (F)", "Basketball (M)", "Basketball (F)",
-        "Shotput (M)", "Shotput (F)", "Discus (M)", "Discus (F)", "Track and Field"
-      ]
-    },
-    {
-      category: "Instrumentals",
-      events: [
-        "Male Duet", "Freestyle Male Duet", "Female Duet", "Freestyle Female Duet",
-        "Mixed Duet", "Freestyle Mixed Duet", "Male Trio", "Freestyle Male Trio",
-        "Female Trio", "Freestyle Female Trio", "Mixed Trio", "Freestyle Mixed Trio",
-        "Male Quartet", "Freestyle Male Quartet", "Female Quartet", "Freestyle Female Quartet",
-        "Mixed Quartet", "Freestyle Mixed Quartet", "Small Ensemble", "Freestyle Small Ensemble"
-      ]
-    },
-    {
-      category: "Dramatics",
-      events: [
-        "Dramatic Monologue", "Expressive Recitation Male", "Expressive Recitation Female",
-        "Poetry Recitation Male", "Poetry Recitation Female", "Dramatic Dialogue", "Clown Act",
-        "Ventriloquism", "Skit", "Oratory", "Preaching (M) 13-15"
-      ]
-    },
-    {
-      category: "Academic",
-      events: [
-        "Spelling", "Academic Bowl", "Chess", "Table Tennis", "Checkers", "Bible Memory Bee"
-      ]
-    },
-    {
-      category: "Creative",
-      events: [
-        "Art Showcase", "Oil Painting", "Water Color", "Graphic Design", "Website Design", "Service Recap Video Presentation"
-      ]
-    },
-    {
-      category: "Other",
-      events: [
-        "Golden Harp Award", "Social Studies-Research", "Social Studies-Theoretical", "Social Studies-Collection"
-      ]
-    }
+    // Add your available events here as before
   ];
 
+  // Handle submission of school registration form
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
     console.log('School Data Submitted:', school);
   };
 
+  // Handle submission of student registration form
   const handleStudentSubmit = (student) => {
     if (editingStudent) {
       setStudents(
@@ -76,20 +36,33 @@ function App() {
     console.log('Student Data Submitted:', student);
   };
 
+  // Handle adding another student
+  const handleAddAnotherStudent = () => {
+    setEditingStudent(null); // Reset the editing state to add a new student
+  };
+
+  // Handle completion of registration (finalize process)
+  const handleCompleteRegistration = () => {
+    setIsComplete(true); // Mark registration as complete
+  };
+
+  // Handle event registration for the student
   const handleEventSubmit = (studentName, selectedEventsForStudent) => {
     setSelectedEvents((prevEvents) => ({
       ...prevEvents,
-      [studentName]: selectedEventsForStudent
+      [studentName]: selectedEventsForStudent,
     }));
     console.log(`Events for ${studentName}:`, selectedEventsForStudent);
     setIsEventRegistration(false); // Return to the student registration flow after submitting events
   };
 
+  // Handle editing a specific student
   const handleEditStudent = (student) => {
-    setEditingStudent(student);
+    setEditingStudent(student); // Set the student to be edited
     setIsEventRegistration(false);
   };
 
+  // Handle event registration
   const handleStartEventRegistration = (student) => {
     setEditingStudent(student); // Set the student to edit
     setIsEventRegistration(true); // Show the event registration form
@@ -102,6 +75,7 @@ function App() {
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !isComplete ? (
+        // Show the student registration form if registration isn't complete
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           student={editingStudent}
@@ -134,7 +108,15 @@ function App() {
               </li>
             ))}
           </ul>
-          <button onClick={() => setIsComplete(true)}>Finish Registration</button>
+          <button onClick={handleCompleteRegistration}>Finish Registration</button>
+        </div>
+      )}
+
+      {/* Show options after at least one student is added */}
+      {students.length > 0 && !isComplete && (
+        <div>
+          <button onClick={handleAddAnotherStudent}>Add Another Student</button>
+          <button onClick={handleCompleteRegistration}>Complete Registration</button>
         </div>
       )}
     </div>
