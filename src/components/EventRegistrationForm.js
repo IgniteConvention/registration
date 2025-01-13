@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
 const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   const [selectedEvents, setSelectedEvents] = useState({});
   const [groupName, setGroupName] = useState("");
 
-  // Handle change for group name field
+  // Handle change for group name field (dropdown)
   const handleGroupNameChange = (event) => {
     setGroupName(event.target.value);
   };
@@ -56,11 +56,17 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
         </div>
       ))}
       
-      {/* Group Name input for group-based events */}
+      {/* Group Name dropdown for group-based events */}
       {Object.keys(selectedEvents).some(category => category.includes('Ensemble') || category.includes('Skit')) && (
         <div>
-          <label>Group Name (e.g., Group A, Group B):</label>
-          <input type="text" value={groupName} onChange={handleGroupNameChange} />
+          <label>Group Name (e.g., Group A, Group B, Group C, Group D):</label>
+          <select value={groupName} onChange={handleGroupNameChange}>
+            <option value="">Select Group</option>
+            <option value="A">Group A</option>
+            <option value="B">Group B</option>
+            <option value="C">Group C</option>
+            <option value="D">Group D</option>
+          </select>
         </div>
       )}
 
