@@ -73,11 +73,13 @@ function App() {
   // Handle editing a specific student
   const handleEditStudent = (student) => {
     setEditingStudent(student); // Set the student to be edited
+    setIsComplete(false); // Allow editing by setting the registration back to incomplete
   };
 
   // Handle starting the event registration for a specific student
   const handleStartEventRegistration = (student) => {
     setEditingStudent(student); // Set the student to edit
+    setIsComplete(false); // Allow event registration by setting the registration back to incomplete
   };
 
   // Handle completion of registration
