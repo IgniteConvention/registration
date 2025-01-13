@@ -32,4 +32,91 @@ function App() {
       "Archery - Compound Bow", "Archery - Traditional Instinctive", 
       "Archery - Limited Freestyle", "Archery - Unlimited Freestyle"
     ],
-    // Add the rest of the categories and events as needed...
+    "Art (Performance)": [
+      "Painting", "Drawing", "Photography", "Graphic Design", "Sculpture"
+    ],
+    "Dramatics (Performance)": [
+      "One Act Play", "Skit", "Small Ensemble", "Sign Language Team (5-10)", 
+      "Sign Language Team (11-20)", "Illustrated Story", "Puppets", "Famous Speech"
+    ],
+    "Instrumentals (Performance)": [
+      "Solo Brass", "Solo Woodwind", "Solo Percussion", "Solo Strings", "Solo Miscellaneous", 
+      "Duet Instrumental", "Ensemble"
+    ],
+    "Miscellaneous": [
+      "Golden Harp", "Golden Lamb", "Golden Apple", "Christian Service (Discipleship Award)", 
+      "Christian Soldier Award", "Christian Worker Award"
+    ]
+  };
+
+  // Handle submission of school registration form
+  const handleSchoolSubmit = (school) => {
+    setSchoolData(school);
+    console.log('School Data Submitted:', school);
+  };
+
+  // Handle submission of student registration form
+  const handleStudentSubmit = (student) => {
+    if (editingStudent) {
+      setStudents(
+        students.map((s) =>
+          s.studentName === editingStudent.studentName ? student : s
+        )
+      );
+      setEditingStudent(null);
+    } else {
+      setStudents([...students, student]);
+    }
+    console.log('Student Data Submitted:', student);
+  };
+
+  // Handle adding another student
+  const handleAddAnotherStudent = () => {
+    setEditingStudent(null); // Reset the editing state to add a new student
+  };
+
+  // Handle event registration for the student
+  const handleEventSubmit = (studentName, selectedEventsForStudent) => {
+    setSelectedEvents((prevEvents) => ({
+      ...prevEvents,
+      [studentName]: selectedEventsForStudent,
+    }));
+    console.log(`Events for ${studentName}:`, selectedEventsForStudent);
+  };
+
+  // Handle editing a specific student
+  const handleEditStudent = (student) => {
+    setEditingStudent(student); // Set the student to be edited
+  };
+
+  return (
+    <div className="App">
+      <h1>Registration System</h1>
+
+      {!schoolData ? (
+        <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
+      ) : !isComplete ? (
+        <StudentRegistrationForm
+          onSubmit={handleStudentSubmit}
+          student={editingStudent} // Ensure this is passed correctly
+        />
+      ) : (
+        <EventRegistrationForm
+          student={editingStudent} // Ensure this is passed correctly
+          onSubmit={handleEventSubmit}
+          availableEvents={availableEvents}
+        />
+      )}
+
+      {/* Add buttons for adding a student or completing registration */}
+      {students.length > 0 && !isComplete && (
+        <div>
+          <button onClick={handleAddAnotherStudent}>Add Another Student</button>
+          <button onClick={() => setIsComplete(true)}>Complete Registration</button>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
