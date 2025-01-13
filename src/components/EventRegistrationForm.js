@@ -4,7 +4,7 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [groupSelection, setGroupSelection] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Change this to control how many categories per page
+  const itemsPerPage = 4; // Adjust to control how many categories to show per page
 
   // Handle event selection (checkbox)
   const handleEventChange = (eventCategory, eventName) => {
@@ -43,8 +43,13 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
 
   // Handle pagination (next and previous page)
   const handlePageChange = (pageNumber) => {
-    setCurrentPage(pageNumber);
+    if (pageNumber >= 1 && pageNumber <= totalPages) {
+      setCurrentPage(pageNumber);
+    }
   };
+
+  // Calculate the total number of pages based on the number of event categories
+  const totalPages = Math.ceil(Object.keys(availableEvents).length / itemsPerPage);
 
   // Split the event categories into pages
   const categoriesPerPage = Object.keys(availableEvents).slice(
@@ -97,6 +102,7 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
         ))}
       </div>
 
+      {/* Pagination buttons */}
       <div className="pagination">
         <button
           onClick={() => handlePageChange(currentPage - 1)}
@@ -106,7 +112,7 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
         </button>
         <button
           onClick={() => handlePageChange(currentPage + 1)}
-          disabled={categoriesPerPage.length < itemsPerPage}
+          disabled={currentPage === totalPages}
         >
           Next
         </button>
