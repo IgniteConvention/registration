@@ -3,7 +3,8 @@ import React, { useState } from 'react';
 const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [groupSelection, setGroupSelection] = useState({});
-  
+
+  // Handle event selection (checkbox)
   const handleEventChange = (eventCategory, eventName) => {
     const updatedEvents = [...selectedEvents];
     const eventIndex = updatedEvents.findIndex(
@@ -17,6 +18,7 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
     setSelectedEvents(updatedEvents);
   };
 
+  // Handle group input for multi-participant events
   const handleGroupChange = (eventName, group) => {
     setGroupSelection((prev) => ({
       ...prev,
@@ -24,6 +26,7 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
     }));
   };
 
+  // Handle form submission
   const handleSubmit = () => {
     onSubmit(student.studentName, selectedEvents.map((e) => ({
       ...e,
@@ -34,39 +37,41 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      {Object.keys(availableEvents).map((eventCategory, index) => (
-        <div key={index}>
-          <h3>{eventCategory}</h3>
-          {availableEvents[eventCategory].map((eventName) => (
-            <div key={eventName}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedEvents.some(
-                    (e) => e.eventCategory === eventCategory && e.eventName === eventName
-                  )}
-                  onChange={() => handleEventChange(eventCategory, eventName)}
-                />
-                {eventName}
-              </label>
-              {/* Display group option for multi-participant events */}
-              {eventName.includes('Bible Bowl') || eventName.includes('Small Ensemble') ? (
-                <div>
-                  <label>
-                    Group: 
-                    <input
-                      type="text"
-                      placeholder="Enter Group (A, B, etc.)"
-                      value={groupSelection[eventName] || ''}
-                      onChange={(e) => handleGroupChange(eventName, e.target.value)}
-                    />
-                  </label>
-                </div>
-              ) : null}
-            </div>
-          ))}
-        </div>
-      ))}
+      <div className="event-container">
+        {Object.keys(availableEvents).map((eventCategory, index) => (
+          <div key={index}>
+            <h3>{eventCategory}</h3>
+            {availableEvents[eventCategory].map((eventName) => (
+              <div key={eventName}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={selectedEvents.some(
+                      (e) => e.eventCategory === eventCategory && e.eventName === eventName
+                    )}
+                    onChange={() => handleEventChange(eventCategory, eventName)}
+                  />
+                  {eventName}
+                </label>
+                {/* Display group option for multi-participant events */}
+                {(eventName.includes('Bible Bowl') || eventName.includes('Small Ensemble') || eventName.includes('Skit')) && (
+                  <div>
+                    <label>
+                      Group: 
+                      <input
+                        type="text"
+                        placeholder="Enter Group (A, B, etc.)"
+                        value={groupSelection[eventName] || ''}
+                        onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                      />
+                    </label>
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        ))}
+      </div>
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
