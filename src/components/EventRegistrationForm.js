@@ -55,7 +55,22 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
                   {eventName}
                 </label>
                 {/* Display group option for multi-participant events */}
-                {(eventName.includes('Bible Bowl') || eventName.includes('Small Ensemble') || eventName.includes('Skit')) && (
+                {(
+                  eventName.includes('Bible Bowl') ||
+                  eventName.includes('Small Ensemble') ||
+                  eventName.includes('Skit') ||
+                  eventName.includes('Radio Program') ||
+                  eventName.includes('400 Meter Relay') ||
+                  eventName.includes('Dramatic Dialogues') ||
+                  eventName.includes('Male Duet') ||
+                  eventName.includes('Science Projects') ||
+                  eventName.includes('Instrumental Duet') ||
+                  eventName.includes('One-Act Play') ||
+                  eventName.includes('Sign Language Team') ||
+                  eventName.includes('Choral Groups') ||
+                  eventName.includes('Illustrated Story') ||
+                  eventName.includes('Puppets')
+                ) && (
                   <div>
                     <label>
                       Group: 
