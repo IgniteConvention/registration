@@ -1,6 +1,11 @@
 import React, { useState } from 'react';
 
 const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
+  // Ensure the student object exists before proceeding
+  if (!student) {
+    return <div>Loading...</div>; // or handle this gracefully
+  }
+
   const [selectedEvents, setSelectedEvents] = useState({});
   const [groupName, setGroupName] = useState("");
 
