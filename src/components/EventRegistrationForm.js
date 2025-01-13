@@ -28,67 +28,59 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
 
   // Handle form submission
   const handleSubmit = () => {
-    // Passing the selected events and group data to the parent component
-    onSubmit(student.studentName, selectedEvents.map((e) => ({
-      ...e,
-      group: groupSelection[e.eventName] || 'N/A',
-    })));
+    // Verify if there are selected events and then submit
+    if (selectedEvents.length > 0) {
+      onSubmit(student.studentName, selectedEvents.map((e) => ({
+        ...e,
+        group: groupSelection[e.eventName] || 'N/A',
+      })));
+      console.log('Events submitted:', selectedEvents);
+    } else {
+      console.log('No events selected');
+    }
   };
 
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      <div className="event-categories-container">
+      <div className="event-list-container">
         {Object.keys(availableEvents).map((eventCategory, index) => (
-          <div className="event-category" key={index}>
+          <div key={index}>
             <h3>{eventCategory}</h3>
-            <div className="event-list">
-              <div className="event-container">
-                {availableEvents[eventCategory].map((eventName) => (
-                  <div key={eventName}>
-                    <label>
-                      <input
-                        type="checkbox"
-                        checked={selectedEvents.some(
-                          (e) => e.eventCategory === eventCategory && e.eventName === eventName
-                        )}
-                        onChange={() => handleEventChange(eventCategory, eventName)}
-                      />
-                      {eventName}
-                    </label>
-                    {/* Display group option for multi-participant events */}
-                    {(
-                      eventName.includes('Bible Bowl') ||
-                      eventName.includes('Small Ensemble') ||
-                      eventName.includes('Skit') ||
-                      eventName.includes('Radio Program') ||
-                      eventName.includes('400 Meter Relay') ||
-                      eventName.includes('Dramatic Dialogues') ||
-                      eventName.includes('Male Duet') ||
-                      eventName.includes('Science Projects') ||
-                      eventName.includes('Instrumental Duet') ||
-                      eventName.includes('One-Act Play') ||
-                      eventName.includes('Sign Language Team') ||
-                      eventName.includes('Choral Groups') ||
-                      eventName.includes('Illustrated Story') ||
-                      eventName.includes('Puppets')
-                    ) && (
-                      <div>
-                        <label>
-                          Group: 
-                          <input
-                            type="text"
-                            placeholder="Enter Group (A, B, etc.)"
-                            value={groupSelection[eventName] || ''}
-                            onChange={(e) => handleGroupChange(eventName, e.target.value)}
-                          />
-                        </label>
-                      </div>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
+            <ul>
+              {availableEvents[eventCategory].map((eventName) => (
+                <li key={eventName}>
+                  <label>
+                    <input
+                      type="checkbox"
+                      checked={selectedEvents.some(
+                        (e) => e.eventCategory === eventCategory && e.eventName === eventName
+                      )}
+                      onChange={() => handleEventChange(eventCategory, eventName)}
+                    />
+                    {eventName}
+                  </label>
+
+                  {/* Show group selection input if the event requires it */}
+                  {[
+                    "Bible Bowl", "Small Ensemble", "Skit", "Radio Program", "Dramatic Dialogues",
+                    "400 Meter Relay", "Science Projects", "Instrumental Duet", "Sign Language Team"
+                  ].includes(eventName) && (
+                    <div>
+                      <label>
+                        Group: 
+                        <input
+                          type="text"
+                          placeholder="Group (A, B, C, etc.)"
+                          value={groupSelection[eventName] || ''}
+                          onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                        />
+                      </label>
+                    </div>
+                  )}
+                </li>
+              ))}
+            </ul>
           </div>
         ))}
       </div>
