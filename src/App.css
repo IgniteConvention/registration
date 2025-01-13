@@ -5,63 +5,74 @@
   padding: 20px;
 }
 
-/* Style the headers and buttons */
-h1, h2, h3 {
-  color: #4CAF50;
+/* Make the event selection container scrollable */
+.event-container {
+  max-height: 400px;  /* Set the max height for the event list */
+  overflow-y: auto;   /* Enable vertical scrolling */
+  margin-bottom: 20px;
+  padding-right: 20px; /* Adds some space to the right side of the list for scrolling */
 }
 
+/* Style for event category headers */
+h3 {
+  font-size: 1.5em;
+  margin-bottom: 10px;
+}
+
+/* Style for checkboxes and labels */
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Style for the group input text box */
+input[type="text"] {
+  margin-top: 5px;
+  padding: 5px;
+  width: 120px; /* Limit the width of the group input */
+  font-size: 1em;
+}
+
+/* Add some margin to buttons */
 button {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 1em;
+  cursor: pointer;
   background-color: #4CAF50;
   color: white;
-  padding: 10px 20px;
   border: none;
-  margin: 5px;
-  cursor: pointer;
+  border-radius: 5px;
 }
 
 button:hover {
   background-color: #45a049;
 }
 
-/* Style the form elements */
-form {
-  max-width: 600px;
-  margin: 20px auto;
-  padding: 20px;
-  border: 2px solid #ddd;
-  border-radius: 8px;
-  background-color: #f9f9f9;
+button:active {
+  background-color: #3e8e41;
 }
 
-input[type="text"], input[type="checkbox"], select {
-  margin: 10px;
-  padding: 5px;
-  font-size: 16px;
+/* Additional styles for the confirmation page */
+.confirmation-container {
+  margin-top: 30px;
+  text-align: left;
 }
 
-input[type="text"] {
-  width: 100%;
+.confirmation-container h2 {
+  font-size: 2em;
+  color: #333;
 }
 
-label {
-  font-size: 16px;
-  margin-left: 10px;
-  margin-bottom: 10px;
-  display: block;
+.confirmation-container p,
+.confirmation-container ul {
+  font-size: 1.2em;
 }
 
-/* Style the list of students and events */
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  margin: 10px 0;
-  font-size: 16px;
-}
-
-/* Style the event categories */
-h3 {
-  text-decoration: underline;
-}
+/* Style the event list in confirmation */
+.confirmation-container ul {
+  li
