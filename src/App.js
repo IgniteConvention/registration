@@ -10,6 +10,7 @@ function App() {
   const [editingStudent, setEditingStudent] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
   const [selectedEvents, setSelectedEvents] = useState({});
+  const [isEventRegistration, setIsEventRegistration] = useState(false); // New state for event registration
 
   // List of available events (from the event list)
   const availableEvents = {
@@ -73,18 +74,19 @@ function App() {
   // Handle editing a specific student
   const handleEditStudent = (student) => {
     setEditingStudent(student); // Set the student to be edited
-    setIsComplete(false); // Allow editing by setting the registration back to incomplete
+    setIsEventRegistration(false); // Ensure we're not in event registration
   };
 
   // Handle starting the event registration for a specific student
   const handleStartEventRegistration = (student) => {
     setEditingStudent(student); // Set the student to edit
-    setIsComplete(false); // Allow event registration by setting the registration back to incomplete
+    setIsEventRegistration(true); // Set event registration state to true
   };
 
   // Handle completion of registration
   const handleCompleteRegistration = () => {
     setIsComplete(true); // Mark registration as complete and show confirmation
+    setIsEventRegistration(false); // Ensure event registration is not active when complete
   };
 
   return (
@@ -93,11 +95,18 @@ function App() {
 
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : !isComplete ? (
-        // Show the student registration form if registration isn't complete
+      ) : !isComplete && !isEventRegistration ? (
+        // Show the student registration form if registration isn't complete and event registration isn't active
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           student={editingStudent} // Ensure this is passed correctly
+        />
+      ) : isEventRegistration ? (
+        // Show the event registration form if event registration is active
+        <EventRegistrationForm
+          student={editingStudent}
+          onSubmit={handleEventSubmit}
+          availableEvents={availableEvents}
         />
       ) : isComplete && students.length > 0 ? (
         // Show confirmation page when registration is complete
@@ -124,16 +133,13 @@ function App() {
           </ul>
         </div>
       ) : (
-        // Show the event registration form if not complete
-        <EventRegistrationForm
-          student={editingStudent}
-          onSubmit={handleEventSubmit}
-          availableEvents={availableEvents}
-        />
+        <div>
+          <h3>Complete Registration First</h3>
+        </div>
       )}
 
       {/* Show buttons for adding a student or completing registration */}
-      {students.length > 0 && !isComplete && (
+      {students.length > 0 && !isComplete && !isEventRegistration && (
         <div>
           <button onClick={handleAddAnotherStudent}>Add Another Student</button>
           <button onClick={handleCompleteRegistration}>Complete Registration</button>
