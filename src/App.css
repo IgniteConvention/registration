@@ -5,21 +5,36 @@
   padding: 20px;
 }
 
-/* Make the event selection container scrollable */
-.event-container {
-  max-height: 400px;  /* Set the max height for the event list */
-  overflow-y: auto;   /* Enable vertical scrolling */
-  margin-bottom: 20px;
-  padding-right: 20px; /* Adds some space to the right side of the list for scrolling */
+/* Make each event category scrollable */
+.event-categories-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
 }
 
-/* Style for event category headers */
+.event-category {
+  flex: 1;
+  margin: 10px;
+  min-width: 300px; /* Ensure categories have minimum width */
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+.event-list {
+  margin-top: 10px;
+}
+
+.event-container {
+  max-height: 350px;  /* Set the max height for the event list */
+  overflow-y: auto;   /* Enable vertical scrolling */
+  padding-right: 20px; /* Adds space for scroll */
+}
+
 h3 {
   font-size: 1.5em;
   margin-bottom: 10px;
 }
 
-/* Style for checkboxes and labels */
 label {
   display: block;
   margin: 10px 0;
@@ -29,11 +44,10 @@ input[type="checkbox"] {
   margin-right: 10px;
 }
 
-/* Style for the group input text box */
 input[type="text"] {
   margin-top: 5px;
   padding: 5px;
-  width: 120px; /* Limit the width of the group input */
+  width: 120px;
   font-size: 1em;
 }
 
