@@ -37,53 +37,57 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      <div className="event-container">
+      <div className="event-categories-container">
         {Object.keys(availableEvents).map((eventCategory, index) => (
-          <div key={index}>
+          <div className="event-category" key={index}>
             <h3>{eventCategory}</h3>
-            {availableEvents[eventCategory].map((eventName) => (
-              <div key={eventName}>
-                <label>
-                  <input
-                    type="checkbox"
-                    checked={selectedEvents.some(
-                      (e) => e.eventCategory === eventCategory && e.eventName === eventName
-                    )}
-                    onChange={() => handleEventChange(eventCategory, eventName)}
-                  />
-                  {eventName}
-                </label>
-                {/* Display group option for multi-participant events */}
-                {(
-                  eventName.includes('Bible Bowl') ||
-                  eventName.includes('Small Ensemble') ||
-                  eventName.includes('Skit') ||
-                  eventName.includes('Radio Program') ||
-                  eventName.includes('400 Meter Relay') ||
-                  eventName.includes('Dramatic Dialogues') ||
-                  eventName.includes('Male Duet') ||
-                  eventName.includes('Science Projects') ||
-                  eventName.includes('Instrumental Duet') ||
-                  eventName.includes('One-Act Play') ||
-                  eventName.includes('Sign Language Team') ||
-                  eventName.includes('Choral Groups') ||
-                  eventName.includes('Illustrated Story') ||
-                  eventName.includes('Puppets')
-                ) && (
-                  <div>
+            <div className="event-list">
+              <div className="event-container">
+                {availableEvents[eventCategory].map((eventName) => (
+                  <div key={eventName}>
                     <label>
-                      Group: 
                       <input
-                        type="text"
-                        placeholder="Enter Group (A, B, etc.)"
-                        value={groupSelection[eventName] || ''}
-                        onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                        type="checkbox"
+                        checked={selectedEvents.some(
+                          (e) => e.eventCategory === eventCategory && e.eventName === eventName
+                        )}
+                        onChange={() => handleEventChange(eventCategory, eventName)}
                       />
+                      {eventName}
                     </label>
+                    {/* Display group option for multi-participant events */}
+                    {(
+                      eventName.includes('Bible Bowl') ||
+                      eventName.includes('Small Ensemble') ||
+                      eventName.includes('Skit') ||
+                      eventName.includes('Radio Program') ||
+                      eventName.includes('400 Meter Relay') ||
+                      eventName.includes('Dramatic Dialogues') ||
+                      eventName.includes('Male Duet') ||
+                      eventName.includes('Science Projects') ||
+                      eventName.includes('Instrumental Duet') ||
+                      eventName.includes('One-Act Play') ||
+                      eventName.includes('Sign Language Team') ||
+                      eventName.includes('Choral Groups') ||
+                      eventName.includes('Illustrated Story') ||
+                      eventName.includes('Puppets')
+                    ) && (
+                      <div>
+                        <label>
+                          Group: 
+                          <input
+                            type="text"
+                            placeholder="Enter Group (A, B, etc.)"
+                            value={groupSelection[eventName] || ''}
+                            onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                          />
+                        </label>
+                      </div>
+                    )}
                   </div>
-                )}
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         ))}
       </div>
