@@ -1,82 +1,74 @@
 import React, { useState } from 'react';
 
 const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
-  // Ensure the student object exists before proceeding
-  if (!student) {
-    return <div>Loading...</div>; // or handle this gracefully
-  }
-
-  const [selectedEvents, setSelectedEvents] = useState({});
-  const [groupName, setGroupName] = useState("");
-
-  // Handle change for group name field (dropdown)
-  const handleGroupNameChange = (event) => {
-    setGroupName(event.target.value);
+  const [selectedEvents, setSelectedEvents] = useState([]);
+  const [groupSelection, setGroupSelection] = useState({});
+  
+  const handleEventChange = (eventCategory, eventName) => {
+    const updatedEvents = [...selectedEvents];
+    const eventIndex = updatedEvents.findIndex(
+      (e) => e.eventCategory === eventCategory && e.eventName === eventName
+    );
+    if (eventIndex === -1) {
+      updatedEvents.push({ eventCategory, eventName });
+    } else {
+      updatedEvents.splice(eventIndex, 1);
+    }
+    setSelectedEvents(updatedEvents);
   };
 
-  // Handle checkbox change for event selection
-  const handleEventChange = (category, event) => {
-    setSelectedEvents((prev) => {
-      const updated = { ...prev };
-      if (!updated[category]) {
-        updated[category] = [];
-      }
-      if (updated[category].includes(event)) {
-        updated[category] = updated[category].filter(e => e !== event);
-      } else {
-        updated[category].push(event);
-      }
-      return updated;
-    });
-  };
-
-  // Handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const eventsWithGroups = Object.entries(selectedEvents).map(([category, events]) => ({
-      category,
-      events: events.map(event => ({
-        event,
-        groupName: category.includes("Ensemble") || category.includes("Skit") ? groupName : null,
-      }))
+  const handleGroupChange = (eventName, group) => {
+    setGroupSelection((prev) => ({
+      ...prev,
+      [eventName]: group,
     }));
-    onSubmit(student.studentName, eventsWithGroups);
+  };
+
+  const handleSubmit = () => {
+    onSubmit(student.studentName, selectedEvents.map((e) => ({
+      ...e,
+      group: groupSelection[e.eventName] || 'N/A',
+    })));
   };
 
   return (
-    <form onSubmit={handleSubmit}>
+    <div>
       <h2>Register Events for {student.studentName}</h2>
-      {Object.keys(availableEvents).map((category, index) => (
+      {Object.keys(availableEvents).map((eventCategory, index) => (
         <div key={index}>
-          <h3>{category}</h3>
-          {availableEvents[category].map((event, idx) => (
-            <label key={idx}>
-              <input 
-                type="checkbox" 
-                onChange={() => handleEventChange(category, event)} 
-              />
-              {event}
-            </label>
+          <h3>{eventCategory}</h3>
+          {availableEvents[eventCategory].map((eventName) => (
+            <div key={eventName}>
+              <label>
+                <input
+                  type="checkbox"
+                  checked={selectedEvents.some(
+                    (e) => e.eventCategory === eventCategory && e.eventName === eventName
+                  )}
+                  onChange={() => handleEventChange(eventCategory, eventName)}
+                />
+                {eventName}
+              </label>
+              {/* Display group option for multi-participant events */}
+              {eventName.includes('Bible Bowl') || eventName.includes('Small Ensemble') ? (
+                <div>
+                  <label>
+                    Group: 
+                    <input
+                      type="text"
+                      placeholder="Enter Group (A, B, etc.)"
+                      value={groupSelection[eventName] || ''}
+                      onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                    />
+                  </label>
+                </div>
+              ) : null}
+            </div>
           ))}
         </div>
       ))}
-      
-      {/* Group Name dropdown for group-based events */}
-      {Object.keys(selectedEvents).some(category => category.includes('Ensemble') || category.includes('Skit')) && (
-        <div>
-          <label>Group Name (e.g., Group A, Group B, Group C, Group D):</label>
-          <select value={groupName} onChange={handleGroupNameChange}>
-            <option value="">Select Group</option>
-            <option value="A">Group A</option>
-            <option value="B">Group B</option>
-            <option value="C">Group C</option>
-            <option value="D">Group D</option>
-          </select>
-        </div>
-      )}
-
-      <button type="submit">Submit Events</button>
-    </form>
+      <button onClick={handleSubmit}>Submit</button>
+    </div>
   );
 };
 
