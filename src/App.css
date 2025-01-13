@@ -1,14 +1,76 @@
-.App {
+/* Container for the confirmation page */
+.confirmation-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  max-width: 600px;
+  margin: 0 auto;
   text-align: center;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+/* Style the list of students */
+.student-list {
+  list-style-type: none;
+  padding: 0;
+}
+
+.student-item {
   display: flex;
-  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
+  margin-bottom: 10px;
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+}
+
+.student-item span {
+  font-weight: bold;
+  flex: 1;
+}
+
+.edit-button {
+  padding: 5px 10px;
+  background-color: #f0ad4e;
   color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.edit-button:hover {
+  background-color: #ec971f;
+}
+
+.buttons {
+  margin-top: 20px;
+}
+
+.finish-button, .event-button {
+  padding: 10px 20px;
+  font-size: 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  margin: 10px;
+  transition: background-color 0.3s ease;
+}
+
+.finish-button {
+  background-color: #5bc0de;
+  color: white;
+}
+
+.finish-button:hover {
+  background-color: #31b0d5;
+}
+
+.event-button {
+  background-color: #007bff;
+  color: white;
+}
+
+.event-button:hover {
+  background-color: #0056b3;
 }
