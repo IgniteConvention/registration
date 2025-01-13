@@ -75,4 +75,16 @@ button:active {
 
 /* Style the event list in confirmation */
 .confirmation-container ul {
-  li
+  list-style-type: none;
+  padding: 0;
+}
+
+.confirmation-container li {
+  margin-bottom: 10px; /* Add spacing between items */
+  font-size: 1.2em;    /* Adjust the font size for list items */
+}
+
+.confirmation-container button {
+  font-size: 1em;
+  padding: 8px 16px;
+  background-color: 
