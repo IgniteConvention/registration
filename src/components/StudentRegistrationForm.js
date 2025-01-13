@@ -1,11 +1,21 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './StudentRegistrationForm.css'; // Import the CSS file
 
-function StudentRegistrationForm({ onSubmit }) {
+function StudentRegistrationForm({ onSubmit, student }) {
   const [studentName, setStudentName] = useState('');
   const [studentDOB, setStudentDOB] = useState('');
   const [studentAge, setStudentAge] = useState('');
   const [studentGender, setStudentGender] = useState('');
+
+  // Pre-fill form with existing student data when editing
+  useEffect(() => {
+    if (student) {
+      setStudentName(student.studentName);
+      setStudentDOB(student.studentDOB);
+      setStudentAge(student.studentAge);
+      setStudentGender(student.studentGender);
+    }
+  }, [student]);
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -20,7 +30,7 @@ function StudentRegistrationForm({ onSubmit }) {
   return (
     <div className="form-container">
       <div className="form-wrapper">
-        <h2>Student Registration</h2>
+        <h2>{student ? 'Edit Student' : 'Student Registration'}</h2>
         
         <p className="reminder">
           Please ensure all necessary forms have been signed and are on file (Permission to Attend (CF6), Medical Forms CF7 (and CF8-if applicable) – one per person attending the convention. CF forms can be found on the Google Drive. Medical forms must have the date of the last tetanus shot.) You may bring these to the Convention or upload them to the Google Drive (preferable).
@@ -62,7 +72,7 @@ function StudentRegistrationForm({ onSubmit }) {
               <option value="Other">Other</option>
             </select>
           </label>
-          <button type="submit">Register Student</button>
+          <button type="submit">{student ? 'Update Student' : 'Register Student'}</button>
         </form>
       </div>
     </div>
