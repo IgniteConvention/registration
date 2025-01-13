@@ -17,7 +17,6 @@ function App() {
   // Handle submission of student registration form
   const handleStudentSubmit = (student) => {
     if (editingStudent) {
-      // If editing an existing student, update the student data
       setStudents(
         students.map((s) =>
           s.studentName === editingStudent.studentName ? student : s
@@ -25,7 +24,6 @@ function App() {
       );
       setEditingStudent(null);
     } else {
-      // Otherwise, add the new student
       setStudents([...students, student]);
     }
     console.log('Student Data Submitted:', student);
@@ -33,7 +31,7 @@ function App() {
 
   // Handle adding another student
   const handleAddAnotherStudent = () => {
-    setIsComplete(false); // Keep the student form visible for next submission
+    setIsComplete(false);
   };
 
   // Handle completion of registration (finalize process)
@@ -47,34 +45,51 @@ function App() {
     setIsComplete(false); // Keep the form visible for editing
   };
 
+  // Handle event registration
+  const handleEventRegistration = () => {
+    console.log("Starting event registration");
+    // Logic for moving to the event registration page will go here
+  };
+
   return (
     <div className="App">
       <h1>Registration System</h1>
 
-      {/* Display School Registration Form if no school data yet */}
+      {/* School registration form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !isComplete ? (
-        // Show Student Registration Form if students are not completed
+        // Student registration form
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           student={editingStudent}
         />
       ) : (
-        // After all students are registered, show the confirmation page
-        <div>
+        // After registration is complete, show the confirmation page
+        <div className="confirmation-container">
           <h2>Registration Complete</h2>
-          <p>School Name: {schoolData.schoolName}</p>
+          <p><strong>School Name:</strong> {schoolData.schoolName}</p>
           <h3>Students Registered:</h3>
-          <ul>
+          <ul className="student-list">
             {students.map((student, index) => (
-              <li key={index}>
-                {student.studentName} - {student.studentAge} years old ({student.studentGender})
-                <button onClick={() => handleEditStudent(student)}>Edit</button>
+              <li key={index} className="student-item">
+                <span>{student.studentName}</span>
+                <button 
+                  onClick={() => handleEditStudent(student)} 
+                  className="edit-button">
+                  Edit
+                </button>
               </li>
             ))}
           </ul>
-          <button onClick={handleCompleteRegistration}>Finish Registration</button>
+          <div className="buttons">
+            <button onClick={handleCompleteRegistration} className="finish-button">
+              Finish Registration
+            </button>
+            <button onClick={handleEventRegistration} className="event-button">
+              Start Adding Events
+            </button>
+          </div>
         </div>
       )}
 
