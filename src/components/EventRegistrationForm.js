@@ -37,7 +37,6 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      {/* Add className="event-container" here */}
       <div className="event-container">
         {Object.keys(availableEvents).map((eventCategory, index) => (
           <div key={index}>
