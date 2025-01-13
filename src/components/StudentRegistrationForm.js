@@ -9,6 +9,7 @@ function StudentRegistrationForm({ onSubmit }) {
   const handleSubmit = (event) => {
     event.preventDefault();
     onSubmit({ studentName, studentDOB, studentAge, studentGender });
+    // Reset the form for next student entry
     setStudentName('');
     setStudentDOB('');
     setStudentAge('');
