@@ -3,6 +3,8 @@ import React, { useState } from 'react';
 const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [groupSelection, setGroupSelection] = useState({});
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 5; // Change this to control how many categories per page
 
   // Handle event selection (checkbox)
   const handleEventChange = (eventCategory, eventName) => {
@@ -28,7 +30,6 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
 
   // Handle form submission
   const handleSubmit = () => {
-    // Verify if there are selected events and then submit
     if (selectedEvents.length > 0) {
       onSubmit(student.studentName, selectedEvents.map((e) => ({
         ...e,
@@ -40,12 +41,23 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
     }
   };
 
+  // Handle pagination (next and previous page)
+  const handlePageChange = (pageNumber) => {
+    setCurrentPage(pageNumber);
+  };
+
+  // Split the event categories into pages
+  const categoriesPerPage = Object.keys(availableEvents).slice(
+    (currentPage - 1) * itemsPerPage,
+    currentPage * itemsPerPage
+  );
+
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      <div className="event-list-container">
-        {Object.keys(availableEvents).map((eventCategory, index) => (
-          <div key={index}>
+      <div className="event-categories-container">
+        {categoriesPerPage.map((eventCategory, index) => (
+          <div className="event-category" key={index}>
             <h3>{eventCategory}</h3>
             <ul>
               {availableEvents[eventCategory].map((eventName) => (
@@ -84,6 +96,22 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
           </div>
         ))}
       </div>
+
+      <div className="pagination">
+        <button
+          onClick={() => handlePageChange(currentPage - 1)}
+          disabled={currentPage === 1}
+        >
+          Previous
+        </button>
+        <button
+          onClick={() => handlePageChange(currentPage + 1)}
+          disabled={categoriesPerPage.length < itemsPerPage}
+        >
+          Next
+        </button>
+      </div>
+
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
