@@ -6,7 +6,7 @@ import './App.css';
 function App() {
   const [schoolData, setSchoolData] = useState(null);
   const [students, setStudents] = useState([]);
-  const [editingStudent, setEditingStudent] = useState(null);
+  const [editingIndex, setEditingIndex] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
 
   const handleSchoolSubmit = (school) => {
@@ -14,24 +14,15 @@ function App() {
   };
 
   const handleStudentSubmit = (student) => {
-    if (editingStudent) {
-      setStudents(
-        students.map((s) =>
-          s.studentName === editingStudent.studentName ? student : s
-        )
-      );
-      setEditingStudent(null);
-    } else {
-      setStudents([...students, student]);
-    }
-  };
-
-  const handleEditStudent = (student) => {
-    setEditingStudent(student);
+    setStudents([...students, student]);
   };
 
   const handleCompleteRegistration = () => {
     setIsComplete(true);
+  };
+
+  const handleSaveEdit = () => {
+    setEditingIndex(null); // Exit editing mode
   };
 
   return (
@@ -61,10 +52,7 @@ function App() {
           <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
         ) : !isComplete ? (
           <>
-            <StudentRegistrationForm
-              onSubmit={handleStudentSubmit}
-              student={editingStudent}
-            />
+            <StudentRegistrationForm onSubmit={handleStudentSubmit} />
             <div>
               <h2>Registered Students:</h2>
               <ul>
@@ -88,18 +76,69 @@ function App() {
             <ul>
               {students.map((student, index) => (
                 <li key={index}>
-                  <p>
-                    <strong>Name:</strong> {student.studentName} <br />
-                    <strong>Age:</strong> {student.studentAge} <br />
-                    <strong>Gender:</strong> {student.studentGender} <br />
-                    <strong>Other Info:</strong> {/* Add additional student fields here */}
-                  </p>
-                  <div className="button-group">
-                    <button onClick={() => handleEditStudent(student)}>Edit</button>
-                    <button onClick={() => console.log(`Add events for ${student.studentName}`)}>
-                      Add Events
-                    </button>
-                  </div>
+                  {editingIndex === index ? (
+                    <div>
+                      <label>
+                        Name:
+                        <input
+                          type="text"
+                          value={students[index].studentName}
+                          onChange={(e) =>
+                            setStudents((prev) =>
+                              prev.map((s, i) =>
+                                i === index ? { ...s, studentName: e.target.value } : s
+                              )
+                            )
+                          }
+                        />
+                      </label>
+                      <label>
+                        Age:
+                        <input
+                          type="number"
+                          value={students[index].studentAge}
+                          onChange={(e) =>
+                            setStudents((prev) =>
+                              prev.map((s, i) =>
+                                i === index ? { ...s, studentAge: e.target.value } : s
+                              )
+                            )
+                          }
+                        />
+                      </label>
+                      <label>
+                        Gender:
+                        <select
+                          value={students[index].studentGender}
+                          onChange={(e) =>
+                            setStudents((prev) =>
+                              prev.map((s, i) =>
+                                i === index ? { ...s, studentGender: e.target.value } : s
+                              )
+                            )
+                          }
+                        >
+                          <option value="Male">Male</option>
+                          <option value="Female">Female</option>
+                        </select>
+                      </label>
+                      <button onClick={handleSaveEdit}>Save</button>
+                    </div>
+                  ) : (
+                    <p>
+                      <strong>Name:</strong> {student.studentName} <br />
+                      <strong>Age:</strong> {student.studentAge} <br />
+                      <strong>Gender:</strong> {student.studentGender}
+                      <div className="button-group">
+                        <button onClick={() => setEditingIndex(index)}>Edit</button>
+                        <button
+                          onClick={() => console.log(`Add events for ${student.studentName}`)}
+                        >
+                          Add Events
+                        </button>
+                      </div>
+                    </p>
+                  )}
                 </li>
               ))}
             </ul>
