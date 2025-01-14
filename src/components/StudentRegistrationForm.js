@@ -2,14 +2,14 @@ import React, { useState } from 'react';
 
 export default function StudentRegistrationForm({ onSubmit }) {
   const [studentName, setStudentName] = useState('');
-  const [studentAge, setStudentAge] = useState('');
+  const [studentDOB, setStudentDOB] = useState('');
   const [studentGender, setStudentGender] = useState('Male');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ studentName, studentAge, studentGender });
+    onSubmit({ studentName, studentDOB, studentGender });
     setStudentName('');
-    setStudentAge('');
+    setStudentDOB('');
     setStudentGender('Male');
   };
 
@@ -25,11 +25,11 @@ export default function StudentRegistrationForm({ onSubmit }) {
         />
       </label>
       <label>
-        Age:
+        DOB:
         <input
-          type="number"
-          value={studentAge}
-          onChange={(e) => setStudentAge(e.target.value)}
+          type="date"
+          value={studentDOB}
+          onChange={(e) => setStudentDOB(e.target.value)}
           required
         />
       </label>
