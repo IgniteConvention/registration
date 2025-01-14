@@ -1,4 +1,3 @@
-/* General Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
@@ -9,58 +8,33 @@ body {
 
 h1, h2, h3 {
   text-align: center;
-  color: #e67e22; /* Bold orange for headings */
+  color: #e67e22; /* Bold orange */
 }
 
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background-color: white;
+  background-color: #fff;
+  border: 2px solid #e67e22;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  border: 2px solid #e67e22; /* Bold orange frame */
+}
+
+label {
+  display: block;
+  margin: 10px 0;
 }
 
 button {
   background-color: #e67e22;
   color: white;
   border: none;
-  padding: 8px 15px;
-  font-size: 14px;
-  border-radius: 4px;
+  padding: 10px 15px;
+  border-radius: 5px;
   cursor: pointer;
-  margin-right: 10px;
 }
 
 button:hover {
-  background-color: #d35400; /* Darker orange on hover */
-}
-
-.button-group button {
-  display: inline-block;
-  margin: 5px 5px 0 0;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-ul li {
-  margin: 15px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-}
-
-.welcome-message {
-  text-align: center;
-  font-size: 18px;
-  margin-bottom: 20px;
-  color: #333;
-  padding: 10px;
-  background-color: #ffecd1; /* Light orange background */
-  border: 1px solid #e67e22;
-  border-radius: 4px;
+  background-color: #d35400;
 }
