@@ -71,7 +71,9 @@ export default function StudentRegistrationForm({ onSubmit }) {
             <option value="Female">Female</option>
           </select>
         </label>
-        <button type="submit">Add Student</button>
+        <div className="button-group">
+          <button type="submit">Add Student</button>
+        </div>
       </form>
     </div>
   );
