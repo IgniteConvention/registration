@@ -4,9 +4,8 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [groupSelection, setGroupSelection] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 4; // Adjust to control how many categories to show per page
+  const itemsPerPage = 4;
 
-  // Handle event selection (checkbox)
   const handleEventChange = (eventCategory, eventName) => {
     const updatedEvents = [...selectedEvents];
     const eventIndex = updatedEvents.findIndex(
@@ -20,7 +19,6 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
     setSelectedEvents(updatedEvents);
   };
 
-  // Handle group input for multi-participant events
   const handleGroupChange = (eventName, group) => {
     setGroupSelection((prev) => ({
       ...prev,
@@ -28,30 +26,27 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
     }));
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     if (selectedEvents.length > 0) {
-      onSubmit(student.studentName, selectedEvents.map((e) => ({
-        ...e,
-        group: groupSelection[e.eventName] || 'N/A',
-      })));
-      console.log('Events submitted:', selectedEvents);
+      onSubmit(
+        student.studentName,
+        selectedEvents.map((e) => ({
+          ...e,
+          group: groupSelection[e.eventName] || 'N/A',
+        }))
+      );
     } else {
-      console.log('No events selected');
+      alert('Please select at least one event.');
     }
   };
 
-  // Handle pagination (next and previous page)
   const handlePageChange = (pageNumber) => {
     if (pageNumber >= 1 && pageNumber <= totalPages) {
       setCurrentPage(pageNumber);
     }
   };
 
-  // Calculate the total number of pages based on the number of event categories
   const totalPages = Math.ceil(Object.keys(availableEvents).length / itemsPerPage);
-
-  // Split the event categories into pages
   const categoriesPerPage = Object.keys(availableEvents).slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
@@ -60,9 +55,9 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      <div className="event-categories-container">
+      <div>
         {categoriesPerPage.map((eventCategory, index) => (
-          <div className="event-category" key={index}>
+          <div key={index}>
             <h3>{eventCategory}</h3>
             <ul>
               {availableEvents[eventCategory].map((eventName) => (
@@ -77,23 +72,13 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
                     />
                     {eventName}
                   </label>
-
-                  {/* Show group selection input if the event requires it */}
-                  {[
-                    "Bible Bowl", "Small Ensemble", "Skit", "Radio Program", "Dramatic Dialogues",
-                    "400 Meter Relay", "Science Projects", "Instrumental Duet", "Sign Language Team"
-                  ].includes(eventName) && (
-                    <div>
-                      <label>
-                        Group: 
-                        <input
-                          type="text"
-                          placeholder="Group (A, B, C, etc.)"
-                          value={groupSelection[eventName] || ''}
-                          onChange={(e) => handleGroupChange(eventName, e.target.value)}
-                        />
-                      </label>
-                    </div>
+                  {["Small Ensemble", "Skit"].includes(eventName) && (
+                    <input
+                      type="text"
+                      placeholder="Group"
+                      value={groupSelection[eventName] || ''}
+                      onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                    />
                   )}
                 </li>
               ))}
@@ -101,23 +86,14 @@ const EventRegistrationForm = ({ student, onSubmit, availableEvents }) => {
           </div>
         ))}
       </div>
-
-      {/* Pagination buttons */}
-      <div className="pagination">
-        <button
-          onClick={() => handlePageChange(currentPage - 1)}
-          disabled={currentPage === 1}
-        >
+      <div>
+        <button onClick={() => handlePageChange(currentPage - 1)} disabled={currentPage === 1}>
           Previous
         </button>
-        <button
-          onClick={() => handlePageChange(currentPage + 1)}
-          disabled={currentPage === totalPages}
-        >
+        <button onClick={() => handlePageChange(currentPage + 1)} disabled={currentPage === totalPages}>
           Next
         </button>
       </div>
-
       <button onClick={handleSubmit}>Submit</button>
     </div>
   );
