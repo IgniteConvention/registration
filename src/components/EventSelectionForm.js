@@ -1,18 +1,65 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
 export default function EventSelectionForm({ student, availableEvents, onSubmit }) {
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [groupIdentifiers, setGroupIdentifiers] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3; // Categories per page
 
+  // Rules and Limits
+  const maxTotalEvents = 13;
+  const maxPerformanceEvents = 6;
+  const maxEliminationEvents = 2;
+  const maxAthleticEvents = 3;
+
+  // Check event type for rules
+  const isPerformanceEvent = (eventName) => eventName.includes("(P)");
+  const isEliminationEvent = (eventName) =>
+    ["Chess", "Checkers", "Bible Bowl", "Pace Bowl"].includes(eventName);
+  const isAthleticEvent = (eventName) => eventName.includes("Athletics");
+
   // Handle event selection
   const handleEventChange = (eventCategory, eventName) => {
-    setSelectedEvents((prev) =>
-      prev.some((e) => e.eventCategory === eventCategory && e.eventName === eventName)
-        ? prev.filter((e) => !(e.eventCategory === eventCategory && e.eventName === eventName))
-        : [...prev, { eventCategory, eventName }]
+    const alreadySelected = selectedEvents.some(
+      (e) => e.eventCategory === eventCategory && e.eventName === eventName
     );
+
+    const performanceCount = selectedEvents.filter((e) =>
+      isPerformanceEvent(e.eventName)
+    ).length;
+    const eliminationCount = selectedEvents.filter((e) =>
+      isEliminationEvent(e.eventName)
+    ).length;
+    const athleticCount = selectedEvents.filter((e) =>
+      isAthleticEvent(e.eventName)
+    ).length;
+
+    if (!alreadySelected) {
+      if (selectedEvents.length >= maxTotalEvents) {
+        setErrorMessage(`You cannot select more than ${maxTotalEvents} total events.`);
+        return;
+      }
+      if (isPerformanceEvent(eventName) && performanceCount >= maxPerformanceEvents) {
+        setErrorMessage(`You cannot select more than ${maxPerformanceEvents} performance events.`);
+        return;
+      }
+      if (isEliminationEvent(eventName) && eliminationCount >= maxEliminationEvents) {
+        setErrorMessage(`You cannot select more than ${maxEliminationEvents} elimination events.`);
+        return;
+      }
+      if (isAthleticEvent(eventName) && athleticCount >= maxAthleticEvents) {
+        setErrorMessage(`You cannot select more than ${maxAthleticEvents} athletic events.`);
+        return;
+      }
+
+      setSelectedEvents((prev) => [...prev, { eventCategory, eventName }]);
+      setErrorMessage("");
+    } else {
+      setSelectedEvents((prev) =>
+        prev.filter((e) => !(e.eventCategory === eventCategory && e.eventName === eventName))
+      );
+    }
   };
 
   // Handle group identifier input
@@ -23,7 +70,7 @@ export default function EventSelectionForm({ student, availableEvents, onSubmit 
     }));
   };
 
-  // Calculate total pages and events to show on the current page
+  // Calculate pagination
   const totalPages = Math.ceil(Object.keys(availableEvents).length / itemsPerPage);
   const categoriesToShow = Object.keys(availableEvents).slice(
     (currentPage - 1) * itemsPerPage,
@@ -34,52 +81,44 @@ export default function EventSelectionForm({ student, availableEvents, onSubmit 
   const handleSubmit = () => {
     const submittedEvents = selectedEvents.map((e) => ({
       ...e,
-      group: groupIdentifiers[e.eventName] || 'N/A',
+      group: groupIdentifiers[e.eventName] || "N/A",
     }));
     onSubmit(student.studentName, submittedEvents);
   };
 
   return (
     <div className="container">
-      <h2>Select Events for {student.studentName}</h2>
+      <h2>Event Selection for {student.studentName}</h2>
+      {errorMessage && <p className="error-message">{errorMessage}</p>}
       {categoriesToShow.map((category) => (
         <div key={category} className="event-category">
           <h3>{category}</h3>
-          {availableEvents[category].map((event) => (
-            <div key={event}>
-              <label>
-                <input
-                  type="checkbox"
-                  checked={selectedEvents.some(
-                    (e) => e.eventCategory === category && e.eventName === event
-                  )}
-                  onChange={() => handleEventChange(category, event)}
-                />
-                {event}
-              </label>
-              {/* Add group identifier input for specific events */}
-              {[
-                "Bible Bowl",
-                "400 Meter Relay",
-                "Instrumental Ensemble",
-                "Small Ensemble",
-                "Skit",
-                "Radio Program",
-                "Sign Language Team (5-10)",
-                "Sign Language Team (11-20)",
-              ].includes(event) && (
-                <input
-                  type="text"
-                  placeholder="Group (e.g., A, B)"
-                  value={groupIdentifiers[event] || ''}
-                  onChange={(e) => handleGroupChange(event, e.target.value)}
-                />
-              )}
-            </div>
-          ))}
+          <ul>
+            {availableEvents[category].map((event) => (
+              <li key={event}>
+                <label>
+                  <input
+                    type="checkbox"
+                    checked={selectedEvents.some(
+                      (e) => e.eventCategory === category && e.eventName === event
+                    )}
+                    onChange={() => handleEventChange(category, event)}
+                  />
+                  {event}
+                </label>
+                {["Bible Bowl", "Small Ensemble", "Skit"].includes(event) && (
+                  <input
+                    type="text"
+                    placeholder="Group (e.g., A, B)"
+                    value={groupIdentifiers[event] || ""}
+                    onChange={(e) => handleGroupChange(event, e.target.value)}
+                  />
+                )}
+              </li>
+            ))}
+          </ul>
         </div>
       ))}
-      {/* Pagination Controls */}
       <div className="pagination">
         <button
           onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
