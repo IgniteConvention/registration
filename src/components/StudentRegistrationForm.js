@@ -34,7 +34,7 @@ export default function StudentRegistrationForm({ onSubmit }) {
   };
 
   return (
-    <div className="student-registration">
+    <div className="container">
       <h2>Student Registration</h2>
       <form onSubmit={handleSubmit}>
         <label>
