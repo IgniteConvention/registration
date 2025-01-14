@@ -9,6 +9,17 @@ function App() {
   const [editingIndex, setEditingIndex] = useState(null);
   const [isComplete, setIsComplete] = useState(false);
 
+  const calculateAge = (dob) => {
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
   };
@@ -58,8 +69,7 @@ function App() {
               <ul>
                 {students.map((student, index) => (
                   <li key={index}>
-                    {student.studentName} - {student.studentAge} years old (
-                    {student.studentGender})
+                    {student.studentName} - Age: {calculateAge(student.studentDOB)} ({student.studentGender})
                   </li>
                 ))}
               </ul>
@@ -93,14 +103,14 @@ function App() {
                         />
                       </label>
                       <label>
-                        Age:
+                        DOB:
                         <input
-                          type="number"
-                          value={students[index].studentAge}
+                          type="date"
+                          value={students[index].studentDOB}
                           onChange={(e) =>
                             setStudents((prev) =>
                               prev.map((s, i) =>
-                                i === index ? { ...s, studentAge: e.target.value } : s
+                                i === index ? { ...s, studentDOB: e.target.value } : s
                               )
                             )
                           }
@@ -127,7 +137,7 @@ function App() {
                   ) : (
                     <p>
                       <strong>Name:</strong> {student.studentName} <br />
-                      <strong>Age:</strong> {student.studentAge} <br />
+                      <strong>Age:</strong> {calculateAge(student.studentDOB)} <br />
                       <strong>Gender:</strong> {student.studentGender}
                       <div className="button-group">
                         <button onClick={() => setEditingIndex(index)}>Edit</button>
