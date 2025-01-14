@@ -1,16 +1,16 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { createRoot } from 'react-dom/client';
+import App from './App'; // Import the main App component
+import './index.css'; // Import the global CSS file
 
-ReactDOM.render(
+// Find the root element in the DOM
+const container = document.getElementById('root');
+
+// Use React 18's createRoot API to render the application
+const root = createRoot(container);
+
+root.render(
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+  </React.StrictMode>
 );
-
-// For measuring performance, log results or send to an endpoint.
-// Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
