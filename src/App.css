@@ -2,28 +2,30 @@ body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #fff8e7; /* Soft orange background */
+  background-color: #fff8e7;
   color: #333;
 }
 
-h1, h2, h3 {
+h1 {
   text-align: center;
-  color: #e67e22; /* Bold orange */
+  color: #e67e22;
+  margin-top: 20px;
 }
 
 .container {
   max-width: 800px;
   margin: 20px auto;
   padding: 20px;
-  background-color: #fff;
+  background-color: white;
   border: 2px solid #e67e22;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-label {
-  display: block;
-  margin: 10px 0;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 button {
@@ -37,4 +39,23 @@ button {
 
 button:hover {
   background-color: #d35400;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+.pagination {
+  text-align: center;
+  margin: 20px 0;
+}
+
+.pagination button {
+  margin: 0 10px;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
 }
