@@ -1,101 +1,71 @@
-/* Style the main app container */
-.App {
+/* General Styles */
+body {
   font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff8e7; /* Soft orange background */
+  color: #333;
+}
+
+h1, h2 {
   text-align: center;
+  color: #e67e22; /* Bold orange for headings */
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
   padding: 20px;
+  background-color: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  border: 2px solid #e67e22; /* Bold orange frame */
 }
 
-/* Style for event category headers */
-h3 {
-  font-size: 1.5em;
-  margin-bottom: 10px;
+button {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px 20px;
+  font-size: 16px;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-/* Style for the event list container */
-.event-categories-container {
-  margin-top: 20px;
-  display: block; /* Ensure each category is properly aligned */
+button:hover {
+  background-color: #d35400; /* Darker orange on hover */
 }
 
-/* Style for each event category */
-.event-category {
-  margin-bottom: 20px;
-  max-height: 400px;
-  overflow-y: auto;   /* Enable vertical scrolling */
-  padding-right: 20px;
-}
-
-/* Style for event items */
 ul {
   list-style-type: none;
   padding: 0;
 }
 
-li {
+ul li {
   margin: 10px 0;
+}
+
+form {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  gap: 15px;
 }
 
-label {
-  margin-left: 10px;
+input[type="text"], input[type="number"], select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 14px;
 }
 
-input[type="checkbox"] {
-  margin-right: 10px;
+input[type="text"]:focus, input[type="number"]:focus, select:focus {
+  border-color: #e67e22;
+  outline: none;
 }
 
-/* Style for the group input text box */
-input[type="text"] {
-  margin-top: 5px;
-  padding: 5px;
-  width: 120px; /* Limit the width of the group input */
-  font-size: 1em;
-}
-
-/* Pagination styles */
-.pagination {
-  margin-top: 20px;
-  display: flex;
-  justify-content: center;
-}
-
-.pagination button {
-  margin: 0 10px;
-  padding: 10px 20px;
-  font-size: 1em;
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-}
-
-.pagination button:hover {
-  background-color: #45a049;
-}
-
-.pagination button:disabled {
-  background-color: #c6c6c6;
-  cursor: not-allowed;
-}
-
-/* Add some margin to the submit button */
-button {
-  margin-top: 20px;
-  padding: 10px 20px;
-  font-size: 1em;
-  cursor: pointer;
-  background-color: #4CAF50;
-  color: white;
-  border: none;
-  border-radius: 5px;
-}
-
-button:hover {
-  background-color: #45a049;
-}
-
-button:active {
-  background-color: #3e8e41;
+.welcome-message {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+  color: #333;
 }
