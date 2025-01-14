@@ -1,15 +1,16 @@
+/* General Styles */
 body {
   font-family: Arial, sans-serif;
   margin: 0;
   padding: 0;
-  background-color: #fff8e7;
+  background-color: #fff8e7; /* Soft orange background */
   color: #333;
 }
 
-h1 {
+h1, h2, h3 {
   text-align: center;
-  color: #e67e22;
-  margin-top: 20px;
+  color: #e67e22; /* Bold orange for headings */
+  margin-top: 10px;
 }
 
 .container {
@@ -22,10 +23,38 @@ h1 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.welcome-message {
+  text-align: center;
+  font-size: 18px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #ffecd1; /* Light orange background */
+  border: 1px solid #e67e22;
+  border-radius: 4px;
+}
+
 form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+}
+
+label {
+  display: block;
+  margin: 10px 0;
+}
+
+input, select {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+input:focus, select:focus {
+  outline: none;
+  border-color: #e67e22;
 }
 
 button {
@@ -35,17 +64,39 @@ button {
   padding: 10px 15px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 16px;
 }
 
 button:hover {
   background-color: #d35400;
 }
 
-label {
-  display: block;
-  margin: 10px 0;
+ul {
+  list-style: none;
+  padding: 0;
 }
 
+ul li {
+  margin: 15px 0;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+}
+
+ul li p {
+  margin: 0;
+}
+
+.button-group {
+  margin-top: 10px;
+}
+
+.button-group button {
+  margin-right: 10px;
+}
+
+/* Pagination Styling */
 .pagination {
   text-align: center;
   margin: 20px 0;
@@ -55,7 +106,21 @@ label {
   margin: 0 10px;
 }
 
-ul {
-  list-style: none;
+/* Special Section Styling */
+.event-category {
+  margin-bottom: 20px;
+}
+
+.event-category h3 {
+  color: #e67e22;
+}
+
+.registration-complete {
+  text-align: center;
+  font-size: 16px;
+  margin-bottom: 20px;
+}
+
+.registration-complete ul {
   padding: 0;
 }
