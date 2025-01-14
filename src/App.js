@@ -61,10 +61,6 @@ function App() {
                 <li key={index}>
                   {student.studentName} - {student.studentAge} years old (
                   {student.studentGender})
-                  <button onClick={() => handleEditStudent(student)}>Edit</button>
-                  <button onClick={() => console.log(`Add events for ${student.studentName}`)}>
-                    Add Events
-                  </button>
                 </li>
               ))}
             </ul>
@@ -74,13 +70,20 @@ function App() {
           </button>
         </>
       ) : (
-        // Show confirmation once registration is complete
+        // Show confirmation and additional options once registration is complete
         <div>
           <h2>Registration Complete</h2>
           <p>School Name: {schoolData.schoolName}</p>
           <ul>
             {students.map((student, index) => (
-              <li key={index}>{student.studentName}</li>
+              <li key={index}>
+                {student.studentName} - {student.studentAge} years old (
+                {student.studentGender})
+                <button onClick={() => handleEditStudent(student)}>Edit</button>
+                <button onClick={() => console.log(`Add events for ${student.studentName}`)}>
+                  Add Events
+                </button>
+              </li>
             ))}
           </ul>
         </div>
