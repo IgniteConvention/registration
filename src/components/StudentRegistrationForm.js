@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function StudentRegistrationForm({ onSubmit }) {
+export default function StudentRegistrationForm({ onSubmit, onComplete }) {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
@@ -73,12 +73,7 @@ export default function StudentRegistrationForm({ onSubmit }) {
         </label>
         <div className="button-group">
           <button type="submit">Add Student</button>
-          <button
-            type="button"
-            onClick={() => {
-              alert("Complete Registration Clicked"); // Placeholder
-            }}
-          >
+          <button type="button" onClick={onComplete}>
             Complete Registration
           </button>
         </div>
