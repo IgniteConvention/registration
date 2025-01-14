@@ -45,4 +45,48 @@ function App() {
       <h1>Ignite Student Convention</h1>
 
       {!schoolData ? (
-        // Show school reg
+        // Show school registration form
+        <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
+      ) : !isComplete ? (
+        // Show student registration form if registration is incomplete
+        <>
+          <StudentRegistrationForm
+            onSubmit={handleStudentSubmit}
+            student={editingStudent}
+          />
+          <div>
+            <h2>Registered Students:</h2>
+            <ul>
+              {students.map((student, index) => (
+                <li key={index}>
+                  {student.studentName} - {student.studentAge} years old (
+                  {student.studentGender})
+                  <button onClick={() => handleEditStudent(student)}>Edit</button>
+                  <button onClick={() => console.log(`Add events for ${student.studentName}`)}>
+                    Add Events
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <button onClick={handleCompleteRegistration}>
+            Complete Registration
+          </button>
+        </>
+      ) : (
+        // Show confirmation once registration is complete
+        <div>
+          <h2>Registration Complete</h2>
+          <p>School Name: {schoolData.schoolName}</p>
+          <ul>
+            {students.map((student, index) => (
+              <li key={index}>{student.studentName}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  );
+}
+
+export default App;
