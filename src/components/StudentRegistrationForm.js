@@ -1,82 +1,50 @@
-import React, { useState, useEffect } from 'react';
-import './StudentRegistrationForm.css'; // Import the CSS file
+import React, { useState } from 'react';
 
-function StudentRegistrationForm({ onSubmit, student }) {
+export default function StudentRegistrationForm({ onSubmit }) {
   const [studentName, setStudentName] = useState('');
-  const [studentDOB, setStudentDOB] = useState('');
   const [studentAge, setStudentAge] = useState('');
-  const [studentGender, setStudentGender] = useState('');
+  const [studentGender, setStudentGender] = useState('Male');
 
-  // Pre-fill form with existing student data when editing
-  useEffect(() => {
-    if (student) {
-      setStudentName(student.studentName);
-      setStudentDOB(student.studentDOB);
-      setStudentAge(student.studentAge);
-      setStudentGender(student.studentGender);
-    }
-  }, [student]);
-
-  const handleSubmit = (event) => {
-    event.preventDefault();
-    onSubmit({ studentName, studentDOB, studentAge, studentGender });
-    // Reset the form for the next student
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    onSubmit({ studentName, studentAge, studentGender });
     setStudentName('');
-    setStudentDOB('');
     setStudentAge('');
-    setStudentGender('');
+    setStudentGender('Male');
   };
 
   return (
-    <div className="form-container">
-      <div className="form-wrapper">
-        <h2>{student ? 'Edit Student' : 'Student Registration'}</h2>
-        
-        <p className="reminder">
-          Please ensure all necessary forms have been signed and are on file (Permission to Attend (CF6), Medical Forms CF7 (and CF8-if applicable) – one per person attending the convention. CF forms can be found on the Google Drive. Medical forms must have the date of the last tetanus shot.) You may bring these to the Convention or upload them to the Google Drive (preferable).
-        </p>
-        
-        <form onSubmit={handleSubmit}>
-          <label>
-            Name:
-            <input
-              type="text"
-              value={studentName}
-              onChange={(e) => setStudentName(e.target.value)}
-            />
-          </label>
-          <label>
-            Date of Birth:
-            <input
-              type="date"
-              value={studentDOB}
-              onChange={(e) => setStudentDOB(e.target.value)}
-            />
-          </label>
-          <label>
-            Age:
-            <input
-              type="number"
-              value={studentAge}
-              onChange={(e) => setStudentAge(e.target.value)}
-            />
-          </label>
-          <label>
-            Gender:
-            <select
-              value={studentGender}
-              onChange={(e) => setStudentGender(e.target.value)}
-            >
-              <option value="Male">Male</option>
-              <option value="Female">Female</option>
-              <option value="Other">Other</option>
-            </select>
-          </label>
-          <button type="submit">{student ? 'Update Student' : 'Register Student'}</button>
-        </form>
-      </div>
-    </div>
+    <form onSubmit={handleSubmit}>
+      <label>
+        Name:
+        <input
+          type="text"
+          value={studentName}
+          onChange={(e) => setStudentName(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Age:
+        <input
+          type="number"
+          value={studentAge}
+          onChange={(e) => setStudentAge(e.target.value)}
+          required
+        />
+      </label>
+      <label>
+        Gender:
+        <select
+          value={studentGender}
+          onChange={(e) => setStudentGender(e.target.value)}
+          required
+        >
+          <option value="Male">Male</option>
+          <option value="Female">Female</option>
+        </select>
+      </label>
+      <button type="submit">Add Student</button>
+    </form>
   );
 }
-
-export default StudentRegistrationForm;
