@@ -39,7 +39,6 @@ h2, h3 {
   background-color: #ffecd1; /* Light orange background */
   border: 2px solid #e67e22;
   border-radius: 4px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
 /* Forms */
@@ -77,8 +76,8 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  display: inline-block;
-  text-align: center;
+  width: auto;
+  display: inline-block; /* Prevent stretching */
 }
 
 button:hover {
@@ -108,17 +107,6 @@ ul li p {
   margin: 0;
 }
 
-/* Button Groups */
-.button-group {
-  margin-top: 10px;
-}
-
-.button-group button {
-  margin-right: 10px;
-  width: auto; /* Prevent stretched buttons */
-  display: inline-block;
-}
-
 /* Error Messages */
 .error-message {
   color: red;
@@ -127,13 +115,21 @@ ul li p {
   margin-bottom: 15px;
 }
 
-/* Student Registration */
-.student-registration {
+/* Pagination */
+.pagination {
   text-align: center;
-  font-size: 18px;
-  padding: 20px;
-  border: 3px solid #e67e22; /* Bold border */
-  border-radius: 8px;
-  margin-top: 20px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  margin: 20px 0;
+}
+
+.pagination button {
+  margin: 0 10px;
+}
+
+/* Event Category Styling */
+.event-category {
+  margin-bottom: 20px;
+}
+
+.event-category h3 {
+  color: #e67e22;
 }
