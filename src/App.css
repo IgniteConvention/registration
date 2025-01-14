@@ -7,7 +7,7 @@ body {
   color: #333;
 }
 
-h1, h2 {
+h1, h2, h3 {
   text-align: center;
   color: #e67e22; /* Bold orange for headings */
 }
@@ -26,14 +26,20 @@ button {
   background-color: #e67e22;
   color: white;
   border: none;
-  padding: 10px 20px;
-  font-size: 16px;
+  padding: 8px 15px;
+  font-size: 14px;
   border-radius: 4px;
   cursor: pointer;
+  margin-right: 10px;
 }
 
 button:hover {
   background-color: #d35400; /* Darker orange on hover */
+}
+
+.button-group button {
+  display: inline-block;
+  margin: 5px 5px 0 0;
 }
 
 ul {
@@ -42,25 +48,10 @@ ul {
 }
 
 ul li {
-  margin: 10px 0;
-}
-
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-
-input[type="text"], input[type="number"], select {
+  margin: 15px 0;
   padding: 10px;
   border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 14px;
-}
-
-input[type="text"]:focus, input[type="number"]:focus, select:focus {
-  border-color: #e67e22;
-  outline: none;
 }
 
 .welcome-message {
@@ -68,4 +59,8 @@ input[type="text"]:focus, input[type="number"]:focus, select:focus {
   font-size: 18px;
   margin-bottom: 20px;
   color: #333;
+  padding: 10px;
+  background-color: #ffecd1; /* Light orange background */
+  border: 1px solid #e67e22;
+  border-radius: 4px;
 }
