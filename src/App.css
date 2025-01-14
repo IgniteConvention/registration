@@ -7,16 +7,9 @@ body {
   color: #333;
 }
 
-h1 {
+h1, h2 {
   text-align: center;
   color: #e67e22; /* Bold orange for headings */
-  margin-top: 10px;
-  font-size: 2.5rem;
-}
-
-h2, h3 {
-  text-align: center;
-  color: #e67e22;
   margin-top: 10px;
 }
 
@@ -30,27 +23,26 @@ h2, h3 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
-/* Welcome Message */
-.welcome-message {
+/* Student Registration Specific */
+.student-registration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
   text-align: center;
-  font-size: 18px;
-  margin: 20px 0;
-  padding: 10px;
-  background-color: #ffecd1; /* Light orange background */
-  border: 2px solid #e67e22;
-  border-radius: 4px;
 }
 
-/* Forms */
+/* Form Elements */
 form {
   display: flex;
   flex-direction: column;
   gap: 15px;
+  width: 100%;
+  max-width: 400px;
 }
 
 label {
-  display: block;
-  margin-bottom: 8px;
+  text-align: left;
   font-weight: bold;
 }
 
@@ -76,60 +68,19 @@ button {
   border-radius: 5px;
   cursor: pointer;
   font-size: 16px;
-  width: auto;
-  display: inline-block; /* Prevent stretching */
 }
 
 button:hover {
   background-color: #d35400;
 }
 
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
 button:disabled {
   background-color: #f0ad4e;
   cursor: not-allowed;
-}
-
-/* List Items */
-ul {
-  list-style: none;
-  padding: 0;
-}
-
-ul li {
-  margin: 15px 0;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  background-color: #f9f9f9;
-}
-
-ul li p {
-  margin: 0;
-}
-
-/* Error Messages */
-.error-message {
-  color: red;
-  font-weight: bold;
-  text-align: center;
-  margin-bottom: 15px;
-}
-
-/* Pagination */
-.pagination {
-  text-align: center;
-  margin: 20px 0;
-}
-
-.pagination button {
-  margin: 0 10px;
-}
-
-/* Event Category Styling */
-.event-category {
-  margin-bottom: 20px;
-}
-
-.event-category h3 {
-  color: #e67e22;
 }
