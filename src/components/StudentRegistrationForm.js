@@ -41,7 +41,7 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
       setStudents([...students, studentData]);
     }
 
-    // Clear the form fields
+    // Clear form fields
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
@@ -96,30 +96,24 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
           </select>
         </label>
         <div className="button-group">
-          <button type="submit">
-            {editingIndex !== null ? "Update Student" : "Add Student"}
-          </button>
+          <button type="submit">{editingIndex !== null ? "Update Student" : "Add Student"}</button>
         </div>
       </form>
 
       <div className="registered-students">
         <h3>Registered Students</h3>
-        {students.length > 0 ? (
-          students.map((student, index) => (
-            <div key={index} className="student-entry">
-              <p>
-                <strong>Name:</strong> {student.studentName} <br />
-                <strong>DOB:</strong> {student.studentDOB} <br />
-                <strong>Gender:</strong> {student.studentGender} <br />
-                <strong>Age:</strong> {student.studentAge}
-              </p>
-              <button onClick={() => handleEdit(index)}>Edit</button>
-              <button onClick={() => handleDelete(index)}>Delete</button>
-            </div>
-          ))
-        ) : (
-          <p>No students registered yet.</p>
-        )}
+        {students.map((student, index) => (
+          <div key={index} className="student-entry">
+            <p>
+              <strong>Name:</strong> {student.studentName} <br />
+              <strong>DOB:</strong> {student.studentDOB} <br />
+              <strong>Gender:</strong> {student.studentGender} <br />
+              <strong>Age:</strong> {student.studentAge}
+            </p>
+            <button onClick={() => handleEdit(index)}>Edit</button>
+            <button onClick={() => handleDelete(index)}>Delete</button>
+          </div>
+        ))}
       </div>
 
       {students.length > 0 && (
