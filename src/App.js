@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
-import StudentRegistrationForm from "./components/StudentRegistrationForm";
+import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
 import "./App.css";
 
@@ -9,6 +9,7 @@ function App() {
   const [students, setStudents] = useState([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState({});
+  const [showFinalReview, setShowFinalReview] = useState(false);
 
   const availableEvents = {
     "Digital Media (Early Entry)": [
@@ -161,29 +162,23 @@ function App() {
     setStudents((prev) => [...prev, student]);
   };
 
-  const handleNextStep = () => {
-    if (students.length > 0) {
-      setCurrentStudentIndex(0);
-    } else {
-      alert("Please register at least one student before proceeding.");
-    }
+  const handleStudentEdit = (index, updatedStudent) => {
+    const updatedStudents = [...students];
+    updatedStudents[index] = updatedStudent;
+    setStudents(updatedStudents);
   };
 
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
+    setCurrentStudentIndex(null);
+  };
 
-    if (currentStudentIndex + 1 < students.length) {
-      setCurrentStudentIndex((prev) => prev + 1);
-    } else {
-      setCurrentStudentIndex(null);
-    }
+  const handleAddEvents = (index) => {
+    setCurrentStudentIndex(index);
   };
 
   const handleFinalize = () => {
-    console.log("Finalizing Registration...");
-    console.log("Students:", students);
-    console.log("Selected Events:", selectedEvents);
-    alert("Registration finalized successfully!");
+    setShowFinalReview(true);
   };
 
   return (
@@ -191,12 +186,7 @@ function App() {
       <h1>Ignite Student Convention</h1>
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : currentStudentIndex === null ? (
-        <StudentRegistrationForm
-          onSubmit={handleStudentSubmit}
-          onNextStep={handleNextStep}
-        />
-      ) : currentStudentIndex < students.length ? (
+      ) : currentStudentIndex !== null ? (
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
@@ -205,19 +195,30 @@ function App() {
           }
           onSubmit={handleEventSubmit}
         />
-      ) : (
+      ) : showFinalReview ? (
         <div className="container finalize-registration">
-          <h2>Review and Finalize</h2>
+          <h2>Final Review</h2>
           <ul>
             {students.map((student) => (
               <li key={student.studentName}>
-                <strong>{student.studentName}:</strong>{" "}
+                <strong>{student.studentName}</strong>:{" "}
                 {selectedEvents[student.studentName]?.join(", ") || "No events selected"}
               </li>
             ))}
           </ul>
-          <button onClick={handleFinalize}>Finalize Registration</button>
+          <button onClick={() => alert("Registration Complete!")}>
+            Finalize Registration
+          </button>
         </div>
+      ) : (
+        <StudentVerificationPage
+          students={students}
+          selectedEvents={selectedEvents}
+          onAddStudent={handleStudentSubmit}
+          onEditStudent={handleStudentEdit}
+          onAddEvents={handleAddEvents}
+          onFinalize={handleFinalize}
+        />
       )}
     </div>
   );
