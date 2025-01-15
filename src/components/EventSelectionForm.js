@@ -95,7 +95,7 @@ export default function EventSelectionForm({ student, availableEvents, onSubmit 
           <h3>{category}</h3>
           <ul>
             {availableEvents[category].map((event) => (
-              <li key={event}>
+              <li key={event} className="event-item">
                 <label>
                   <input
                     type="checkbox"
@@ -106,7 +106,12 @@ export default function EventSelectionForm({ student, availableEvents, onSubmit 
                   />
                   {event}
                 </label>
-                {["Bible Bowl", "Small Ensemble", "Skit"].includes(event) && (
+                {[
+                  "Bible Bowl",
+                  "Small Ensemble",
+                  "Skit",
+                  "Choir",
+                ].includes(event) && (
                   <input
                     type="text"
                     placeholder="Group (e.g., A, B)"
@@ -133,7 +138,9 @@ export default function EventSelectionForm({ student, availableEvents, onSubmit 
           Next
         </button>
       </div>
-      <button onClick={handleSubmit}>Submit Events</button>
+      <button onClick={handleSubmit} className="finalize-registration">
+        Submit Events
+      </button>
     </div>
   );
 }
