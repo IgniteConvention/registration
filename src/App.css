@@ -23,6 +23,14 @@ h1, h2 {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* School Registration Form */
+.registration-box {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Vertically center the form */
+}
+
 /* Student Registration Specific */
 .student-registration {
   display: flex;
@@ -30,6 +38,7 @@ h1, h2 {
   align-items: center;
   justify-content: center;
   text-align: center;
+  padding: 20px;
 }
 
 /* Form Elements */
@@ -74,13 +83,41 @@ button:hover {
   background-color: #d35400;
 }
 
-.button-group {
-  display: flex;
-  justify-content: center;
-  gap: 10px;
-}
-
 button:disabled {
   background-color: #f0ad4e;
   cursor: not-allowed;
+}
+
+/* Event Registration Styles */
+.event-registration {
+  padding: 20px;
+}
+
+.event {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.event span {
+  flex-grow: 1;
+  font-size: 14px;
+}
+
+.event input[type="checkbox"] {
+  margin-right: 10px;
+}
+
+/* Finalize Registration Button */
+.finalize-registration {
+  display: block;
+  margin: 20px auto;
+  padding: 10px 20px;
+  font-size: 16px;
+  background-color: #27ae60; /* Green for final action */
+  border-radius: 5px;
+}
+
+.finalize-registration:hover {
+  background-color: #2ecc71;
 }
