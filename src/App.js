@@ -14,7 +14,6 @@ function App() {
     "Category A": ["Event 1", "Event 2", "Event 3"],
     "Category B": ["Event 4", "Event 5", "Event 6"],
     "Category C": ["Event 7", "Event 8", "Event 9"],
-    // Add more categories and events as needed
   };
 
   const handleSchoolSubmit = (school) => setSchoolData(school);
@@ -22,20 +21,23 @@ function App() {
   const handleStudentSubmit = (student) => setStudents([...students, student]);
 
   const handleNextStep = () => {
-    setCurrentStudentIndex(0); // Start event selection for the first student
+    if (students.length > 0) {
+      setCurrentStudentIndex(0); // Start event selection for the first student
+    }
   };
 
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
+
     if (currentStudentIndex + 1 < students.length) {
-      setCurrentStudentIndex(currentStudentIndex + 1);
+      setCurrentStudentIndex(currentStudentIndex + 1); // Move to the next student
     } else {
-      setCurrentStudentIndex(null); // Complete event selection
+      setCurrentStudentIndex(null); // End event selection
     }
   };
 
   const handleFinalize = () => {
-    alert("Registration finalized!"); // Replace with actual logic
+    alert("Registration finalized! Thank you!"); // Replace with actual finalization logic
   };
 
   return (
@@ -44,24 +46,32 @@ function App() {
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : currentStudentIndex === null ? (
-        <>
-          <StudentRegistrationForm
-            onSubmit={handleStudentSubmit}
-            onNextStep={handleNextStep}
-          />
-          {Object.keys(selectedEvents).length === students.length && (
-            <button className="finalize-button" onClick={handleFinalize}>
-              Finalize Registration
-            </button>
-          )}
-        </>
-      ) : (
+        <StudentRegistrationForm
+          onSubmit={handleStudentSubmit}
+          onNextStep={handleNextStep}
+        />
+      ) : currentStudentIndex < students.length ? (
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
-          existingSelections={selectedEvents[students[currentStudentIndex].studentName] || []}
+          existingSelections={
+            selectedEvents[students[currentStudentIndex]?.studentName] || []
+          }
           onSubmit={handleEventSubmit}
         />
+      ) : (
+        <div className="container finalize-registration">
+          <h2>Review and Finalize</h2>
+          <ul>
+            {students.map((student) => (
+              <li key={student.studentName}>
+                <strong>{student.studentName}:</strong>{" "}
+                {selectedEvents[student.studentName]?.join(", ") || "No events selected"}
+              </li>
+            ))}
+          </ul>
+          <button onClick={handleFinalize}>Finalize Registration</button>
+        </div>
       )}
     </div>
   );
