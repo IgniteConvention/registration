@@ -5,6 +5,8 @@ export default function StudentRegistrationForm({ onSubmit, onComplete }) {
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
   const [studentAge, setStudentAge] = useState("");
+  const [editingIndex, setEditingIndex] = useState(null);
+  const [students, setStudents] = useState([]);
 
   const calculateAge = (dob) => {
     if (!dob) return "";
@@ -26,11 +28,34 @@ export default function StudentRegistrationForm({ onSubmit, onComplete }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ studentName, studentDOB, studentGender, studentAge });
+    const studentData = { studentName, studentDOB, studentGender, studentAge };
+
+    if (editingIndex !== null) {
+      const updatedStudents = [...students];
+      updatedStudents[editingIndex] = studentData;
+      setStudents(updatedStudents);
+      setEditingIndex(null);
+    } else {
+      setStudents([...students, studentData]);
+    }
+
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
     setStudentAge("");
+  };
+
+  const handleEdit = (index) => {
+    const student = students[index];
+    setStudentName(student.studentName);
+    setStudentDOB(student.studentDOB);
+    setStudentGender(student.studentGender);
+    setStudentAge(student.studentAge);
+    setEditingIndex(index);
+  };
+
+  const handleDelete = (index) => {
+    setStudents(students.filter((_, i) => i !== index));
   };
 
   return (
@@ -72,12 +97,28 @@ export default function StudentRegistrationForm({ onSubmit, onComplete }) {
           </select>
         </label>
         <div className="button-group">
-          <button type="submit">Add Student</button>
+          <button type="submit">{editingIndex !== null ? "Update Student" : "Add Student"}</button>
           <button type="button" onClick={onComplete}>
             Complete Registration
           </button>
         </div>
       </form>
+
+      <div className="registered-students">
+        <h3>Registered Students</h3>
+        {students.map((student, index) => (
+          <div key={index} className="student-entry">
+            <p>
+              <strong>Name:</strong> {student.studentName} <br />
+              <strong>DOB:</strong> {student.studentDOB} <br />
+              <strong>Gender:</strong> {student.studentGender} <br />
+              <strong>Age:</strong> {student.studentAge}
+            </p>
+            <button onClick={() => handleEdit(index)}>Edit</button>
+            <button onClick={() => handleDelete(index)}>Delete</button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
