@@ -1,70 +1,86 @@
-/* Center the form on the page */
-.school-registration .form-container {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Full viewport height */
-  background-color: #f4f4f9; /* Light background color */
-}
-
-/* Style the form */
-.school-registration .form-wrapper {
-  background-color: white;
-  padding: 30px;
-  border-radius: 8px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
-  width: 100%;
-  max-width: 500px; /* Limit the width of the form */
-}
-
-/* Style form headings */
-.school-registration h2 {
-  text-align: center;
+/* General Styles */
+body {
+  font-family: Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #fff8e7; /* Soft orange background */
   color: #333;
-  margin-bottom: 20px;
 }
 
-/* Style form labels and inputs */
-.school-registration label {
-  display: block;
-  margin: 10px 0 5px;
+h1, h2 {
+  text-align: center;
+  color: #e67e22; /* Bold orange for headings */
+  margin-top: 10px;
+}
+
+.container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: white;
+  border: 3px solid #e67e22; /* Bold border */
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Student Registration Specific */
+.student-registration {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+}
+
+/* Form Elements */
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 100%;
+  max-width: 400px;
+}
+
+label {
+  text-align: left;
   font-weight: bold;
 }
 
-.school-registration input[type="text"],
-.school-registration input[type="email"],
-.school-registration input[type="number"],
-.school-registration input[type="date"],
-.school-registration select {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 20px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-  transition: all 0.3s ease;
-}
-
-.school-registration input:focus,
-.school-registration select:focus {
-  border-color: #007bff;
-  outline: none;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-}
-
-/* Style the submit button */
-.school-registration button {
+input, select {
   width: 100%;
   padding: 10px;
-  background-color: #007bff;
-  color: white;
-  border: none;
+  font-size: 14px;
+  border: 1px solid #ccc;
   border-radius: 4px;
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
 }
 
-.school-registration button:hover {
-  background-color: #0056b3; /* Darker blue on hover */
+input:focus, select:focus {
+  outline: none;
+  border-color: #e67e22;
+}
+
+/* Buttons */
+button {
+  background-color: #e67e22;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+button:hover {
+  background-color: #d35400;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+}
+
+button:disabled {
+  background-color: #f0ad4e;
+  cursor: not-allowed;
 }
