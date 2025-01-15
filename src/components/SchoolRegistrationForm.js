@@ -52,7 +52,7 @@ export default function SchoolRegistrationForm({ onSubmit }) {
         Welcome to the Ignite Student Convention Registration process. Please fill out the
         requested information below.
       </div>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="school-registration-form">
         <label>
           School Name:
           <input
@@ -148,10 +148,10 @@ export default function SchoolRegistrationForm({ onSubmit }) {
             </button>
           </div>
         ))}
-        <button type="button" onClick={addSponsor}>
+        <button type="button" onClick={addSponsor} className="add-sponsor-button">
           Add Sponsor
         </button>
-        <button type="submit">Submit</button>
+        <button type="submit" className="submit-button">Submit</button>
       </form>
     </div>
   );
