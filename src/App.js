@@ -16,28 +16,42 @@ function App() {
     "Category C": ["Event 7", "Event 8", "Event 9"],
   };
 
-  const handleSchoolSubmit = (school) => setSchoolData(school);
+  const handleSchoolSubmit = (school) => {
+    console.log("School registered:", school);
+    setSchoolData(school);
+  };
 
-  const handleStudentSubmit = (student) => setStudents([...students, student]);
+  const handleStudentSubmit = (student) => {
+    console.log("Student registered:", student);
+    setStudents([...students, student]);
+  };
 
   const handleNextStep = () => {
     if (students.length > 0) {
+      console.log("Transitioning to event selection for the first student.");
       setCurrentStudentIndex(0); // Start event selection for the first student
+    } else {
+      alert("Please add at least one student before proceeding.");
     }
   };
 
   const handleEventSubmit = (studentName, events) => {
+    console.log(`Events selected for ${studentName}:`, events);
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
 
     if (currentStudentIndex + 1 < students.length) {
       setCurrentStudentIndex(currentStudentIndex + 1); // Move to the next student
     } else {
+      console.log("All students have completed event selection.");
       setCurrentStudentIndex(null); // End event selection
     }
   };
 
   const handleFinalize = () => {
-    alert("Registration finalized! Thank you!"); // Replace with actual finalization logic
+    console.log("Finalizing registration with the following data:");
+    console.log("Students:", students);
+    console.log("Selected Events:", selectedEvents);
+    alert("Registration finalized! Thank you!");
   };
 
   return (
