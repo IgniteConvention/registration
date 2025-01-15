@@ -7,6 +7,7 @@ export default function EventSelectionForm({
   onSubmit
 }) {
   const [selectedEvents, setSelectedEvents] = useState(existingSelections || []);
+  const [groupDesignations, setGroupDesignations] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
@@ -14,15 +15,26 @@ export default function EventSelectionForm({
   const totalPages = Math.ceil(categories.length / itemsPerPage);
 
   const handleEventChange = (event) => {
-    if (selectedEvents.includes(event)) {
-      setSelectedEvents(selectedEvents.filter((e) => e !== event));
+    if (selectedEvents.some((e) => e.name === event)) {
+      setSelectedEvents(selectedEvents.filter((e) => e.name !== event));
+      const updatedGroups = { ...groupDesignations };
+      delete updatedGroups[event];
+      setGroupDesignations(updatedGroups);
     } else {
-      setSelectedEvents([...selectedEvents, event]);
+      setSelectedEvents([...selectedEvents, { name: event }]);
     }
   };
 
+  const handleGroupChange = (event, group) => {
+    setGroupDesignations({ ...groupDesignations, [event]: group });
+  };
+
   const handleSubmit = () => {
-    onSubmit(student.studentName, selectedEvents);
+    const eventsWithGroups = selectedEvents.map((e) => ({
+      ...e,
+      group: groupDesignations[e.name] || null
+    }));
+    onSubmit(student.studentName, eventsWithGroups);
   };
 
   const paginatedCategories = categories.slice(
@@ -42,11 +54,19 @@ export default function EventSelectionForm({
                 <label>
                   <input
                     type="checkbox"
-                    checked={selectedEvents.includes(event)}
+                    checked={selectedEvents.some((e) => e.name === event)}
                     onChange={() => handleEventChange(event)}
                   />
                   {event}
                 </label>
+                {["Bible Bowl", "Small Ensemble", "Skit"].includes(event) && (
+                  <input
+                    type="text"
+                    placeholder="Group (e.g., A, B)"
+                    value={groupDesignations[event] || ""}
+                    onChange={(e) => handleGroupChange(event, e.target.value)}
+                  />
+                )}
               </li>
             ))}
           </ul>
