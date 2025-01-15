@@ -8,7 +8,7 @@ export default function SchoolRegistrationForm({ onSubmit }) {
   const [contactEmail, setContactEmail] = useState("");
   const [pastorName, setPastorName] = useState("");
   const [sponsors, setSponsors] = useState([
-    { name: "", willingToJudge: false, judgingCategories: "" },
+    { name: "", willingToJudge: false, judgingCategories: "" }
   ]);
 
   const handleSponsorChange = (index, field, value) => {
@@ -34,19 +34,12 @@ export default function SchoolRegistrationForm({ onSubmit }) {
       contactPhone,
       contactEmail,
       pastorName,
-      sponsors,
+      sponsors
     });
-    setSchoolName("");
-    setSchoolAddress("");
-    setContactName("");
-    setContactPhone("");
-    setContactEmail("");
-    setPastorName("");
-    setSponsors([{ name: "", willingToJudge: false, judgingCategories: "" }]);
   };
 
   return (
-    <div className="container school-registration">
+    <div className="container">
       <h2>School Registration</h2>
       <form onSubmit={handleSubmit}>
         <label>
@@ -100,21 +93,17 @@ export default function SchoolRegistrationForm({ onSubmit }) {
             type="text"
             value={pastorName}
             onChange={(e) => setPastorName(e.target.value)}
-            required
           />
         </label>
-        <h3>Sponsors/Chaperones</h3>
+        <h3>Sponsors</h3>
         {sponsors.map((sponsor, index) => (
-          <div key={index} className="sponsor-entry">
+          <div key={index}>
             <label>
               Name:
               <input
                 type="text"
                 value={sponsor.name}
-                onChange={(e) =>
-                  handleSponsorChange(index, "name", e.target.value)
-                }
-                required
+                onChange={(e) => handleSponsorChange(index, "name", e.target.value)}
               />
             </label>
             <label>
@@ -135,12 +124,11 @@ export default function SchoolRegistrationForm({ onSubmit }) {
                   onChange={(e) =>
                     handleSponsorChange(index, "judgingCategories", e.target.value)
                   }
-                  placeholder="List categories"
                 />
               </label>
             )}
             <button type="button" onClick={() => removeSponsor(index)}>
-              Remove Sponsor
+              Remove
             </button>
           </div>
         ))}
