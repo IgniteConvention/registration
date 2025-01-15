@@ -29,7 +29,7 @@ function App() {
       "Quilts", "Quilt Square"
     ],
     "Music Division (Performance)": [
-      "Male Solo", "Freestyle Male Solo", "Female Solo", "Freestyle Female Solo",
+      "Choir", "Male Solo", "Freestyle Male Solo", "Female Solo", "Freestyle Female Solo",
       "Male Duet", "Freestyle Male Duet", "Female Duet", "Freestyle Female Duet",
       "Mixed Duet", "Freestyle Mixed Duet", "Male Trio", "Freestyle Male Trio",
       "Female Trio", "Freestyle Female Trio", "Male Quartet", "Freestyle Male Quartet",
@@ -106,7 +106,7 @@ function App() {
       ) : !isComplete ? (
         <>
           <StudentRegistrationForm onSubmit={handleStudentSubmit} />
-          <button onClick={handleCompleteRegistration}>Complete Registration</button>
+          <button className="complete-registration-centered" onClick={handleCompleteRegistration}>Complete Registration</button>
         </>
       ) : currentStudent ? (
         <EventSelectionForm
@@ -137,6 +137,9 @@ function App() {
               </button>
             </div>
           ))}
+          <button className="finalize-registration" onClick={() => alert('Registration finalized!')}>
+            Finalize Registration
+          </button>
         </div>
       )}
     </div>
