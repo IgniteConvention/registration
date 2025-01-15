@@ -1,123 +1,70 @@
-/* General Styles */
-body {
-  font-family: Arial, sans-serif;
-  margin: 0;
-  padding: 0;
-  background-color: #fff8e7; /* Soft orange background */
-  color: #333;
+/* Center the form on the page */
+.school-registration .form-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh; /* Full viewport height */
+  background-color: #f4f4f9; /* Light background color */
 }
 
-h1, h2 {
-  text-align: center;
-  color: #e67e22; /* Bold orange for headings */
-  margin-top: 10px;
-}
-
-.container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 20px;
+/* Style the form */
+.school-registration .form-wrapper {
   background-color: white;
-  border: 3px solid #e67e22; /* Bold border */
+  padding: 30px;
   border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
-
-/* School Registration Form */
-.registration-box {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh; /* Vertically center the form */
-}
-
-/* Student Registration Specific */
-.student-registration {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  padding: 20px;
-}
-
-/* Form Elements */
-form {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
   width: 100%;
-  max-width: 400px;
+  max-width: 500px; /* Limit the width of the form */
 }
 
-label {
-  text-align: left;
+/* Style form headings */
+.school-registration h2 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+/* Style form labels and inputs */
+.school-registration label {
+  display: block;
+  margin: 10px 0 5px;
   font-weight: bold;
 }
 
-input, select {
+.school-registration input[type="text"],
+.school-registration input[type="email"],
+.school-registration input[type="number"],
+.school-registration input[type="date"],
+.school-registration select {
   width: 100%;
-  padding: 10px;
-  font-size: 14px;
+  padding: 8px;
+  margin-bottom: 20px;
   border: 1px solid #ccc;
   border-radius: 4px;
+  box-sizing: border-box;
+  transition: all 0.3s ease;
 }
 
-input:focus, select:focus {
+.school-registration input:focus,
+.school-registration select:focus {
+  border-color: #007bff;
   outline: none;
-  border-color: #e67e22;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
-/* Buttons */
-button {
-  background-color: #e67e22;
+/* Style the submit button */
+.school-registration button {
+  width: 100%;
+  padding: 10px;
+  background-color: #007bff;
   color: white;
   border: none;
-  padding: 10px 15px;
-  border-radius: 5px;
+  border-radius: 4px;
+  font-size: 16px;
   cursor: pointer;
-  font-size: 16px;
+  transition: background-color 0.3s ease;
 }
 
-button:hover {
-  background-color: #d35400;
-}
-
-button:disabled {
-  background-color: #f0ad4e;
-  cursor: not-allowed;
-}
-
-/* Event Registration Styles */
-.event-registration {
-  padding: 20px;
-}
-
-.event {
-  display: flex;
-  align-items: center;
-  margin-bottom: 10px;
-}
-
-.event span {
-  flex-grow: 1;
-  font-size: 14px;
-}
-
-.event input[type="checkbox"] {
-  margin-right: 10px;
-}
-
-/* Finalize Registration Button */
-.finalize-registration {
-  display: block;
-  margin: 20px auto;
-  padding: 10px 20px;
-  font-size: 16px;
-  background-color: #27ae60; /* Green for final action */
-  border-radius: 5px;
-}
-
-.finalize-registration:hover {
-  background-color: #2ecc71;
+.school-registration button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }
