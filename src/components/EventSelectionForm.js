@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom"; // Assuming you use React Router
 
 export default function EventSelectionForm({
   student,
@@ -6,49 +7,51 @@ export default function EventSelectionForm({
   existingSelections,
   onSubmit,
 }) {
-  // Initialize state with defensive checks
   const [selectedEvents, setSelectedEvents] = useState(existingSelections || []);
   const [groupDesignations, setGroupDesignations] = useState({});
   const [currentPage, setCurrentPage] = useState(1);
   const itemsPerPage = 3;
 
-  // Handle missing or empty availableEvents gracefully
+  const navigate = useNavigate(); // For navigation after submission
+
   const categories = availableEvents ? Object.keys(availableEvents) : [];
   const totalPages = Math.ceil(categories.length / itemsPerPage);
 
-  // Handle event selection
   const handleEventChange = (event) => {
     if (selectedEvents.some((e) => e.name === event)) {
-      // Remove event if already selected
       setSelectedEvents(selectedEvents.filter((e) => e.name !== event));
       const updatedGroups = { ...groupDesignations };
       delete updatedGroups[event];
       setGroupDesignations(updatedGroups);
     } else {
-      // Add event to selected events
       setSelectedEvents([...selectedEvents, { name: event }]);
     }
   };
 
-  // Handle group designation input
   const handleGroupChange = (event, group) => {
     setGroupDesignations({ ...groupDesignations, [event]: group });
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     const eventsWithGroups = selectedEvents.map((e) => ({
       ...e,
       group: groupDesignations[e.name] || null,
     }));
+
     if (student?.studentName) {
       onSubmit(student.studentName, eventsWithGroups);
+
+      // Clear the form after submission
+      setSelectedEvents([]);
+      setGroupDesignations({});
+
+      // Navigate back to the student verification page
+      navigate("/students");
     } else {
       console.error("Student name is undefined or invalid.");
     }
   };
 
-  // Paginate categories for display
   const paginatedCategories = categories.slice(
     (currentPage - 1) * itemsPerPage,
     currentPage * itemsPerPage
