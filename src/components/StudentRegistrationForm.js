@@ -4,33 +4,14 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
-  const [students, setStudents] = useState([]);
-
-  const calculateAge = (dob) => {
-    if (!dob) return "";
-    const birthDate = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
-  };
-
-  const handleDOBChange = (e) => {
-    const dob = e.target.value;
-    setStudentDOB(dob);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const student = { studentName, studentDOB, studentGender };
-    setStudents([...students, student]);
+    onSubmit(student);
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
-    onSubmit(student);
   };
 
   return (
@@ -51,7 +32,7 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
           <input
             type="date"
             value={studentDOB}
-            onChange={handleDOBChange}
+            onChange={(e) => setStudentDOB(e.target.value)}
             required
           />
         </label>
@@ -67,9 +48,9 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
         </label>
         <button type="submit">Add Student</button>
       </form>
-      {students.length > 0 && (
-        <button onClick={onNextStep}>Next: Select Events</button>
-      )}
+      <button onClick={onNextStep} disabled={studentName === "" || studentDOB === ""}>
+        Next: Select Events
+      </button>
     </div>
   );
 }
