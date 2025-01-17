@@ -3,7 +3,7 @@ import React, { useState } from "react";
 const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelections }) => {
   const [selectedEvents, setSelectedEvents] = useState(existingSelections || []);
   const [groupSelection, setGroupSelection] = useState({});
-  
+
   // Handle event selection (checkbox)
   const handleEventChange = (eventCategory, eventName) => {
     const updatedEvents = [...selectedEvents];
