@@ -8,11 +8,9 @@ import "./App.css";
 function App() {
   const [schoolData, setSchoolData] = useState(null);
   const [students, setStudents] = useState([]);
-  const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
-  const [selectedEvents, setSelectedEvents] = useState({});
-  const [showFinalReview, setShowFinalReview] = useState(false);
   const [isStudentRegistrationComplete, setIsStudentRegistrationComplete] = useState(false);
 
+  // Available Events
   const availableEvents = {
     "Digital Media (Early Entry)": [
       "Website Design",
@@ -20,12 +18,12 @@ function App() {
       "Graphic Design",
       "Persuasive Video",
       "Scripture Video",
-      "Radio Program",
+      "Radio Program"
     ],
     "Academic Division (Performance)": [
       "Bible Memory Bee",
       "Academic Bowl",
-      "Bible Bowl",
+      "Bible Bowl"
     ],
     "Academic Division (Non-Performance)": [
       "Checkers",
@@ -37,7 +35,7 @@ function App() {
       "Science Theoretical",
       "Social Studies Research",
       "Social Studies Theoretical",
-      "Social Studies Collection",
+      "Social Studies Collection"
     ],
     "Music Division (Performance)": [
       "Male Solo",
@@ -62,7 +60,7 @@ function App() {
       "Solo Brass",
       "Solo String",
       "Freestyle Guitar (Male)",
-      "Freestyle Guitar (Female)",
+      "Freestyle Guitar (Female)"
     ],
     "Dramatics Division (Performance)": [
       "Famous Speech",
@@ -85,7 +83,7 @@ function App() {
       "Puppets",
       "Sign Language Team (5-10)",
       "Sign Language Team (11-20)",
-      "One Act Play",
+      "One Act Play"
     ],
     "Art Division (Non-Performance)": [
       "Oil Painting",
@@ -104,7 +102,7 @@ function App() {
       "Marquetry",
       "Metal Working",
       "Ceramics/Clay Sculpture",
-      "Scrapbooking",
+      "Scrapbooking"
     ],
     "Photography Division (Non-Performance)": [
       "Mono Still Life",
@@ -116,7 +114,7 @@ function App() {
       "Color Plants",
       "Color Wildlife",
       "Color Special Effects",
-      "Computer Photo Enhancement",
+      "Computer Photo Enhancement"
     ],
     "Athletics (Male)": [
       "100 Meter Dash",
@@ -130,7 +128,7 @@ function App() {
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
-      "Basketball",
+      "Basketball"
     ],
     "Athletics (Female)": [
       "100 Meter Dash",
@@ -144,7 +142,7 @@ function App() {
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
-      "Volleyball",
+      "Volleyball"
     ],
     "Christian Service Awards": [
       "Discipleship Award",
@@ -152,8 +150,8 @@ function App() {
       "Christian Worker Award",
       "Golden Apple Award",
       "Golden Lamb Award",
-      "Golden Harp Award",
-    ],
+      "Golden Harp Award"
+    ]
   };
 
   const handleSchoolSubmit = (school) => {
@@ -170,21 +168,12 @@ function App() {
     setStudents(updatedStudents);
   };
 
-  const handleEventSubmit = (studentName, events) => {
-    setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null); // Reset current student after submitting events
-  };
-
-  const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index); // Set the student for event registration
+  const handleNextStep = () => {
+    setIsStudentRegistrationComplete(true);
   };
 
   const handleFinalize = () => {
-    setShowFinalReview(true);
-  };
-
-  const handleNextStep = () => {
-    setIsStudentRegistrationComplete(true);
+    alert("Finalized Registration");
   };
 
   return (
@@ -195,40 +184,16 @@ function App() {
       ) : !isStudentRegistrationComplete ? (
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
+          students={students}
           onNextStep={handleNextStep}
         />
-      ) : currentStudentIndex !== null ? (
-        <EventSelectionForm
-          student={students[currentStudentIndex]}
-          availableEvents={availableEvents}
-          existingSelections={
-            selectedEvents[students[currentStudentIndex]?.studentName] || []
-          }
-          onSubmit={handleEventSubmit}
-        />
-      ) : showFinalReview ? (
-        <div className="container finalize-registration">
-          <h2>Final Review</h2>
-          <ul>
-            {students.map((student) => (
-              <li key={student.studentName}>
-                <strong>{student.studentName}</strong>:{" "}
-                {selectedEvents[student.studentName]?.join(", ") ||
-                  "No events selected"}
-              </li>
-            ))}
-          </ul>
-          <button onClick={() => alert("Registration Complete!")}>
-            Finalize Registration
-          </button>
-        </div>
       ) : (
         <StudentVerificationPage
           students={students}
-          selectedEvents={selectedEvents}
+          selectedEvents={availableEvents}
           onAddStudent={handleStudentSubmit}
           onEditStudent={handleStudentEdit}
-          onAddEvents={handleAddEvents}
+          onAddEvents={() => {}}
           onFinalize={handleFinalize}
         />
       )}
