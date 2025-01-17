@@ -1,4 +1,3 @@
-// src/components/StudentRegistrationForm.js
 import React, { useState } from "react";
 
 export default function StudentRegistrationForm({ onSubmit, students }) {
@@ -25,8 +24,7 @@ export default function StudentRegistrationForm({ onSubmit, students }) {
       studentGender,
       studentAge: calculateAge(studentDOB),
     };
-
-    onSubmit(student);  // Submit student data to parent component
+    onSubmit(student); // Pass student data to parent component
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
