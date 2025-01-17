@@ -50,4 +50,11 @@ export default function StudentRegistrationForm({ onSubmit }) {
         </label>
         <button type="submit">Add Student</button>
       </form>
-     
+      {students.length > 0 && (
+        <button onClick={() => alert("Moving to event selection")}>
+          Next: Select Events
+        </button>
+      )}
+    </div>
+  );
+}
