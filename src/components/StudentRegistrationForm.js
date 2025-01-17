@@ -4,29 +4,28 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
-  const [age, setAge] = useState("");
 
+  // Calculate Age
   const calculateAge = (dob) => {
     if (!dob) return "";
     const birthDate = new Date(dob);
     const today = new Date();
-    let calculatedAge = today.getFullYear() - birthDate.getFullYear();
+    let age = today.getFullYear() - birthDate.getFullYear();
     const monthDiff = today.getMonth() - birthDate.getMonth();
     if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      calculatedAge--;
+      age--;
     }
-    setAge(calculatedAge);
+    return age;
   };
 
   const handleDOBChange = (e) => {
     const dob = e.target.value;
     setStudentDOB(dob);
-    calculateAge(dob);
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const student = { studentName, studentDOB, studentGender, studentAge: age };
+    const student = { studentName, studentDOB, studentGender, studentAge: calculateAge(studentDOB) };
     onSubmit(student);
     setStudentName("");
     setStudentDOB("");
@@ -67,18 +66,17 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
         </label>
         <button type="submit">Add Student</button>
       </form>
-
-      {/* Display the list of students for verification */}
-      {students.length > 0 && (
-        <ul>
-          {students.map((student, index) => (
-            <li key={index}>
-              {student.studentName} - {student.studentAge} years old
-            </li>
-          ))}
-        </ul>
+      {/* Display the list of students */}
+      {students && students.length > 0 && (
+        <div>
+          <h3>Students Added:</h3>
+          <ul>
+            {students.map((student, index) => (
+              <li key={index}>{student.studentName}</li>
+            ))}
+          </ul>
+        </div>
       )}
-
       {students.length > 0 && (
         <button onClick={onNextStep}>Next: Select Events</button>
       )}
