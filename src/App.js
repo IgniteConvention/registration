@@ -28,12 +28,13 @@ function App() {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
     setStudents(updatedStudents);
+    setCurrentStudentIndex(null); // Close editing and return to the verification page
   };
 
   // Handle event submission for a student
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null); // After submission, go back to the verification page
+    setCurrentStudentIndex(null); // After submitting events, go back to the verification page
   };
 
   // Set the current student index for event registration
