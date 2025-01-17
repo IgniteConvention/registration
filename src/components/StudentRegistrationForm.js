@@ -26,7 +26,7 @@ export default function StudentRegistrationForm({ onSubmit, students }) {
       studentAge: calculateAge(studentDOB),
     };
 
-    onSubmit(student); // Call onSubmit to pass student data to the parent component
+    onSubmit(student);  // Submit student data to parent component
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
