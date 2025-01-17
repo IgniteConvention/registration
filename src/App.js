@@ -11,6 +11,7 @@ function App() {
   const [selectedEvents, setSelectedEvents] = useState({});
   const [showFinalReview, setShowFinalReview] = useState(false);
 
+  // Complete list of available events
   const availableEvents = {
     "Digital Media (Early Entry)": [
       "Website Design",
@@ -18,12 +19,12 @@ function App() {
       "Graphic Design",
       "Persuasive Video",
       "Scripture Video",
-      "Radio Program"
+      "Radio Program",
     ],
     "Academic Division (Performance)": [
       "Bible Memory Bee",
       "Academic Bowl",
-      "Bible Bowl"
+      "Bible Bowl",
     ],
     "Academic Division (Non-Performance)": [
       "Checkers",
@@ -35,7 +36,7 @@ function App() {
       "Science Theoretical",
       "Social Studies Research",
       "Social Studies Theoretical",
-      "Social Studies Collection"
+      "Social Studies Collection",
     ],
     "Music Division (Performance)": [
       "Male Solo",
@@ -60,7 +61,7 @@ function App() {
       "Solo Brass",
       "Solo String",
       "Freestyle Guitar (Male)",
-      "Freestyle Guitar (Female)"
+      "Freestyle Guitar (Female)",
     ],
     "Dramatics Division (Performance)": [
       "Famous Speech",
@@ -83,7 +84,7 @@ function App() {
       "Puppets",
       "Sign Language Team (5-10)",
       "Sign Language Team (11-20)",
-      "One Act Play"
+      "One Act Play",
     ],
     "Art Division (Non-Performance)": [
       "Oil Painting",
@@ -102,7 +103,7 @@ function App() {
       "Marquetry",
       "Metal Working",
       "Ceramics/Clay Sculpture",
-      "Scrapbooking"
+      "Scrapbooking",
     ],
     "Photography Division (Non-Performance)": [
       "Mono Still Life",
@@ -114,7 +115,7 @@ function App() {
       "Color Plants",
       "Color Wildlife",
       "Color Special Effects",
-      "Computer Photo Enhancement"
+      "Computer Photo Enhancement",
     ],
     "Athletics (Male)": [
       "100 Meter Dash",
@@ -128,7 +129,7 @@ function App() {
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
-      "Basketball"
+      "Basketball",
     ],
     "Athletics (Female)": [
       "100 Meter Dash",
@@ -142,7 +143,7 @@ function App() {
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
-      "Volleyball"
+      "Volleyball",
     ],
     "Christian Service Awards": [
       "Discipleship Award",
@@ -150,33 +151,39 @@ function App() {
       "Christian Worker Award",
       "Golden Apple Award",
       "Golden Lamb Award",
-      "Golden Harp Award"
-    ]
+      "Golden Harp Award",
+    ],
   };
 
+  // Handle the submission of the school registration form
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
   };
 
+  // Handle the submission of student registration form
   const handleStudentSubmit = (student) => {
     setStudents((prev) => [...prev, student]);
   };
 
+  // Handle the editing of a specific student
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
     setStudents(updatedStudents);
   };
 
+  // Handle event submission for each student
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
     setCurrentStudentIndex(null);
   };
 
+  // Handle the click to add events to a student
   const handleAddEvents = (index) => {
     setCurrentStudentIndex(index);
   };
 
+  // Handle finalizing registration and showing final review
   const handleFinalize = () => {
     setShowFinalReview(true);
   };
@@ -184,9 +191,12 @@ function App() {
   return (
     <div className="App">
       <h1>Ignite Student Convention</h1>
+
+      {/* School Registration Form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : currentStudentIndex !== null ? (
+        // Show the Event Selection Form if we are editing an individual student
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
@@ -196,6 +206,7 @@ function App() {
           onSubmit={handleEventSubmit}
         />
       ) : showFinalReview ? (
+        // Show final review page if registration is complete
         <div className="container finalize-registration">
           <h2>Final Review</h2>
           <ul>
@@ -211,6 +222,7 @@ function App() {
           </button>
         </div>
       ) : (
+        // Show the student verification page
         <StudentVerificationPage
           students={students}
           selectedEvents={selectedEvents}
