@@ -1,11 +1,6 @@
-import React, { useState } from 'react';
-import '../App.css';  // Corrected the import path for CSS
+import React, { useState } from "react";
 
 const EventSelectionForm = ({ student, onSubmit, availableEvents }) => {
-  if (!student) {
-    return <div>Loading...</div>;
-  }
-
   const [selectedEvents, setSelectedEvents] = useState([]);
   const [groupSelection, setGroupSelection] = useState({});
 
@@ -33,10 +28,11 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents }) => {
     if (selectedEvents.length > 0) {
       onSubmit(student.studentName, selectedEvents.map((e) => ({
         ...e,
-        group: groupSelection[e.eventName] || 'N/A',
+        group: groupSelection[e.eventName] || "N/A",
       })));
+      console.log("Events submitted:", selectedEvents);
     } else {
-      console.log('No events selected');
+      console.log("No events selected");
     }
   };
 
@@ -44,8 +40,8 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents }) => {
     <div>
       <h2>Register Events for {student.studentName}</h2>
       <div className="event-categories-container">
-        {Object.keys(availableEvents).map((eventCategory, index) => (
-          <div className="event-category" key={index}>
+        {Object.keys(availableEvents).map((eventCategory) => (
+          <div key={eventCategory} className="event-category">
             <h3>{eventCategory}</h3>
             <ul>
               {availableEvents[eventCategory].map((eventName) => (
@@ -60,22 +56,12 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents }) => {
                     />
                     {eventName}
                   </label>
-                  {[
-                    "Bible Bowl", "Small Ensemble", "Skit", "Radio Program", "Dramatic Dialogues",
-                    "400 Meter Relay", "Science Projects", "Instrumental Duet", "Sign Language Team"
-                  ].includes(eventName) && (
-                    <div>
-                      <label>
-                        Group: 
-                        <input
-                          type="text"
-                          placeholder="Group (A, B, C, etc.)"
-                          value={groupSelection[eventName] || ''}
-                          onChange={(e) => handleGroupChange(eventName, e.target.value)}
-                        />
-                      </label>
-                    </div>
-                  )}
+                  <input
+                    type="text"
+                    placeholder="Group (A, B, C)"
+                    value={groupSelection[eventName] || ""}
+                    onChange={(e) => handleGroupChange(eventName, e.target.value)}
+                  />
                 </li>
               ))}
             </ul>
@@ -83,7 +69,7 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents }) => {
         ))}
       </div>
 
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit}>Submit Events</button>
     </div>
   );
 };
