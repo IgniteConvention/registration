@@ -11,6 +11,7 @@ function App() {
   const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState({});
   const [showFinalReview, setShowFinalReview] = useState(false);
+  const [isStudentRegistrationComplete, setIsStudentRegistrationComplete] = useState(false);
 
   const availableEvents = {
     "Digital Media (Early Entry)": [
@@ -182,11 +183,20 @@ function App() {
     setShowFinalReview(true);
   };
 
+  const handleNextStep = () => {
+    setIsStudentRegistrationComplete(true);
+  };
+
   return (
     <div className="App">
       <h1>Ignite Student Convention</h1>
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
+      ) : !isStudentRegistrationComplete ? (
+        <StudentRegistrationForm
+          onSubmit={handleStudentSubmit}
+          onNextStep={handleNextStep}
+        />
       ) : currentStudentIndex !== null ? (
         <EventSelectionForm
           student={students[currentStudentIndex]}
