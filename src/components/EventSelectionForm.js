@@ -1,10 +1,9 @@
-import React, { useState } from "react";
+import React, { useState } from 'react';
 
-const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelections }) => {
+const EventSelectionForm = ({ student, availableEvents, onSubmit, existingSelections }) => {
   const [selectedEvents, setSelectedEvents] = useState(existingSelections || []);
   const [groupSelection, setGroupSelection] = useState({});
 
-  // Handle event selection (checkbox)
   const handleEventChange = (eventCategory, eventName) => {
     const updatedEvents = [...selectedEvents];
     const eventIndex = updatedEvents.findIndex(
@@ -18,7 +17,6 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
     setSelectedEvents(updatedEvents);
   };
 
-  // Handle group input for multi-participant events
   const handleGroupChange = (eventName, group) => {
     setGroupSelection((prev) => ({
       ...prev,
@@ -26,14 +24,12 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
     }));
   };
 
-  // Handle form submission
   const handleSubmit = () => {
     if (selectedEvents.length > 0) {
       onSubmit(student.studentName, selectedEvents.map((e) => ({
         ...e,
         group: groupSelection[e.eventName] || 'N/A',
       })));
-      console.log('Events submitted:', selectedEvents);
     } else {
       console.log('No events selected');
     }
@@ -43,8 +39,8 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
     <div>
       <h2>Register Events for {student.studentName}</h2>
       <div className="event-categories-container">
-        {Object.keys(availableEvents).map((eventCategory) => (
-          <div className="event-category" key={eventCategory}>
+        {Object.keys(availableEvents).map((eventCategory, index) => (
+          <div className="event-category" key={index}>
             <h3>{eventCategory}</h3>
             <ul>
               {availableEvents[eventCategory].map((eventName) => (
@@ -84,8 +80,7 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
         ))}
       </div>
 
-      {/* Submit Button */}
-      <button onClick={handleSubmit}>Submit</button>
+      <button onClick={handleSubmit}>Submit Events</button>
     </div>
   );
 };
