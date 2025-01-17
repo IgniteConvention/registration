@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
-import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
 import "./App.css";
@@ -8,11 +7,10 @@ import "./App.css";
 function App() {
   const [schoolData, setSchoolData] = useState(null);
   const [students, setStudents] = useState([]);
-  const [selectedEvents, setSelectedEvents] = useState({});
-  const [isStudentRegistrationComplete, setIsStudentRegistrationComplete] = useState(false);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
+  const [selectedEvents, setSelectedEvents] = useState({});
+  const [showFinalReview, setShowFinalReview] = useState(false);
 
-  // Available Events (from the event list)
   const availableEvents = {
     "Digital Media (Early Entry)": [
       "Website Design",
@@ -21,6 +19,14 @@ function App() {
       "Persuasive Video",
       "Scripture Video",
       "Radio Program"
+    ],
+    "Early Entries": [
+      "Essay Writing",
+      "Poetry Writing",
+      "Creative Composition",
+      "Creative Compositions (Poetry)",
+      "Creative Compositions (Essay Writing)",
+      "Skit Writing"
     ],
     "Academic Division (Performance)": [
       "Bible Memory Bee",
@@ -127,6 +133,9 @@ function App() {
       "Soccer Kick",
       "Physical Fitness",
       "Archery - Compound Bow",
+      "Archery - Traditional Instinctive",
+      "Archery - Limited Freestyle",
+      "Archery - Unlimited Freestyle",
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
@@ -140,7 +149,10 @@ function App() {
       "1600 Meter Run",
       "Soccer Kick",
       "Physical Fitness",
+      "Archery - Compound Bow",
       "Archery - Traditional Instinctive",
+      "Archery - Limited Freestyle",
+      "Archery - Unlimited Freestyle",
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
@@ -171,19 +183,16 @@ function App() {
   };
 
   const handleEventSubmit = (studentName, events) => {
-    setSelectedEvents((prev) => ({
-      ...prev,
-      [studentName]: events,
-    }));
-    setCurrentStudentIndex(null); // Go back to verification page
+    setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
+    setCurrentStudentIndex(null);
   };
 
   const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index); // Set student for event registration
+    setCurrentStudentIndex(index);
   };
 
   const handleFinalize = () => {
-    alert("Registration Finalized!");
+    setShowFinalReview(true);
   };
 
   return (
@@ -191,19 +200,30 @@ function App() {
       <h1>Ignite Student Convention</h1>
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : !isStudentRegistrationComplete ? (
-        <StudentRegistrationForm
-          onSubmit={handleStudentSubmit}
-          students={students}
-          onNextStep={() => setIsStudentRegistrationComplete(true)}
-        />
       ) : currentStudentIndex !== null ? (
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
-          existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
+          existingSelections={
+            selectedEvents[students[currentStudentIndex]?.studentName] || []
+          }
           onSubmit={handleEventSubmit}
         />
+      ) : showFinalReview ? (
+        <div className="container finalize-registration">
+          <h2>Final Review</h2>
+          <ul>
+            {students.map((student) => (
+              <li key={student.studentName}>
+                <strong>{student.studentName}</strong>:{" "}
+                {selectedEvents[student.studentName]?.join(", ") || "No events selected"}
+              </li>
+            ))}
+          </ul>
+          <button onClick={() => alert("Registration Complete!")}>
+            Finalize Registration
+          </button>
+        </div>
       ) : (
         <StudentVerificationPage
           students={students}
