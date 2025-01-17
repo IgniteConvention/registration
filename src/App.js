@@ -212,7 +212,6 @@ function App() {
         // Student Registration Form: Should allow multiple students to be added
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
-          onNextStep={() => setCurrentStudentIndex(null)} // Optional, can trigger finalization or event registration
           students={students} // This passes the list of students entered so far
         />
       ) : currentStudentIndex !== null ? (
