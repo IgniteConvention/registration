@@ -1,14 +1,16 @@
 import React, { useState } from "react";
 
-export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
+export default function StudentRegistrationForm({ onSubmit }) {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
+  const [students, setStudents] = useState([]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
     const student = { studentName, studentDOB, studentGender };
-    onSubmit(student);  // Submit student data
+    onSubmit(student); // Pass the student to the parent component
+    setStudents((prev) => [...prev, student]);
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
@@ -48,10 +50,4 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
         </label>
         <button type="submit">Add Student</button>
       </form>
-      {/* Enable Next step button only after at least one student is added */}
-      {studentName && (
-        <button onClick={onNextStep}>Next: Select Events</button>
-      )}
-    </div>
-  );
-}
+     
