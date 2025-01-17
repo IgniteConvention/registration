@@ -1,77 +1,91 @@
 import React, { useState } from "react";
+import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
+import StudentRegistrationForm from "./components/StudentRegistrationForm";
+import StudentVerificationPage from "./components/StudentVerificationPage";
+import EventSelectionForm from "./components/EventSelectionForm";
+import availableEvents from "./events"; // Import the events list
+import "./App.css";
 
-export default function StudentRegistrationForm({ onSubmit, students }) {
-  const [studentName, setStudentName] = useState("");
-  const [studentDOB, setStudentDOB] = useState("");
-  const [studentGender, setStudentGender] = useState("Male");
+function App() {
+  const [schoolData, setSchoolData] = useState(null);
+  const [students, setStudents] = useState([]);
+  const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
+  const [selectedEvents, setSelectedEvents] = useState({});
+  const [showFinalReview, setShowFinalReview] = useState(false);
 
-  const calculateAge = (dob) => {
-    const birthDate = new Date(dob);
-    const today = new Date();
-    let age = today.getFullYear() - birthDate.getFullYear();
-    const monthDiff = today.getMonth() - birthDate.getMonth();
-    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
-      age--;
-    }
-    return age;
+  // Handle school submission
+  const handleSchoolSubmit = (school) => {
+    setSchoolData(school);
   };
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    const student = {
-      studentName,
-      studentDOB,
-      studentGender,
-      studentAge: calculateAge(studentDOB),
-    };
-    onSubmit(student); // Call onSubmit to pass student data to the parent component
-    setStudentName("");
-    setStudentDOB("");
-    setStudentGender("Male");
+  // Handle student submission
+  const handleStudentSubmit = (student) => {
+    setStudents((prev) => [...prev, student]);
+  };
+
+  // Handle event submission for a student
+  const handleEventSubmit = (studentName, events) => {
+    setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
+    setCurrentStudentIndex(null); // After submitting events, go back to the verification page
+  };
+
+  // Set the current student index for event registration
+  const handleAddEvents = (index) => {
+    setCurrentStudentIndex(index);
+  };
+
+  // Show final review page
+  const handleFinalize = () => {
+    setShowFinalReview(true);
   };
 
   return (
-    <div className="container">
-      <h2>Student Registration</h2>
-      <form onSubmit={handleSubmit}>
-        <label>
-          Name:
-          <input
-            type="text"
-            value={studentName}
-            onChange={(e) => setStudentName(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          DOB:
-          <input
-            type="date"
-            value={studentDOB}
-            onChange={(e) => setStudentDOB(e.target.value)}
-            required
-          />
-        </label>
-        <label>
-          Gender:
-          <select value={studentGender} onChange={(e) => setStudentGender(e.target.value)}>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </label>
-        <button type="submit">Add Student</button>
-      </form>
+    <div className="App">
+      <h1>Ignite Student Convention</h1>
 
-      <h3>Students Registered:</h3>
-      {students.length > 0 && (
-        <ul>
-          {students.map((student, index) => (
-            <li key={index}>
-              {student.studentName} - {student.studentAge} years old
-            </li>
-          ))}
-        </ul>
+      {/* School Registration Form */}
+      {!schoolData ? (
+        <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
+      ) : students.length < 1 ? (
+        // Student Registration Form: Allows multiple students to be added
+        <StudentRegistrationForm
+          onSubmit={handleStudentSubmit}
+          students={students} // Passes the list of students entered so far
+        />
+      ) : currentStudentIndex !== null ? (
+        // Event Selection Form for a specific student
+        <EventSelectionForm
+          student={students[currentStudentIndex]}
+          availableEvents={availableEvents}
+          existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
+          onSubmit={handleEventSubmit}
+        />
+      ) : showFinalReview ? (
+        // Final Review Page: Displays the final list of students with events
+        <div className="container finalize-registration">
+          <h2>Final Review</h2>
+          <ul>
+            {students.map((student) => (
+              <li key={student.studentName}>
+                <strong>{student.studentName}</strong>:{" "}
+                {selectedEvents[student.studentName]?.join(", ") || "No events selected"}
+              </li>
+            ))}
+          </ul>
+          <button onClick={() => alert("Registration Complete!")}>Finalize Registration</button>
+        </div>
+      ) : (
+        // Student Verification Page: Shows entered students and allows edits
+        <StudentVerificationPage
+          students={students}
+          selectedEvents={selectedEvents}
+          onAddStudent={handleStudentSubmit}
+          onAddEvents={handleAddEvents}
+          onFinalize={handleFinalize}
+        />
       )}
     </div>
   );
 }
+
+export default App;
