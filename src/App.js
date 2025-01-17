@@ -23,12 +23,10 @@ function App() {
       "Radio Program"
     ],
     "Early Entries": [
+      "Short Story",
       "Essay Writing",
       "Poetry Writing",
-      "Creative Composition",
-      "Creative Compositions (Poetry)",
-      "Creative Compositions (Essay Writing)",
-      "Skit Writing"
+      "Script/Playwriting"
     ],
     "Academic Division (Performance)": [
       "Bible Memory Bee",
@@ -135,6 +133,9 @@ function App() {
       "Soccer Kick",
       "Physical Fitness",
       "Archery - Compound Bow",
+      "Archery - Traditional Instinctive",
+      "Archery - Limited Freestyle",
+      "Archery - Unlimited Freestyle",
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
@@ -148,7 +149,10 @@ function App() {
       "1600 Meter Run",
       "Soccer Kick",
       "Physical Fitness",
+      "Archery - Compound Bow",
       "Archery - Traditional Instinctive",
+      "Archery - Limited Freestyle",
+      "Archery - Unlimited Freestyle",
       "Long Jump",
       "400 Meter Relay",
       "1600 Meter Relay",
