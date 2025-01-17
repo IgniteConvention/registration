@@ -3,7 +3,7 @@ import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
-import availableEvents from "./events"; // Import the event list
+import availableEvents from "./events"; // Importing the events list from the external file
 import "./App.css";
 
 function App() {
@@ -20,30 +20,30 @@ function App() {
 
   // Handle student submission
   const handleStudentSubmit = (student) => {
-    setStudents((prev) => [...prev, student]);
+    setStudents((prev) => [...prev, student]);  // Add new student to the students array
   };
 
   // Handle student editing
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
-    updatedStudents[index] = updatedStudent;
+    updatedStudents[index] = updatedStudent;  // Update the specific student
     setStudents(updatedStudents);
   };
 
   // Handle event submission for a student
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null);
+    setCurrentStudentIndex(null);  // Reset currentStudentIndex after submitting
   };
 
   // Set the current student index for event registration
   const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index);
+    setCurrentStudentIndex(index);  // Set the index of the student for event selection
   };
 
   // Show final review page
   const handleFinalize = () => {
-    setShowFinalReview(true);
+    setShowFinalReview(true);  // Set the page to show the final review
   };
 
   return (
