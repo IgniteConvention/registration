@@ -8,7 +8,7 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     const student = { studentName, studentDOB, studentGender };
-    onSubmit(student);
+    onSubmit(student);  // Submit student data
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
@@ -48,9 +48,10 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep }) {
         </label>
         <button type="submit">Add Student</button>
       </form>
-      <button onClick={onNextStep} disabled={studentName === "" || studentDOB === ""}>
-        Next: Select Events
-      </button>
+      {/* Enable Next step button only after at least one student is added */}
+      {studentName && (
+        <button onClick={onNextStep}>Next: Select Events</button>
+      )}
     </div>
   );
 }
