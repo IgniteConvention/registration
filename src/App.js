@@ -155,29 +155,35 @@ function App() {
     ]
   };
 
+  // Handling School Form Submit
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
   };
 
+  // Handling Student Form Submit
   const handleStudentSubmit = (student) => {
     setStudents((prev) => [...prev, student]);
   };
 
+  // Handling Edit of Student
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
     setStudents(updatedStudents);
   };
 
+  // Handling Event Form Submit
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
     setCurrentStudentIndex(null);
   };
 
+  // Handling Add Events for a Student
   const handleAddEvents = (index) => {
     setCurrentStudentIndex(index);
   };
 
+  // Finalizing Registration
   const handleFinalize = () => {
     setShowFinalReview(true);
   };
