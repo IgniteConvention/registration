@@ -156,30 +156,30 @@ function App() {
   };
 
   const handleSchoolSubmit = (school) => {
-    setSchoolData(school);
+    setSchoolData(school); // Store the school data after submission
   };
 
   const handleStudentSubmit = (student) => {
-    setStudents((prev) => [...prev, student]);
+    setStudents((prev) => [...prev, student]); // Add student to list
   };
 
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
-    setStudents(updatedStudents);
+    setStudents(updatedStudents); // Update student information in list
   };
 
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null);
+    setCurrentStudentIndex(null); // Reset the current student index after submission
   };
 
   const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index);
+    setCurrentStudentIndex(index); // Set current student for event selection
   };
 
   const handleFinalize = () => {
-    setShowFinalReview(true);
+    setShowFinalReview(true); // Show final review after registration is complete
   };
 
   return (
