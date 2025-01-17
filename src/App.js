@@ -1,30 +1,29 @@
-// src/App.js
 import React, { useState } from "react";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
-import { availableEvents } from "./events";
+import { availableEvents } from "./events";  // Ensure this is correctly imported from events.js
 import "./App.css";
 
 function App() {
   const [schoolData, setSchoolData] = useState(null);
-  const [students, setStudents] = useState([]);
-  const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
-  const [selectedEvents, setSelectedEvents] = useState({});
+  const [students, setStudents] = useState([]);  // Store students here
+  const [selectedEvents, setSelectedEvents] = useState({});  // Store events for each student
+  const [currentStudentIndex, setCurrentStudentIndex] = useState(null);  // Track the current student for event registration
   const [showFinalReview, setShowFinalReview] = useState(false);
 
-  // Handle school registration form
+  // Handle school submission
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
   };
 
-  // Handle student registration form
+  // Handle student registration (allow multiple entries)
   const handleStudentSubmit = (student) => {
-    setStudents((prev) => [...prev, student]);
+    setStudents((prev) => [...prev, student]);  // Add new student to the list
   };
 
-  // Handle student editing
+  // Handle student editing (update the student at a specific index)
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
@@ -33,16 +32,16 @@ function App() {
 
   // Handle event selection for a student
   const handleEventSubmit = (studentName, events) => {
-    setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null);
+    setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));  // Store selected events for the student
+    setCurrentStudentIndex(null);  // Reset current student index after submission
   };
 
-  // Set the current student index for event registration
+  // Handle the flow of event selection for each student
   const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index);
+    setCurrentStudentIndex(index);  // Set the student index for event selection
   };
 
-  // Final review page
+  // Finalize the registration and show the final review page
   const handleFinalize = () => {
     setShowFinalReview(true);
   };
@@ -54,20 +53,18 @@ function App() {
       {/* School Registration Form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : students.length < 1 ? (
+      ) : students.length === 0 ? (
         // Student Registration Form
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           students={students}
         />
       ) : currentStudentIndex !== null ? (
-        // Event Selection Form for a student
+        // Event Selection Form for a specific student
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
-          existingSelections={
-            selectedEvents[students[currentStudentIndex]?.studentName] || []
-          }
+          existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
           onSubmit={handleEventSubmit}
         />
       ) : showFinalReview ? (
@@ -82,9 +79,7 @@ function App() {
               </li>
             ))}
           </ul>
-          <button onClick={() => alert("Registration Complete!")}>
-            Finalize Registration
-          </button>
+          <button onClick={() => alert("Registration Complete!")}>Finalize Registration</button>
         </div>
       ) : (
         // Student Verification Page
