@@ -8,9 +8,11 @@ import "./App.css";
 function App() {
   const [schoolData, setSchoolData] = useState(null);
   const [students, setStudents] = useState([]);
+  const [selectedEvents, setSelectedEvents] = useState({});
   const [isStudentRegistrationComplete, setIsStudentRegistrationComplete] = useState(false);
+  const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
 
-  // Available Events
+  // Available Events (from the event list)
   const availableEvents = {
     "Digital Media (Early Entry)": [
       "Website Design",
@@ -168,12 +170,20 @@ function App() {
     setStudents(updatedStudents);
   };
 
-  const handleNextStep = () => {
-    setIsStudentRegistrationComplete(true);
+  const handleEventSubmit = (studentName, events) => {
+    setSelectedEvents((prev) => ({
+      ...prev,
+      [studentName]: events,
+    }));
+    setCurrentStudentIndex(null); // Go back to verification page
+  };
+
+  const handleAddEvents = (index) => {
+    setCurrentStudentIndex(index); // Set student for event registration
   };
 
   const handleFinalize = () => {
-    alert("Finalized Registration");
+    alert("Registration Finalized!");
   };
 
   return (
@@ -185,15 +195,22 @@ function App() {
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
           students={students}
-          onNextStep={handleNextStep}
+          onNextStep={() => setIsStudentRegistrationComplete(true)}
+        />
+      ) : currentStudentIndex !== null ? (
+        <EventSelectionForm
+          student={students[currentStudentIndex]}
+          availableEvents={availableEvents}
+          existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
+          onSubmit={handleEventSubmit}
         />
       ) : (
         <StudentVerificationPage
           students={students}
-          selectedEvents={availableEvents}
+          selectedEvents={selectedEvents}
           onAddStudent={handleStudentSubmit}
           onEditStudent={handleStudentEdit}
-          onAddEvents={() => {}}
+          onAddEvents={handleAddEvents}
           onFinalize={handleFinalize}
         />
       )}
