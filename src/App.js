@@ -1,9 +1,10 @@
+// src/App.js
 import React, { useState } from "react";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
-import availableEvents from "./events"; // Import the events list
+import { availableEvents } from "./events";
 import "./App.css";
 
 function App() {
@@ -13,12 +14,12 @@ function App() {
   const [selectedEvents, setSelectedEvents] = useState({});
   const [showFinalReview, setShowFinalReview] = useState(false);
 
-  // Handle school submission
+  // Handle school registration form
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
   };
 
-  // Handle student submission
+  // Handle student registration form
   const handleStudentSubmit = (student) => {
     setStudents((prev) => [...prev, student]);
   };
@@ -28,13 +29,12 @@ function App() {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
     setStudents(updatedStudents);
-    setCurrentStudentIndex(null); // Close editing and return to the verification page
   };
 
-  // Handle event submission for a student
+  // Handle event selection for a student
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null); // After submitting events, go back to the verification page
+    setCurrentStudentIndex(null);
   };
 
   // Set the current student index for event registration
@@ -42,7 +42,7 @@ function App() {
     setCurrentStudentIndex(index);
   };
 
-  // Show final review page
+  // Final review page
   const handleFinalize = () => {
     setShowFinalReview(true);
   };
@@ -55,21 +55,23 @@ function App() {
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : students.length < 1 ? (
-        // Student Registration Form: Allows multiple students to be added
+        // Student Registration Form
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
-          students={students} // Passes the list of students entered so far
+          students={students}
         />
       ) : currentStudentIndex !== null ? (
-        // Event Selection Form for a specific student
+        // Event Selection Form for a student
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
-          existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
+          existingSelections={
+            selectedEvents[students[currentStudentIndex]?.studentName] || []
+          }
           onSubmit={handleEventSubmit}
         />
       ) : showFinalReview ? (
-        // Final Review Page: Displays the final list of students with events
+        // Final Review Page
         <div className="container finalize-registration">
           <h2>Final Review</h2>
           <ul>
@@ -80,10 +82,12 @@ function App() {
               </li>
             ))}
           </ul>
-          <button onClick={() => alert("Registration Complete!")}>Finalize Registration</button>
+          <button onClick={() => alert("Registration Complete!")}>
+            Finalize Registration
+          </button>
         </div>
       ) : (
-        // Student Verification Page: Shows entered students and allows edits
+        // Student Verification Page
         <StudentVerificationPage
           students={students}
           selectedEvents={selectedEvents}
