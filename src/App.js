@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
-import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
 import "./App.css";
 
@@ -155,36 +154,43 @@ function App() {
     ]
   };
 
+  // Handling school submission
   const handleSchoolSubmit = (school) => {
-    setSchoolData(school); // Store the school data after submission
+    setSchoolData(school);
   };
 
+  // Handling student submission
   const handleStudentSubmit = (student) => {
-    setStudents((prev) => [...prev, student]); // Add student to list
+    setStudents((prev) => [...prev, student]); // Add student to the list
   };
 
+  // Handling student edit
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
     updatedStudents[index] = updatedStudent;
-    setStudents(updatedStudents); // Update student information in list
+    setStudents(updatedStudents);
   };
 
+  // Handling event submission for a student
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null); // Reset the current student index after submission
+    setCurrentStudentIndex(null);
   };
 
+  // Handling event selection start
   const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index); // Set current student for event selection
+    setCurrentStudentIndex(index); // Set the current student for event selection
   };
 
+  // Finalizing registration
   const handleFinalize = () => {
-    setShowFinalReview(true); // Show final review after registration is complete
+    setShowFinalReview(true);
   };
 
   return (
     <div className="App">
       <h1>Ignite Student Convention</h1>
+
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : currentStudentIndex !== null ? (
