@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState } from "react";
 
-const EventSelectionForm = ({ student, availableEvents, onSubmit, existingSelections }) => {
-  const [selectedEvents, setSelectedEvents] = useState(existingSelections || []);
-  const [groupSelection, setGroupSelection] = useState({});
+const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelections }) => {
+  const [selectedEvents, setSelectedEvents] = useState(existingSelections);
 
   const handleEventChange = (eventCategory, eventName) => {
     const updatedEvents = [...selectedEvents];
@@ -17,70 +16,34 @@ const EventSelectionForm = ({ student, availableEvents, onSubmit, existingSelect
     setSelectedEvents(updatedEvents);
   };
 
-  const handleGroupChange = (eventName, group) => {
-    setGroupSelection((prev) => ({
-      ...prev,
-      [eventName]: group,
-    }));
-  };
-
   const handleSubmit = () => {
     if (selectedEvents.length > 0) {
-      onSubmit(student.studentName, selectedEvents.map((e) => ({
-        ...e,
-        group: groupSelection[e.eventName] || 'N/A',
-      })));
-    } else {
-      console.log('No events selected');
+      onSubmit(student.studentName, selectedEvents); // Submit events for the student
     }
   };
 
   return (
     <div>
       <h2>Register Events for {student.studentName}</h2>
-      <div className="event-categories-container">
-        {Object.keys(availableEvents).map((eventCategory, index) => (
-          <div className="event-category" key={index}>
-            <h3>{eventCategory}</h3>
-            <ul>
-              {availableEvents[eventCategory].map((eventName) => (
-                <li key={eventName}>
-                  <label>
-                    <input
-                      type="checkbox"
-                      checked={selectedEvents.some(
-                        (e) => e.eventCategory === eventCategory && e.eventName === eventName
-                      )}
-                      onChange={() => handleEventChange(eventCategory, eventName)}
-                    />
-                    {eventName}
-                  </label>
+      {Object.keys(availableEvents).map((category) => (
+        <div key={category}>
+          <h3>{category}</h3>
+          {availableEvents[category].map((event) => (
+            <label key={event}>
+              <input
+                type="checkbox"
+                checked={selectedEvents.some(
+                  (e) => e.eventCategory === category && e.eventName === event
+                )}
+                onChange={() => handleEventChange(category, event)}
+              />
+              {event}
+            </label>
+          ))}
+        </div>
+      ))}
 
-                  {/* Group selection for multi-participant events */}
-                  {[
-                    "Bible Bowl", "Small Ensemble", "Skit", "Radio Program", "Dramatic Dialogues",
-                    "400 Meter Relay", "Science Projects", "Instrumental Duet", "Sign Language Team"
-                  ].includes(eventName) && (
-                    <div>
-                      <label>
-                        Group: 
-                        <input
-                          type="text"
-                          placeholder="Group (A, B, C, etc.)"
-                          value={groupSelection[eventName] || ''}
-                          onChange={(e) => handleGroupChange(eventName, e.target.value)}
-                        />
-                      </label>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
-      </div>
-
-      <button onClick={handleSubmit}>Submit Events</button>
+      <button onClick={handleSubmit}>Submit</button>
     </div>
   );
 };
