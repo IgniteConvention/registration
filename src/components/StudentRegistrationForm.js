@@ -1,16 +1,31 @@
 import React, { useState } from "react";
 
-export default function StudentRegistrationForm({ onSubmit }) {
+export default function StudentRegistrationForm({ onSubmit, onNextStep, students }) {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
-  const [students, setStudents] = useState([]);
+
+  const calculateAge = (dob) => {
+    if (!dob) return "";
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
+  };
+
+  const handleDOBChange = (e) => {
+    const dob = e.target.value;
+    setStudentDOB(dob);
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const student = { studentName, studentDOB, studentGender };
-    onSubmit(student); // Pass the student to the parent component
-    setStudents((prev) => [...prev, student]);
+    const student = { studentName, studentDOB, studentGender, studentAge: calculateAge(studentDOB) };
+    onSubmit(student);
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
@@ -34,7 +49,7 @@ export default function StudentRegistrationForm({ onSubmit }) {
           <input
             type="date"
             value={studentDOB}
-            onChange={(e) => setStudentDOB(e.target.value)}
+            onChange={handleDOBChange}
             required
           />
         </label>
@@ -42,19 +57,4 @@ export default function StudentRegistrationForm({ onSubmit }) {
           Gender:
           <select
             value={studentGender}
-            onChange={(e) => setStudentGender(e.target.value)}
-          >
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-          </select>
-        </label>
-        <button type="submit">Add Student</button>
-      </form>
-      {students.length > 0 && (
-        <button onClick={() => alert("Moving to event selection")}>
-          Next: Select Events
-        </button>
-      )}
-    </div>
-  );
-}
+            on
