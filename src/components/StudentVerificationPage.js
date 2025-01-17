@@ -1,13 +1,6 @@
 import React from "react";
 
-const StudentVerificationPage = ({
-  students,
-  selectedEvents,
-  onAddStudent,
-  onEditStudent,
-  onAddEvents,
-  onFinalize,
-}) => {
+const StudentVerificationPage = ({ students, onEditStudent, onAddEvents, onFinalize }) => {
   return (
     <div className="container">
       <h2>Student Verification</h2>
