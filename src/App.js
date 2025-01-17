@@ -212,13 +212,10 @@ function App() {
           </button>
         </div>
       ) : (
-        <StudentVerificationPage
-          students={students}
-          selectedEvents={selectedEvents}
-          onAddStudent={handleStudentSubmit}
-          onEditStudent={handleStudentEdit}
-          onAddEvents={handleAddEvents}
-          onFinalize={handleFinalize}
+        <StudentRegistrationForm
+          onSubmit={handleStudentSubmit}
+          onNextStep={handleFinalize}
+          students={students} // Ensure the student list is available here
         />
       )}
     </div>
