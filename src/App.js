@@ -21,7 +21,12 @@ function App() {
       "Scripture Video",
       "Radio Program"
     ],
-    // Continue adding the other event categories here...
+    "Academic Division (Performance)": [
+      "Bible Memory Bee",
+      "Academic Bowl",
+      "Bible Bowl"
+    ],
+    // Continue adding all other event categories here...
   };
 
   const handleSchoolSubmit = (school) => {
@@ -56,7 +61,14 @@ function App() {
       <h1>Ignite Student Convention</h1>
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
+      ) : students.length === 0 ? (
+        // Show the student registration form if no students are added yet
+        <StudentRegistrationForm
+          onSubmit={handleStudentSubmit}
+          onNextStep={() => setShowFinalReview(false)}
+        />
       ) : currentStudentIndex !== null ? (
+        // Show the event selection form when a student is selected for events
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents}
