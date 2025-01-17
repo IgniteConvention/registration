@@ -1,13 +1,11 @@
 import React, { useState } from "react";
 
-const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
+export default function StudentRegistrationForm({ onSubmit, students }) {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
 
-  // Calculate Age
   const calculateAge = (dob) => {
-    if (!dob) return "";
     const birthDate = new Date(dob);
     const today = new Date();
     let age = today.getFullYear() - birthDate.getFullYear();
@@ -18,14 +16,14 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
     return age;
   };
 
-  const handleDOBChange = (e) => {
-    const dob = e.target.value;
-    setStudentDOB(dob);
-  };
-
   const handleSubmit = (e) => {
     e.preventDefault();
-    const student = { studentName, studentDOB, studentGender, studentAge: calculateAge(studentDOB) };
+    const student = {
+      studentName,
+      studentDOB,
+      studentGender,
+      studentAge: calculateAge(studentDOB),
+    };
     onSubmit(student);
     setStudentName("");
     setStudentDOB("");
@@ -50,38 +48,30 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
           <input
             type="date"
             value={studentDOB}
-            onChange={handleDOBChange}
+            onChange={(e) => setStudentDOB(e.target.value)}
             required
           />
         </label>
         <label>
           Gender:
-          <select
-            value={studentGender}
-            onChange={(e) => setStudentGender(e.target.value)}
-          >
+          <select value={studentGender} onChange={(e) => setStudentGender(e.target.value)}>
             <option value="Male">Male</option>
             <option value="Female">Female</option>
           </select>
         </label>
         <button type="submit">Add Student</button>
       </form>
-      {/* Display the list of students */}
-      {students && students.length > 0 && (
-        <div>
-          <h3>Students Added:</h3>
-          <ul>
-            {students.map((student, index) => (
-              <li key={index}>{student.studentName}</li>
-            ))}
-          </ul>
-        </div>
-      )}
+      
+      <h3>Students Registered:</h3>
       {students.length > 0 && (
-        <button onClick={onNextStep}>Next: Select Events</button>
+        <ul>
+          {students.map((student, index) => (
+            <li key={index}>
+              {student.studentName} - {student.studentAge} years old
+            </li>
+          ))}
+        </ul>
       )}
     </div>
   );
-};
-
-export default StudentRegistrationForm;
+}
