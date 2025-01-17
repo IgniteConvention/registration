@@ -4,7 +4,6 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
   const [studentName, setStudentName] = useState("");
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
-
   const [age, setAge] = useState("");
 
   const calculateAge = (dob) => {
@@ -22,7 +21,7 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
   const handleDOBChange = (e) => {
     const dob = e.target.value;
     setStudentDOB(dob);
-    calculateAge(dob); // Automatically calculate age on DOB change
+    calculateAge(dob);
   };
 
   const handleSubmit = (e) => {
@@ -70,7 +69,6 @@ const StudentRegistrationForm = ({ onSubmit, onNextStep, students }) => {
       </form>
 
       {/* Display the list of students for verification */}
-      <h3>Students Registered</h3>
       {students.length > 0 && (
         <ul>
           {students.map((student, index) => (
