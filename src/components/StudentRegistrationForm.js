@@ -5,6 +5,7 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep, students
   const [studentDOB, setStudentDOB] = useState("");
   const [studentGender, setStudentGender] = useState("Male");
 
+  // Calculate the age from the entered date of birth (DOB)
   const calculateAge = (dob) => {
     if (!dob) return "";
     const birthDate = new Date(dob);
@@ -24,8 +25,13 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep, students
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const student = { studentName, studentDOB, studentGender, studentAge: calculateAge(studentDOB) };
-    onSubmit(student);
+    const student = {
+      studentName,
+      studentDOB,
+      studentGender,
+      studentAge: calculateAge(studentDOB),
+    };
+    onSubmit(student); // Pass the student data back to the parent component
     setStudentName("");
     setStudentDOB("");
     setStudentGender("Male");
@@ -57,4 +63,27 @@ export default function StudentRegistrationForm({ onSubmit, onNextStep, students
           Gender:
           <select
             value={studentGender}
-            on
+            onChange={(e) => setStudentGender(e.target.value)}
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </label>
+        <button type="submit">Add Student</button>
+      </form>
+      {students.length > 0 && (
+        <div>
+          <h3>Students Added:</h3>
+          <ul>
+            {students.map((student, index) => (
+              <li key={index}>
+                {student.studentName} - {student.studentAge} years old ({student.studentGender})
+              </li>
+            ))}
+          </ul>
+          <button onClick={onNextStep}>Next: Select Events</button>
+        </div>
+      )}
+    </div>
+  );
+}
