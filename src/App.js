@@ -1,136 +1,90 @@
 import React, { useState } from "react";
-import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
-import StudentRegistrationForm from "./components/StudentRegistrationForm";
-import EventSelectionForm from "./components/EventSelectionForm";
-import StudentVerificationPage from "./components/StudentVerificationPage";
-import "./App.css";
 
-function App() {
-  const [schoolData, setSchoolData] = useState(null);
-  const [students, setStudents] = useState([]);
-  const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
-  const [selectedEvents, setSelectedEvents] = useState({});
-  const [showFinalReview, setShowFinalReview] = useState(false);
+export default function StudentRegistrationForm({ onSubmit, students }) {
+  const [studentName, setStudentName] = useState("");
+  const [studentDOB, setStudentDOB] = useState("");
+  const [studentGender, setStudentGender] = useState("Male");
 
-  const availableEvents = {
-    "Digital Media (Early Entry)": [
-      "Website Design", "Service Recap Video Presentation", "Graphic Design",
-      "Persuasive Video", "Scripture Video", "Radio Program"
-    ],
-    "Academic Division (Performance)": [
-      "Bible Memory Bee", "Academic Bowl", "Bible Bowl"
-    ],
-    "Academic Division (Non-Performance)": [
-      "Checkers", "Chess", "Spelling", "Science Collection", "Science Research",
-      "Science Engineering", "Science Theoretical", "Social Studies Research",
-      "Social Studies Theoretical", "Social Studies Collection"
-    ],
-    "Music Division (Performance)": [
-      "Male Solo", "Female Solo", "Male Duet", "Female Duet", "Mixed Duet",
-      "Male Trio", "Female Trio", "Mixed Trio", "Male Quartet", "Female Quartet",
-      "Mixed Quartet", "Small Ensemble", "Large Ensemble", "Choir", "Male Piano Solo",
-      "Female Piano Solo", "Duet Piano", "Instrumental Ensemble", "Solo Woodwind",
-      "Solo Brass", "Solo String", "Freestyle Guitar (Male)", "Freestyle Guitar (Female)"
-    ],
-    "Dramatics Division (Performance)": [
-      "Famous Speech", "Dramatic Monologue", "Expressive Recitation (Male)",
-      "Expressive Recitation (Female)", "Poetry Recitation (Male)", "Poetry Recitation (Female)",
-      "Dramatic Dialogue", "Clown Act", "Ventriloquism", "Skit", "Oratory",
-      "Preaching (Male 13-15)", "Preaching (Male 16-18)", "Preaching (Female 13-15)",
-      "Preaching (Female 16-18)", "Illustrated Storytelling (Male)", "Illustrated Storytelling (Female)",
-      "Puppets", "Sign Language Team (5-10)", "Sign Language Team (11-20)", "One Act Play"
-    ],
-    "Art Division (Non-Performance)": [
-      "Oil Painting", "Water Color", "Acrylics", "Sketching", "Pen and Ink", "Colored Pencils",
-      "Oil Pastels", "Chalk Pastels", "Mixed Media", "Abstract", "Wood Construction", "Wood Turning",
-      "Wood Carving", "Marquetry", "Metal Working", "Ceramics/Clay Sculpture", "Scrapbooking"
-    ],
-    "Photography Division (Non-Performance)": [
-      "Mono Still Life", "Mono Wildlife", "Mono Scenic", "Mono Plants", "Color Scenic",
-      "Color Still Life", "Color Plants", "Color Wildlife", "Color Special Effects", "Computer Photo Enhancement"
-    ],
-    "Athletics (Male)": [
-      "100 Meter Dash", "200 Meter Dash", "400 Meter Dash", "800 Meter Run", "1600 Meter Run",
-      "Soccer Kick", "Physical Fitness", "Archery - Compound Bow", "Long Jump", "400 Meter Relay",
-      "1600 Meter Relay", "Basketball"
-    ],
-    "Athletics (Female)": [
-      "100 Meter Dash", "200 Meter Dash", "400 Meter Dash", "800 Meter Run", "1600 Meter Run",
-      "Soccer Kick", "Physical Fitness", "Archery - Traditional Instinctive", "Long Jump", "400 Meter Relay",
-      "1600 Meter Relay", "Volleyball"
-    ],
-    "Christian Service Awards": [
-      "Discipleship Award", "Christian Soldier Award", "Christian Worker Award", "Golden Apple Award",
-      "Golden Lamb Award", "Golden Harp Award"
-    ]
+  // Calculate age based on DOB
+  const calculateAge = (dob) => {
+    if (!dob) return "";
+    const birthDate = new Date(dob);
+    const today = new Date();
+    let age = today.getFullYear() - birthDate.getFullYear();
+    const monthDiff = today.getMonth() - birthDate.getMonth();
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+      age--;
+    }
+    return age;
   };
 
-  const handleSchoolSubmit = (school) => {
-    setSchoolData(school);
+  const handleDOBChange = (e) => {
+    const dob = e.target.value;
+    setStudentDOB(dob);
   };
 
-  const handleStudentSubmit = (student) => {
-    setStudents((prev) => [...prev, student]);
-  };
-
-  const handleStudentEdit = (index, updatedStudent) => {
-    const updatedStudents = [...students];
-    updatedStudents[index] = updatedStudent;
-    setStudents(updatedStudents);
-  };
-
-  const handleEventSubmit = (studentName, events) => {
-    setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null);
-  };
-
-  const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index); // This will trigger the event selection form for the selected student
-  };
-
-  const handleFinalize = () => {
-    setShowFinalReview(true); // This will show the final review page
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    const student = {
+      studentName,
+      studentDOB,
+      studentGender,
+      studentAge: calculateAge(studentDOB),
+    };
+    onSubmit(student);
+    setStudentName("");
+    setStudentDOB("");
+    setStudentGender("Male");
   };
 
   return (
-    <div className="App">
-      <h1>Ignite Student Convention</h1>
-      {!schoolData ? (
-        <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : currentStudentIndex !== null ? (
-        <EventSelectionForm
-          student={students[currentStudentIndex]}
-          availableEvents={availableEvents}
-          existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
-          onSubmit={handleEventSubmit}
-        />
-      ) : showFinalReview ? (
-        <div className="container finalize-registration">
-          <h2>Final Review</h2>
+    <div className="container">
+      <h2>Student Registration</h2>
+      <form onSubmit={handleSubmit}>
+        <label>
+          Name:
+          <input
+            type="text"
+            value={studentName}
+            onChange={(e) => setStudentName(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          DOB:
+          <input
+            type="date"
+            value={studentDOB}
+            onChange={handleDOBChange}
+            required
+          />
+        </label>
+        <label>
+          Gender:
+          <select
+            value={studentGender}
+            onChange={(e) => setStudentGender(e.target.value)}
+          >
+            <option value="Male">Male</option>
+            <option value="Female">Female</option>
+          </select>
+        </label>
+        <button type="submit">Add Student</button>
+      </form>
+
+      {students.length > 0 && (
+        <div>
+          <h3>Students Added:</h3>
           <ul>
-            {students.map((student) => (
-              <li key={student.studentName}>
-                <strong>{student.studentName}</strong>:{" "}
-                {selectedEvents[student.studentName]?.join(", ") || "No events selected"}
+            {students.map((student, index) => (
+              <li key={index}>
+                {student.studentName} - {student.studentAge} years old ({student.studentGender})
               </li>
             ))}
           </ul>
-          <button onClick={() => alert("Registration Complete!")}>
-            Finalize Registration
-          </button>
+          <button onClick={onNextStep}>Next: Select Events</button>
         </div>
-      ) : (
-        <StudentVerificationPage
-          students={students}
-          selectedEvents={selectedEvents}
-          onAddStudent={handleStudentSubmit}
-          onEditStudent={handleStudentEdit}
-          onAddEvents={handleAddEvents} // This will pass the function to StudentVerificationPage
-          onFinalize={handleFinalize}
-        />
       )}
     </div>
   );
 }
-
-export default App;
