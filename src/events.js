@@ -1,23 +1,22 @@
-// src/events.js
-export const availableEvents = {
+const availableEvents = {
   "Digital Media (Early Entry)": [
     "Website Design",
     "Service Recap Video Presentation",
     "Graphic Design",
     "Persuasive Video",
     "Scripture Video",
-    "Radio Program",
+    "Radio Program"
   ],
   "Early Entries": [
     "Short Story",
     "Essay Writing",
     "Poetry Writing",
-    "Script/Playwriting",
+    "Script/Playwriting"
   ],
   "Academic Division (Performance)": [
     "Bible Memory Bee",
     "Academic Bowl",
-    "Bible Bowl",
+    "Bible Bowl"
   ],
   "Academic Division (Non-Performance)": [
     "Checkers",
@@ -29,7 +28,7 @@ export const availableEvents = {
     "Science Theoretical",
     "Social Studies Research",
     "Social Studies Theoretical",
-    "Social Studies Collection",
+    "Social Studies Collection"
   ],
   "Music Division (Performance)": [
     "Male Solo",
@@ -54,7 +53,7 @@ export const availableEvents = {
     "Solo Brass",
     "Solo String",
     "Freestyle Guitar (Male)",
-    "Freestyle Guitar (Female)",
+    "Freestyle Guitar (Female)"
   ],
   "Dramatics Division (Performance)": [
     "Famous Speech",
@@ -77,7 +76,7 @@ export const availableEvents = {
     "Puppets",
     "Sign Language Team (5-10)",
     "Sign Language Team (11-20)",
-    "One Act Play",
+    "One Act Play"
   ],
   "Art Division (Non-Performance)": [
     "Oil Painting",
@@ -96,7 +95,7 @@ export const availableEvents = {
     "Marquetry",
     "Metal Working",
     "Ceramics/Clay Sculpture",
-    "Scrapbooking",
+    "Scrapbooking"
   ],
   "Photography Division (Non-Performance)": [
     "Mono Still Life",
@@ -108,7 +107,7 @@ export const availableEvents = {
     "Color Plants",
     "Color Wildlife",
     "Color Special Effects",
-    "Computer Photo Enhancement",
+    "Computer Photo Enhancement"
   ],
   "Athletics (Male)": [
     "100 Meter Dash",
@@ -125,7 +124,7 @@ export const availableEvents = {
     "Long Jump",
     "400 Meter Relay",
     "1600 Meter Relay",
-    "Basketball",
+    "Basketball"
   ],
   "Athletics (Female)": [
     "100 Meter Dash",
@@ -142,7 +141,7 @@ export const availableEvents = {
     "Long Jump",
     "400 Meter Relay",
     "1600 Meter Relay",
-    "Volleyball",
+    "Volleyball"
   ],
   "Christian Service Awards": [
     "Discipleship Award",
@@ -150,6 +149,8 @@ export const availableEvents = {
     "Christian Worker Award",
     "Golden Apple Award",
     "Golden Lamb Award",
-    "Golden Harp Award",
-  ],
+    "Golden Harp Award"
+  ]
 };
+
+export default availableEvents;
