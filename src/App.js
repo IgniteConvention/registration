@@ -54,15 +54,27 @@ function App() {
       {/* School Registration Form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : students.length < 1 ? (
-        // Student Registration Form: Should allow multiple students to be added
-        <StudentRegistrationForm
-          onSubmit={handleStudentSubmit}
-          students={students}
-          onEdit={handleStudentEdit}
-        />
-      ) : currentStudentIndex !== null ? (
-        // Event Selection Form for a specific student
+      ) : (
+        <>
+          <StudentRegistrationForm
+            onSubmit={handleStudentSubmit}
+            students={students}
+            onEdit={handleStudentEdit}
+          />
+          <h3>Students Registered:</h3>
+          <ul>
+            {students.map((student, index) => (
+              <li key={index}>
+                {student.studentName} - {student.studentAge} years old ({student.studentGender})
+                <button onClick={() => handleStudentEdit(index, student)}>Edit</button>
+                <button onClick={() => handleAddEvents(index)}>Add Events</button>
+              </li>
+            ))}
+          </ul>
+        </>
+      )}
+
+      {currentStudentIndex !== null ? (
         <EventSelectionForm
           student={students[currentStudentIndex]}
           availableEvents={availableEvents} // Now includes category filtering
@@ -71,7 +83,6 @@ function App() {
           onBack={() => setCurrentStudentIndex(null)}
         />
       ) : showFinalReview ? (
-        // Final Review Page
         <div className="container finalize-registration">
           <h2>Final Review</h2>
           <ul>
@@ -84,7 +95,6 @@ function App() {
           <button onClick={() => alert("Registration Complete!")}>Finalize Registration</button>
         </div>
       ) : (
-        // Student Verification Page: Shows entered students and allows edits
         <StudentVerificationPage
           students={students}
           selectedEvents={selectedEvents}
