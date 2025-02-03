@@ -4,7 +4,7 @@ import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
 import EventSelectionForm from "./components/EventSelectionForm";
-import availableEvents from "./events"; // Importing the events list from the external file
+import availableEvents from "./events";
 import "./App.css";
 
 function App() {
@@ -12,8 +12,8 @@ function App() {
   const [students, setStudents] = useState([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState({});
-  const [showEventSelection, setShowEventSelection] = useState(false);
   const [showFinalReview, setShowFinalReview] = useState(false);
+  const [showEventSelection, setShowEventSelection] = useState(false);
 
   // Handle school submission
   const handleSchoolSubmit = (school) => {
@@ -53,15 +53,22 @@ function App() {
     setShowFinalReview(true);
   };
 
+  // Edit events from final review page
+  const handleEditEvents = (studentName) => {
+    const studentIndex = students.findIndex(s => s.studentName === studentName);
+    if (studentIndex !== -1) {
+      setCurrentStudentIndex(studentIndex);
+      setShowEventSelection(true);
+    }
+  };
+
   return (
     <div className="App">
       <h1>Ignite Student Convention</h1>
 
-      {/* School Registration Form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !showEventSelection ? (
-        // Student Registration Form
         <>
           <StudentRegistrationForm
             onSubmit={handleStudentSubmit}
@@ -86,6 +93,8 @@ function App() {
           existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
           onSubmit={handleEventSubmit}
           onBack={() => setCurrentStudentIndex(null)}
+          selectedEventsForAll={selectedEvents}
+          onEdit={handleEditEvents}
         />
       ) : showFinalReview ? (
         <div className="container finalize-registration">
@@ -94,6 +103,7 @@ function App() {
             {students.map((student) => (
               <li key={student.studentName}>
                 <strong>{student.studentName}</strong>: {selectedEvents[student.studentName]?.map(e => e.eventName).join(", ") || "No events selected"}
+                <button onClick={() => handleEditEvents(student.studentName)}>Edit Events</button>
               </li>
             ))}
           </ul>
