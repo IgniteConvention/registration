@@ -16,20 +16,18 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
     setSelectedEvents(existingSelections || []);
   }, [existingSelections]);
 
-  const handleEventChange = (eventCategory, eventName, isGroup = false) => {
-    const updatedEvents = [...selectedEvents];
-    const eventIndex = updatedEvents.findIndex(e => e.eventCategory === eventCategory && e.eventName === eventName);
-    
-    if (eventIndex === -1) {
-      const newEvent = { eventCategory, eventName };
-      if (GROUP_EVENTS.includes(eventName)) {
-        newEvent.group = "Group A";
+  const handleEventChange = (eventCategory, eventName) => {
+    setSelectedEvents(prev => {
+      const updatedEvents = [...prev];
+      const eventIndex = updatedEvents.findIndex(e => e.eventCategory === eventCategory && e.eventName === eventName);
+      
+      if (eventIndex === -1) {
+        updatedEvents.push({ eventCategory, eventName, group: GROUP_EVENTS.includes(eventName) ? "Group A" : "" });
+      } else {
+        updatedEvents.splice(eventIndex, 1);
       }
-      updatedEvents.push(newEvent);
-    } else {
-      updatedEvents.splice(eventIndex, 1);
-    }
-    setSelectedEvents(updatedEvents);
+      return updatedEvents;
+    });
   };
 
   const validateSelection = () => {
@@ -61,7 +59,7 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
       <p>Selected Events: {selectedEvents.length} / {MAX_EVENTS}</p>
       <div>
         <label>Filter by Category:</label>
-        <select onChange={(e) => setCurrentCategory(e.target.value)}>
+        <select value={currentCategory} onChange={(e) => setCurrentCategory(e.target.value)}>
           {Object.keys(availableEvents).map(category => (
             <option key={category} value={category}>{category}</option>
           ))}
@@ -74,7 +72,7 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
               <input
                 type="checkbox"
                 checked={selectedEvents.some(e => e.eventCategory === currentCategory && e.eventName === event)}
-                onChange={() => handleEventChange(currentCategory, event, GROUP_EVENTS.includes(event))}
+                onChange={() => handleEventChange(currentCategory, event)}
               />
               {event}
             </label>
@@ -90,7 +88,10 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
       <h3>Previously Selected Events:</h3>
       <ul>
         {Object.entries(selectedEventsForAll || {}).map(([studentName, events]) => (
-          <li key={studentName}><strong>{studentName}:</strong> {events?.map(e => e.eventName).join(", ") || "No events selected"} <button onClick={() => onEdit(studentName)}>Edit</button></li>
+          <li key={studentName}>
+            <strong>{studentName}:</strong> {events?.map(e => e.eventName).join(", ") || "No events selected"}
+            <button onClick={() => onEdit(studentName)}>Edit</button>
+          </li>
         ))}
       </ul>
       <button onClick={onBack}>Back</button>
