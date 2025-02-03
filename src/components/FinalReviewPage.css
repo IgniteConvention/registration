@@ -1,0 +1,60 @@
+/* FinalReviewPage.css */
+
+.finalize-registration {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.finalize-registration h2 {
+  color: #333;
+}
+
+.finalize-registration ul {
+  list-style: none;
+  padding: 0;
+  margin-top: 15px;
+}
+
+.finalize-registration li {
+  padding: 10px;
+  background: #fff;
+  border-radius: 5px;
+  margin-bottom: 8px;
+  border: 1px solid #ddd;
+}
+
+.button-group {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.finalize-button {
+  background-color: #4caf50;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.print-button {
+  background-color: #2196F3;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+button:hover {
+  opacity: 0.8;
+}
