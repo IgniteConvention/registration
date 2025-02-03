@@ -1,3 +1,4 @@
+// events.js
 const availableEvents = {
   "Digital Media (Early Entry)": [
     "Website Design",
@@ -29,6 +30,37 @@ const availableEvents = {
     "Social Studies Research",
     "Social Studies Theoretical",
     "Social Studies Collection"
+  ],
+  "Art Division (Non-Performance)": [
+    "Oil Painting",
+    "Water Color",
+    "Acrylics",
+    "Sketching",
+    "Pen and Ink",
+    "Colored Pencils",
+    "Oil Pastels",
+    "Chalk Pastels",
+    "Mixed Media",
+    "Abstract",
+    "Wood Construction",
+    "Wood Turning",
+    "Wood Carving",
+    "Marquetry",
+    "Metal Working",
+    "Ceramics/Clay Sculpture",
+    "Scrapbooking"
+  ],
+  "Photography Division (Non-Performance)": [
+    "Mono Still Life",
+    "Mono Wildlife",
+    "Mono Scenic",
+    "Mono Plants",
+    "Color Scenic",
+    "Color Still Life",
+    "Color Plants",
+    "Color Wildlife",
+    "Color Special Effects",
+    "Computer Photo Enhancement"
   ],
   "Music Division (Performance)": [
     "Male Solo",
