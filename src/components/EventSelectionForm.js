@@ -17,6 +17,10 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
     setSelectedEvents(existingSelections || []);
   }, [existingSelections]);
 
+  const handlePrint = () => {
+    window.print();
+  };
+
   const handleEventChange = (eventCategory, eventName) => {
     setSelectedEvents(prev => {
       const updatedEvents = [...prev];
@@ -106,6 +110,7 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
       <div className="button-group">
         <button className="back-button" onClick={onBack}>Back</button>
         <button className="submit-button" onClick={handleSubmit}>Submit</button>
+        <button className="print-button" onClick={handlePrint}>Print</button>
       </div>
     </div>
   );
