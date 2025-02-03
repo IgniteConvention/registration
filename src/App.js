@@ -12,6 +12,7 @@ function App() {
   const [students, setStudents] = useState([]);
   const [currentStudentIndex, setCurrentStudentIndex] = useState(null);
   const [selectedEvents, setSelectedEvents] = useState({});
+  const [showEventSelection, setShowEventSelection] = useState(false);
   const [showFinalReview, setShowFinalReview] = useState(false);
 
   // Handle school submission
@@ -42,6 +43,11 @@ function App() {
     setCurrentStudentIndex(index);
   };
 
+  // Navigate to event selection page
+  const handleRegisterForEvents = () => {
+    setShowEventSelection(true);
+  };
+
   // Show final review page
   const handleFinalize = () => {
     setShowFinalReview(true);
@@ -54,7 +60,8 @@ function App() {
       {/* School Registration Form */}
       {!schoolData ? (
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
-      ) : (
+      ) : !showEventSelection ? (
+        // Student Registration Form
         <>
           <StudentRegistrationForm
             onSubmit={handleStudentSubmit}
@@ -67,17 +74,15 @@ function App() {
               <li key={index}>
                 {student.studentName} - {student.studentAge} years old ({student.studentGender})
                 <button onClick={() => handleStudentEdit(index, student)}>Edit</button>
-                <button onClick={() => handleAddEvents(index)}>Add Events</button>
               </li>
             ))}
           </ul>
+          {students.length > 0 && <button onClick={handleRegisterForEvents}>Register for Events</button>}
         </>
-      )}
-
-      {currentStudentIndex !== null ? (
+      ) : currentStudentIndex !== null ? (
         <EventSelectionForm
           student={students[currentStudentIndex]}
-          availableEvents={availableEvents} // Now includes category filtering
+          availableEvents={availableEvents}
           existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
           onSubmit={handleEventSubmit}
           onBack={() => setCurrentStudentIndex(null)}
@@ -98,8 +103,6 @@ function App() {
         <StudentVerificationPage
           students={students}
           selectedEvents={selectedEvents}
-          onAddStudent={handleStudentSubmit}
-          onEditStudent={handleStudentEdit}
           onAddEvents={handleAddEvents}
           onFinalize={handleFinalize}
         />
