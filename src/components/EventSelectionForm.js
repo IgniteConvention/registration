@@ -1,5 +1,6 @@
 // EventSelectionForm.js
 import React, { useState, useEffect } from "react";
+import "./EventSelectionForm.css";
 
 const MAX_EVENTS = 13;
 const MAX_PERFORMANCE_EVENTS = 6;
@@ -53,11 +54,14 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
   };
 
   return (
-    <div>
+    <div className="event-selection-container">
+      <div className="instruction-box">
+        <p><strong>Instructions:</strong> Please select up to 13 events for {student.studentName}. Performance events are limited to 6, athletic events to 3, and elimination events to 2.</p>
+      </div>
       <h2>Register Events for {student.studentName}</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+      {error && <p className="error-message">{error}</p>}
       <p>Selected Events: {selectedEvents.length} / {MAX_EVENTS}</p>
-      <div>
+      <div className="category-filter">
         <label>Filter by Category:</label>
         <select value={currentCategory} onChange={(e) => setCurrentCategory(e.target.value)}>
           {Object.keys(availableEvents).map(category => (
@@ -65,9 +69,9 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
           ))}
         </select>
       </div>
-      <div>
+      <div className="event-list">
         {availableEvents[currentCategory]?.map(event => (
-          <div key={event}>
+          <div key={event} className="event-item">
             <label>
               <input
                 type="checkbox"
@@ -77,7 +81,12 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
               {event}
             </label>
             {GROUP_EVENTS.includes(event) && (
-              <select onChange={(e) => handleEventChange(currentCategory, event, e.target.value)}>
+              <select
+                value={selectedEvents.find(e => e.eventName === event)?.group || "Group A"}
+                onChange={(e) => {
+                  setSelectedEvents(prev => prev.map(ev => ev.eventName === event ? { ...ev, group: e.target.value } : ev));
+                }}
+              >
                 <option value="Group A">Group A</option>
                 <option value="Group B">Group B</option>
               </select>
@@ -86,16 +95,18 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
         ))}
       </div>
       <h3>Previously Selected Events:</h3>
-      <ul>
+      <ul className="selected-events-list">
         {Object.entries(selectedEventsForAll || {}).map(([studentName, events]) => (
           <li key={studentName}>
-            <strong>{studentName}:</strong> {events?.map(e => e.eventName).join(", ") || "No events selected"}
-            <button onClick={() => onEdit(studentName)}>Edit</button>
+            <strong>{studentName}:</strong> {events?.map(e => `${e.eventName} (${e.group || "Solo"})`).join(", ") || "No events selected"}
+            <button className="edit-button" onClick={() => onEdit(studentName)}>Edit</button>
           </li>
         ))}
       </ul>
-      <button onClick={onBack}>Back</button>
-      <button onClick={handleSubmit}>Submit</button>
+      <div className="button-group">
+        <button className="back-button" onClick={onBack}>Back</button>
+        <button className="submit-button" onClick={handleSubmit}>Submit</button>
+      </div>
     </div>
   );
 };
