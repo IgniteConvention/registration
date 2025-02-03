@@ -7,10 +7,10 @@ const MAX_ATHLETIC_EVENTS = 3;
 const MAX_ELIMINATION_EVENTS = 2;
 const GROUP_EVENTS = ["Dramatic Dialogue", "Skit", "Radio Program", "Puppets", "Sign Language Team (5-10)", "Sign Language Team (11-20)", "One Act Play"];
 
-const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelections, onBack, selectedEventsForAll }) => {
-  const [selectedEvents, setSelectedEvents] = useState(existingSelections);
+const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelections, onBack, selectedEventsForAll = {} }) => {
+  const [selectedEvents, setSelectedEvents] = useState(existingSelections || []);
   const [error, setError] = useState("");
-  const [currentCategory, setCurrentCategory] = useState(Object.keys(availableEvents)[0]);
+  const [currentCategory, setCurrentCategory] = useState(Object.keys(availableEvents)[0] || "");
 
   const handleEventChange = (eventCategory, eventName, isGroup = false) => {
     const updatedEvents = [...selectedEvents];
@@ -64,7 +64,7 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
         </select>
       </div>
       <div>
-        {availableEvents[currentCategory].map(event => (
+        {availableEvents[currentCategory]?.map(event => (
           <div key={event}>
             <label>
               <input
@@ -85,8 +85,8 @@ const EventSelectionForm = ({ student, onSubmit, availableEvents, existingSelect
       </div>
       <h3>Previously Selected Events:</h3>
       <ul>
-        {Object.entries(selectedEventsForAll).map(([studentName, events]) => (
-          <li key={studentName}><strong>{studentName}:</strong> {events.map(e => e.eventName).join(", ") || "No events selected"}</li>
+        {Object.entries(selectedEventsForAll || {}).map(([studentName, events]) => (
+          <li key={studentName}><strong>{studentName}:</strong> {events?.map(e => e.eventName).join(", ") || "No events selected"}</li>
         ))}
       </ul>
       <button onClick={onBack}>Back</button>
