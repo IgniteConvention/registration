@@ -1,3 +1,4 @@
+// App.js
 import React, { useState } from "react";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
@@ -20,30 +21,30 @@ function App() {
 
   // Handle student submission
   const handleStudentSubmit = (student) => {
-    setStudents((prev) => [...prev, student]);  // Add new student to the students array
+    setStudents((prev) => [...prev, student]);
   };
 
   // Handle student editing
   const handleStudentEdit = (index, updatedStudent) => {
     const updatedStudents = [...students];
-    updatedStudents[index] = updatedStudent;  // Update the specific student
+    updatedStudents[index] = updatedStudent;
     setStudents(updatedStudents);
   };
 
   // Handle event submission for a student
   const handleEventSubmit = (studentName, events) => {
     setSelectedEvents((prev) => ({ ...prev, [studentName]: events }));
-    setCurrentStudentIndex(null);  // Reset currentStudentIndex after submitting
+    setCurrentStudentIndex(null);
   };
 
   // Set the current student index for event registration
   const handleAddEvents = (index) => {
-    setCurrentStudentIndex(index);  // Set the index of the student for event selection
+    setCurrentStudentIndex(index);
   };
 
   // Show final review page
   const handleFinalize = () => {
-    setShowFinalReview(true);  // Set the page to show the final review
+    setShowFinalReview(true);
   };
 
   return (
@@ -57,15 +58,17 @@ function App() {
         // Student Registration Form: Should allow multiple students to be added
         <StudentRegistrationForm
           onSubmit={handleStudentSubmit}
-          students={students} // This passes the list of students entered so far
+          students={students}
+          onEdit={handleStudentEdit}
         />
       ) : currentStudentIndex !== null ? (
         // Event Selection Form for a specific student
         <EventSelectionForm
           student={students[currentStudentIndex]}
-          availableEvents={availableEvents} // This should now be populated with all events
+          availableEvents={availableEvents} // Now includes category filtering
           existingSelections={selectedEvents[students[currentStudentIndex]?.studentName] || []}
           onSubmit={handleEventSubmit}
+          onBack={() => setCurrentStudentIndex(null)}
         />
       ) : showFinalReview ? (
         // Final Review Page
@@ -74,8 +77,7 @@ function App() {
           <ul>
             {students.map((student) => (
               <li key={student.studentName}>
-                <strong>{student.studentName}</strong>:{" "}
-                {selectedEvents[student.studentName]?.join(", ") || "No events selected"}
+                <strong>{student.studentName}</strong>: {selectedEvents[student.studentName]?.map(e => e.eventName).join(", ") || "No events selected"}
               </li>
             ))}
           </ul>
