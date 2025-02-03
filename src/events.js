@@ -82,6 +82,15 @@ const availableEvents = {
     "Instrumental Ensemble",
     "Solo Miscellaneous"
   ],
+  "Group Events": [
+    "Dramatic Dialogue",
+    "Skit",
+    "Radio Program",
+    "Puppets",
+    "Sign Language Team (5-10)",
+    "Sign Language Team (11-20)",
+    "One Act Play"
+  ],
   "Dramatic Arts Division (Performance)": [
     "Famous Speech",
     "Dramatic Monologue",
@@ -89,21 +98,13 @@ const availableEvents = {
     "Expressive Recitation Female",
     "Poetry Recitation Male",
     "Poetry Recitation Female",
-    "Dramatic Dialogue",
-    "Clown Act",
-    "Ventriloquism",
-    "Skit",
     "Oratory",
     "Preaching (M) 13-15",
     "Preaching (M) 16-18",
     "Preaching (F) 13-15",
     "Preaching (F) 16-18",
     "Illustrated Storytelling Male",
-    "Illustrated Storytelling Female",
-    "Puppets",
-    "Sign Language Team (5-10)",
-    "Sign Language Team (11-20)",
-    "One Act Play"
+    "Illustrated Storytelling Female"
   ],
   "Art Division (Non-Performance)": [
     "Oil Painting",
