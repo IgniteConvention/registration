@@ -1,7 +1,7 @@
 // App.js
 import React, { useState, useEffect } from "react";
 import { db } from "./firebaseConfig";
-import { collection, addDoc } from "firebase/firestore";
+import { collection, doc, setDoc } from "firebase/firestore";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
@@ -19,18 +19,26 @@ function App() {
   const [showEventSelection, setShowEventSelection] = useState(false);
   const [testMessage, setTestMessage] = useState("");
 
-  const handleSchoolSubmit = (school) => {
+  const handleSchoolSubmit = async (school) => {
+    try {
+      await setDoc(doc(db, "schools", school.schoolName), school);
+      console.log("✅ School data saved:", school);
+    } catch (error) {
+      console.error("❌ Error saving school data:", error);
+    }
     setSchoolData(school);
   };
 
-  const handleStudentSubmit = (student) => {
+  const handleStudentSubmit = async (student) => {
+    try {
+      const schoolRef = doc(db, "schools", schoolData.schoolName);
+      const studentsRef = doc(schoolRef, "students", student.studentName);
+      await setDoc(studentsRef, student);
+      console.log("✅ Student data saved:", student);
+    } catch (error) {
+      console.error("❌ Error saving student data:", error);
+    }
     setStudents((prev) => [...prev, student]);
-  };
-
-  const handleStudentEdit = (index, updatedStudent) => {
-    const updatedStudents = [...students];
-    updatedStudents[index] = updatedStudent;
-    setStudents(updatedStudents);
   };
 
   const handleEventSubmit = (studentName, events) => {
@@ -58,17 +66,6 @@ function App() {
     }
   };
 
-  const testFirestoreWrite = async () => {
-    try {
-      await addDoc(collection(db, "testCollection"), { test: "Hello Firebase!" });
-      setTestMessage("✅ Firestore write successful!");
-      console.log("✅ Firestore write successful!");
-    } catch (error) {
-      setTestMessage("❌ Firestore write failed: " + error.message);
-      console.error("❌ Firestore write failed:", error);
-    }
-  };
-
   return (
     <div className="App">
       <h1>Ignite Student Convention</h1>
@@ -77,13 +74,13 @@ function App() {
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !showEventSelection ? (
         <>
-          <StudentRegistrationForm onSubmit={handleStudentSubmit} students={students} onEdit={handleStudentEdit} />
+          <StudentRegistrationForm onSubmit={handleStudentSubmit} students={students} />
           <h3>Students Registered:</h3>
           <ul>
             {students.map((student, index) => (
               <li key={index}>
                 {student.studentName} - {student.studentAge} years old ({student.studentGender})
-                <button onClick={() => handleStudentEdit(index, student)}>Edit</button>
+                <button onClick={() => handleEditEvents(student.studentName)}>Edit Events</button>
               </li>
             ))}
           </ul>
@@ -104,9 +101,6 @@ function App() {
       ) : (
         <StudentVerificationPage students={students} selectedEvents={selectedEvents} onAddEvents={handleAddEvents} onFinalize={handleFinalize} />
       )}
-      
-      <button onClick={testFirestoreWrite}>Test Firebase</button>
-      {testMessage && <p>{testMessage}</p>}
     </div>
   );
 }
