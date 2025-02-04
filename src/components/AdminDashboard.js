@@ -1,4 +1,3 @@
-// AdminDashboard.js
 import { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { collection, getDocs, deleteDoc, doc } from "firebase/firestore";
@@ -16,6 +15,12 @@ const AdminDashboard = () => {
     };
     fetchSchools();
   }, []);
+
+  const handleDelete = async (schoolId) => {
+    await deleteDoc(doc(db, "schools", schoolId));
+    setSchools(schools.filter(school => school.id !== schoolId));
+    alert("School deleted successfully!");
+  };
 
   const handleLogout = async () => {
     await logoutUser();
@@ -35,7 +40,7 @@ const AdminDashboard = () => {
         {schools.map(school => (
           <li key={school.id}>
             {school.schoolName} - {school.contactEmail}
-            <button onClick={() => deleteDoc(doc(db, "schools", school.id))}>Delete</button>
+            <button onClick={() => handleDelete(school.id)}>Delete</button>
           </li>
         ))}
       </ul>
