@@ -1,15 +1,27 @@
 import React, { useState } from "react";
 import { registerUser } from "../auth";
+import { db } from "../firebaseConfig";
+import { doc, setDoc } from "firebase/firestore";
 
 const RegisterPage = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [schoolName, setSchoolName] = useState("");
   const [role, setRole] = useState("school"); // Default to School
 
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
-      await registerUser(email, password, role);
+      const user = await registerUser(email, password, role);
+
+      // Store School Data in Firestore
+      if (role === "school") {
+        await setDoc(doc(db, "schools", email), {
+          schoolName,
+          email,
+        });
+      }
+
       alert("Registration successful!");
     } catch (error) {
       alert("Registration failed: " + error.message);
@@ -20,6 +32,7 @@ const RegisterPage = () => {
     <div>
       <h2>Register User</h2>
       <form onSubmit={handleRegister}>
+        <input type="text" placeholder="School Name" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} required />
         <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
         <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
         <select value={role} onChange={(e) => setRole(e.target.value)}>
