@@ -1,4 +1,7 @@
-import React, { useState } from "react";
+// App.js
+import React, { useState, useEffect } from "react";
+import { db } from "./firebaseConfig";
+import { collection, addDoc } from "firebase/firestore";
 import SchoolRegistrationForm from "./components/SchoolRegistrationForm";
 import StudentRegistrationForm from "./components/StudentRegistrationForm";
 import StudentVerificationPage from "./components/StudentVerificationPage";
@@ -14,6 +17,7 @@ function App() {
   const [selectedEvents, setSelectedEvents] = useState({});
   const [showFinalReview, setShowFinalReview] = useState(false);
   const [showEventSelection, setShowEventSelection] = useState(false);
+  const [testMessage, setTestMessage] = useState("");
 
   const handleSchoolSubmit = (school) => {
     setSchoolData(school);
@@ -54,6 +58,17 @@ function App() {
     }
   };
 
+  const testFirestoreWrite = async () => {
+    try {
+      await addDoc(collection(db, "testCollection"), { test: "Hello Firebase!" });
+      setTestMessage("✅ Firestore write successful!");
+      console.log("✅ Firestore write successful!");
+    } catch (error) {
+      setTestMessage("❌ Firestore write failed: " + error.message);
+      console.error("❌ Firestore write failed:", error);
+    }
+  };
+
   return (
     <div className="App">
       <h1>Ignite Student Convention</h1>
@@ -62,11 +77,7 @@ function App() {
         <SchoolRegistrationForm onSubmit={handleSchoolSubmit} />
       ) : !showEventSelection ? (
         <>
-          <StudentRegistrationForm
-            onSubmit={handleStudentSubmit}
-            students={students}
-            onEdit={handleStudentEdit}
-          />
+          <StudentRegistrationForm onSubmit={handleStudentSubmit} students={students} onEdit={handleStudentEdit} />
           <h3>Students Registered:</h3>
           <ul>
             {students.map((student, index) => (
@@ -89,19 +100,13 @@ function App() {
           onEdit={handleEditEvents}
         />
       ) : showFinalReview ? (
-        <FinalReviewPage
-          students={students}
-          selectedEvents={selectedEvents}
-          onEditEvents={handleEditEvents}
-        />
+        <FinalReviewPage students={students} selectedEvents={selectedEvents} onEditEvents={handleEditEvents} />
       ) : (
-        <StudentVerificationPage
-          students={students}
-          selectedEvents={selectedEvents}
-          onAddEvents={handleAddEvents}
-          onFinalize={handleFinalize}
-        />
+        <StudentVerificationPage students={students} selectedEvents={selectedEvents} onAddEvents={handleAddEvents} onFinalize={handleFinalize} />
       )}
+      
+      <button onClick={testFirestoreWrite}>Test Firebase</button>
+      {testMessage && <p>{testMessage}</p>}
     </div>
   );
 }
