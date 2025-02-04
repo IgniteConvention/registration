@@ -30,7 +30,7 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={!user ? <LoginPage /> : role === "admin" ? <Navigate to="/admin-dashboard" /> : <Navigate to="/school-dashboard" />} />
-        <Route path="/register" element={<RegisterPage />} />
+        <Route path="/register" element={<RegisterPage setUser={setUser} />} />
         <Route path="/admin-dashboard" element={role === "admin" ? <AdminDashboard /> : <Navigate to="/" />} />
         <Route path="/school-dashboard" element={role === "school" ? <SchoolDashboard /> : <Navigate to="/" />} />
       </Routes>
