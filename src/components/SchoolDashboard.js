@@ -1,7 +1,9 @@
+// SchoolDashboard.js
 import { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { logoutUser } from "../auth";
 
 const auth = getAuth();
 
@@ -22,9 +24,15 @@ function SchoolDashboard() {
     alert("Updated successfully!");
   };
 
+  const handleLogout = async () => {
+    await logoutUser();
+    window.location.reload();
+  };
+
   return (
     <div>
       <h1>School Dashboard</h1>
+      <button onClick={handleLogout}>Log Out</button>
       {schoolData ? (
         <div>
           <input
