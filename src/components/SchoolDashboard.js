@@ -1,4 +1,3 @@
-// SchoolDashboard.js
 import { useEffect, useState } from "react";
 import { db } from "../firebaseConfig";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
@@ -12,15 +11,21 @@ function SchoolDashboard() {
 
   useEffect(() => {
     const fetchSchool = async () => {
-      const schoolRef = doc(db, "schools", auth.currentUser.uid);
+      if (!auth.currentUser) return;
+      const schoolRef = doc(db, "schools", auth.currentUser.email); // Use email instead of UID
       const schoolSnap = await getDoc(schoolRef);
-      if (schoolSnap.exists()) setSchoolData(schoolSnap.data());
+      if (schoolSnap.exists()) {
+        setSchoolData(schoolSnap.data());
+      } else {
+        console.error("❌ School data not found");
+      }
     };
     fetchSchool();
   }, []);
 
   const handleUpdate = async () => {
-    await updateDoc(doc(db, "schools", auth.currentUser.uid), schoolData);
+    const schoolRef = doc(db, "schools", auth.currentUser.email); 
+    await updateDoc(schoolRef, schoolData);
     alert("Updated successfully!");
   };
 
@@ -43,7 +48,7 @@ function SchoolDashboard() {
           <button onClick={handleUpdate}>Update</button>
         </div>
       ) : (
-        <p>Loading...</p>
+        <p>Loading school data...</p>
       )}
     </div>
   );
