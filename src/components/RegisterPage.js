@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { registerUser, loginUser } from "../auth";
+import { registerUser, loginUser, getUserRole } from "../auth";
 import { db } from "../firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -14,6 +14,7 @@ const RegisterPage = () => {
   const handleRegister = async (e) => {
     e.preventDefault();
     try {
+      // Register the user
       const user = await registerUser(email, password, role);
 
       // Store School Data in Firestore
@@ -27,8 +28,9 @@ const RegisterPage = () => {
       // Automatically log in the user
       await loginUser(email, password);
 
-      alert("Registration successful!");
-      navigate("/school-dashboard"); // Redirect to School Dashboard
+      // Get user role & navigate to the correct dashboard
+      const userRole = await getUserRole(user.uid);
+      navigate(userRole === "admin" ? "/admin-dashboard" : "/school-dashboard");
     } catch (error) {
       alert("Registration failed: " + error.message);
     }
