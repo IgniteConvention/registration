@@ -1,57 +1,48 @@
-import { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { registerUser } from "../auth";
 import { db } from "../firebaseConfig";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
-import { logoutUser } from "../auth";
+import { doc, setDoc } from "firebase/firestore";
 
-const auth = getAuth();
+const RegisterPage = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [schoolName, setSchoolName] = useState("");
+  const [role, setRole] = useState("school"); // Default to School
 
-function SchoolDashboard() {
-  const [schoolData, setSchoolData] = useState(null);
+  const handleRegister = async (e) => {
+    e.preventDefault();
+    try {
+      const user = await registerUser(email, password, role);
 
-  useEffect(() => {
-    const fetchSchool = async () => {
-      if (!auth.currentUser) return;
-      const schoolRef = doc(db, "schools", auth.currentUser.email); // Use email instead of UID
-      const schoolSnap = await getDoc(schoolRef);
-      if (schoolSnap.exists()) {
-        setSchoolData(schoolSnap.data());
-      } else {
-        console.error("❌ School data not found");
+      // Store School Data in Firestore
+      if (role === "school") {
+        await setDoc(doc(db, "schools", email), {
+          schoolName,
+          email,
+        });
       }
-    };
-    fetchSchool();
-  }, []);
 
-  const handleUpdate = async () => {
-    const schoolRef = doc(db, "schools", auth.currentUser.email); 
-    await updateDoc(schoolRef, schoolData);
-    alert("Updated successfully!");
-  };
-
-  const handleLogout = async () => {
-    await logoutUser();
-    window.location.reload();
+      alert("Registration successful!");
+    } catch (error) {
+      alert("Registration failed: " + error.message);
+    }
   };
 
   return (
     <div>
-      <h1>School Dashboard</h1>
-      <button onClick={handleLogout}>Log Out</button>
-      {schoolData ? (
-        <div>
-          <input
-            type="text"
-            value={schoolData.schoolName}
-            onChange={(e) => setSchoolData({ ...schoolData, schoolName: e.target.value })}
-          />
-          <button onClick={handleUpdate}>Update</button>
-        </div>
-      ) : (
-        <p>Loading school data...</p>
-      )}
+      <h2>Register User</h2>
+      <form onSubmit={handleRegister}>
+        <input type="text" placeholder="School Name" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} required />
+        <input type="email" placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)} required />
+        <input type="password" placeholder="Password" value={password} onChange={(e) => setPassword(e.target.value)} required />
+        <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <option value="school">School</option>
+          <option value="admin">Admin</option>
+        </select>
+        <button type="submit">Register</button>
+      </form>
     </div>
   );
-}
+};
 
-export default SchoolDashboard;
+export default RegisterPage;
