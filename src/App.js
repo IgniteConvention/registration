@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
-import { auth, getUserRole } from "./auth";
+import { getUserRole } from "./auth";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+const auth = getAuth();
 import AdminDashboard from "./components/AdminDashboard";
 import SchoolDashboard from "./components/SchoolDashboard";
 import LoginPage from "./components/LoginPage";
