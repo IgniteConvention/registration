@@ -1,57 +1,98 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
-export default function SchoolRegistrationForm({ onSubmit }) {
-  const [schoolName, setSchoolName] = useState("");
-  const [schoolAddress, setSchoolAddress] = useState("");
-  const [contactName, setContactName] = useState("");
-  const [contactPhone, setContactPhone] = useState("");
-  const [contactEmail, setContactEmail] = useState("");
-  const [pastorName, setPastorName] = useState("");
-  const [sponsors, setSponsors] = useState([
-    { name: "", willingToJudge: false, judgingCategories: "" }
-  ]);
+export default function SchoolRegistrationForm({ schoolData, onSubmit }) {
+  const [formData, setFormData] = useState({
+    schoolName: "",
+    contactPerson: "",
+    contactPhone: "",
+    contactEmail: "",
+    address: "",
+    pastorName: "",
+    sponsors: [{ name: "", willingToJudge: false, judgingCategories: "" }],
+  });
+
+  useEffect(() => {
+    if (schoolData) setFormData(schoolData);
+  }, [schoolData]);
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
   const handleSponsorChange = (index, field, value) => {
-    const updatedSponsors = [...sponsors];
+    const updatedSponsors = [...formData.sponsors];
     updatedSponsors[index][field] = value;
-    setSponsors(updatedSponsors);
+    setFormData({ ...formData, sponsors: updatedSponsors });
   };
 
   const addSponsor = () => {
-    setSponsors([...sponsors, { name: "", willingToJudge: false, judgingCategories: "" }]);
+    setFormData({
+      ...formData,
+      sponsors: [...formData.sponsors, { name: "", willingToJudge: false, judgingCategories: "" }],
+    });
   };
 
   const removeSponsor = (index) => {
-    setSponsors(sponsors.filter((_, i) => i !== index));
+    setFormData({
+      ...formData,
+      sponsors: formData.sponsors.filter((_, i) => i !== index),
+    });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    onSubmit({ schoolName, schoolAddress, contactName, contactPhone, contactEmail, pastorName, sponsors });
+    onSubmit(formData);
   };
 
   return (
     <div className="container">
-      <h2>School Registration</h2>
       <form onSubmit={handleSubmit}>
-        <label>School Name: <input type="text" value={schoolName} onChange={(e) => setSchoolName(e.target.value)} required /></label>
-        <label>School Address: <input type="text" value={schoolAddress} onChange={(e) => setSchoolAddress(e.target.value)} required /></label>
-        <label>Contact Person: <input type="text" value={contactName} onChange={(e) => setContactName(e.target.value)} required /></label>
-        <label>Contact Phone: <input type="tel" value={contactPhone} onChange={(e) => setContactPhone(e.target.value)} required /></label>
-        <label>Contact Email: <input type="email" value={contactEmail} onChange={(e) => setContactEmail(e.target.value)} required /></label>
-        <label>Pastor's Name: <input type="text" value={pastorName} onChange={(e) => setPastorName(e.target.value)} /></label>
-        
+        <label>School Name:</label>
+        <input type="text" name="schoolName" value={formData.schoolName} onChange={handleChange} required />
+
+        <label>Contact Person:</label>
+        <input type="text" name="contactPerson" value={formData.contactPerson} onChange={handleChange} required />
+
+        <label>Phone:</label>
+        <input type="text" name="contactPhone" value={formData.contactPhone} onChange={handleChange} required />
+
+        <label>Email:</label>
+        <input type="email" name="contactEmail" value={formData.contactEmail} readOnly />
+
+        <label>Address:</label>
+        <input type="text" name="address" value={formData.address} onChange={handleChange} required />
+
+        <label>Pastor's Name:</label>
+        <input type="text" name="pastorName" value={formData.pastorName} onChange={handleChange} />
+
         <h3>Sponsors</h3>
-        {sponsors.map((sponsor, index) => (
+        {formData.sponsors.map((sponsor, index) => (
           <div key={index}>
-            <label>Name: <input type="text" value={sponsor.name} onChange={(e) => handleSponsorChange(index, "name", e.target.value)} required /></label>
-            <label>Willing to Judge: <input type="checkbox" checked={sponsor.willingToJudge} onChange={(e) => handleSponsorChange(index, "willingToJudge", e.target.checked)} /></label>
-            {sponsor.willingToJudge && <label>Judging Categories: <textarea value={sponsor.judgingCategories} onChange={(e) => handleSponsorChange(index, "judgingCategories", e.target.value)} /></label>}
+            <label>Name:</label>
+            <input
+              type="text"
+              value={sponsor.name}
+              onChange={(e) => handleSponsorChange(index, "name", e.target.value)}
+            />
+            <label>Willing to Judge:</label>
+            <input
+              type="checkbox"
+              checked={sponsor.willingToJudge}
+              onChange={(e) => handleSponsorChange(index, "willingToJudge", e.target.checked)}
+            />
+            {sponsor.willingToJudge && (
+              <label>Judging Categories:
+                <textarea
+                  value={sponsor.judgingCategories}
+                  onChange={(e) => handleSponsorChange(index, "judgingCategories", e.target.value)}
+                />
+              </label>
+            )}
             <button type="button" onClick={() => removeSponsor(index)}>Remove</button>
           </div>
         ))}
         <button type="button" onClick={addSponsor}>Add Sponsor</button>
-        <button type="submit">Submit</button>
+        <button type="submit">Save School Details</button>
       </form>
     </div>
   );
