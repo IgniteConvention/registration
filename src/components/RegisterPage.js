@@ -1,5 +1,6 @@
 import React, { useState } from "react";
-import { registerUser } from "../auth";
+import { useNavigate } from "react-router-dom";
+import { registerUser, loginUser } from "../auth";
 import { db } from "../firebaseConfig";
 import { doc, setDoc } from "firebase/firestore";
 
@@ -8,6 +9,7 @@ const RegisterPage = () => {
   const [password, setPassword] = useState("");
   const [schoolName, setSchoolName] = useState("");
   const [role, setRole] = useState("school"); // Default to School
+  const navigate = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();
@@ -22,7 +24,11 @@ const RegisterPage = () => {
         });
       }
 
+      // Automatically log in the user
+      await loginUser(email, password);
+
       alert("Registration successful!");
+      navigate("/school-dashboard"); // Redirect to School Dashboard
     } catch (error) {
       alert("Registration failed: " + error.message);
     }
